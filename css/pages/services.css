@@ -201,139 +201,10 @@
   width: 960px;
 }
 
-/* Featured Blogs */
-
-.blogs {
-  background: #010101;
-  padding: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: 36.72px;
-  width: 100%;
-}
-
-.blogs-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
-  font-size: 37.5px;
-  line-height: 48px;
-  letter-spacing: -0.5px;
-  color: #f9f9ff;
-  max-width: 754px;
-}
-
-.blogs-subtitle {
-  font-family: "Figtree", sans-serif;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-  color: #8c8c8c;
-  max-width: 754px;
-}
-
-.blog-cards {
-  display: flex;
-  gap: 16px;
-  height: 743px;
-  padding-top: 40px;
-  width: 100%;
-}
-
-.blog-card {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  min-height: 492px;
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.blog-card img.blog-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.blog-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.36) 100%);
-  z-index: 1;
-}
-
-.blog-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  padding: 32px;
-  gap: 32px;
-}
-
-.blog-top {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.blog-cat-wrap {
-  position: relative;
-  padding-bottom: 12px;
-}
-
-.blog-cat {
-  font-family: "Figtree", sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 1.75px;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.blog-cat-bar {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 28px;
-  height: 4px;
-  background: #fff;
-  border-radius: 9999px;
-}
-
-.blog-heading {
-  font-family: "Fustat", sans-serif;
-  font-weight: 700;
-  font-size: 20.6px;
-  line-height: 33px;
-  color: #fff;
-}
-
-.blog-know {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Figtree", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 0.12px;
-  text-transform: uppercase;
-  color: #fff;
-  padding-top: 16px;
-}
-
-.blog-know img {
-  width: 26px;
-  height: 26px;
-}
+/* Featured Blogs — styled entirely by css/components.css (+ footer.css /
+   responsive.css breakpoints). The verbatim .blogs/.blog-* copy that used to
+   sit here out-ranked the shared 1440 rules and pinned the band to 120px
+   gutters and 743px cards. */
 
 /* Enquire / contact form */
 
@@ -644,69 +515,10 @@
   text-underline-position: from-font;
 }
 
-/* CTA + Partners */
+/* CTA + Partners — styled entirely by css/components.css. The copy that
+   used to sit here zeroed .cta-wrap's 110px top padding and pinned
+   .cta-title to a 56px leading. */
 
-.cta-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 120px;
-  padding: 0 0 0;
-  width: 100%;
-  background: #1d1d1d;
-}
-
-.cta {
-  width: 1060px;
-  height: 398px;
-  background: rgba(83, 83, 83, 0.3);
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 110px;
-  overflow: hidden;
-}
-
-.cta-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  max-width: 790px;
-  width: 100%;
-}
-
-.cta-title {
-  font-family: "Fustat", sans-serif;
-  font-weight: 500;
-  font-size: 46.3px;
-  line-height: 56px;
-  color: #fff;
-  text-transform: capitalize;
-  max-width: 521px;
-}
-
-.cta-sub {
-  font-family: "Fustat", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.16px;
-  color: #b9b9b9;
-  max-width: 477px;
-  margin-bottom: 24px;
-}
-
-.partners {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  overflow: hidden;
-  background: #fff;
-}
 
 /* The Figma canvas is 1920 wide and the grid is two fixed 960px cards. Below
    1920 that pair overflowed its row and the second card was clipped off the
@@ -865,19 +677,6 @@
     font-size: clamp(28px, 7vw, 40px) !important;
   }
 
-  .blogs {
-    padding: 48px 16px !important;
-  }
-
-  .blog-cards {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .blog-card {
-    height: 400px;
-  }
-
   /* The FAQ band kept its desktop 215px side padding at every width, so at
      375px the content box collapsed to 0 and every answer wrapped one letter
      per line. */
@@ -917,16 +716,6 @@
     padding: 0 16px 20px;
   }
 
-  /* Tap targets */
-  .blog-know {
-    min-height: 44px;
-    align-items: center;
-  }
-
-  /* 56px line-height under a 26–36px clamp left three loose bands of text. */
-  .cta-title {
-    line-height: 1.2;
-  }
 }
 
 /* The 215px FAQ gutter also overwhelms tablet widths. */
@@ -980,18 +769,9 @@ html[data-theme="light"] .svc-card {
   border-color: var(--border-strong);
 }
 
-/* —— Featured blogs —— */
-html[data-theme="light"] .blogs {
-  background: var(--bg-elevated);
-}
-
-html[data-theme="light"] .blogs-title {
-  color: var(--text);
-}
-
-html[data-theme="light"] .blogs-subtitle {
-  color: var(--text-secondary);
-}
+/* —— Featured blogs —— light rules live in components.css: the band stays
+   dark ink in both themes (homepage reference). The white-plate copy that
+   used to sit here was the only reason this page's strip flipped to paper. */
 
 /* —— Enquire —— */
 html[data-theme="light"] .enquire {

@@ -1443,68 +1443,9 @@
   text-decoration: underline;
 }
 
-/* CTA + partners (shared pattern) */
-
-.cta-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 120px;
-  padding: 110px 0 0;
-  width: 100%;
-  background: #1d1d1d;
-}
-
-.cta {
-  width: 1060px;
-  height: 398px;
-  background: rgba(83, 83, 83, 0.3);
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 110px;
-}
-
-.cta-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  max-width: 790px;
-  width: 100%;
-}
-
-.cta-title {
-  font-family: "Fustat", sans-serif;
-  font-weight: 500;
-  font-size: 46.3px;
-  line-height: 56px;
-  color: #fff;
-  text-transform: capitalize;
-  max-width: 521px;
-}
-
-.cta-sub {
-  font-family: "Fustat", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.16px;
-  color: #b9b9b9;
-  max-width: 477px;
-  margin-bottom: 24px;
-}
-
-.partners {
-  position: relative;
-  width: 100%;
-  height: 319px;
-  overflow: hidden;
-  background: #fff;
-}
+/* CTA + partners — styled entirely by css/components.css. The verbatim copy
+   removed from here pinned .cta-title to a 56px leading and forced the
+   partner band to a fixed 319px, so it sat 79px taller than everywhere else. */
 
 @media (max-width: 1100px) {
   .ab-story-overlay {
@@ -2102,11 +2043,6 @@ html[data-theme="light"] .ab-faq-more a {
   color: var(--text);
 }
 
-/* — CTA band (page-local copy of the shared block) — */
-html[data-theme="light"] .cta-wrap {
-  background: var(--bg-page);
-}
-
 /* ═══════════════════════════════════════════════════════════════════
    MOBILE (<= 768px / 375px reference)
    Figma has no dedicated About mobile frame — the only ~390w frames in the
@@ -2392,49 +2328,9 @@ html[data-theme="light"] .cta-wrap {
     margin: -12px -4px;
   }
 
-  /* — CTA — */
-  .cta-wrap {
-    gap: 64px;
-    padding-top: 64px;
-  }
+  /* — CTA — mobile sizing is shared (css/responsive.css @768). */
 
-  .cta {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    padding: 40px 20px;
-    box-sizing: border-box;
-  }
-
-  .cta-title {
-    font-size: clamp(26px, 7vw, 36px);
-    line-height: 1.2;
-  }
-
-  /* The partner band is a single 1920x320 artwork. Scaled to fit 375 it
-     collapses to a 47px strip and every address/URL in it becomes unreadable,
-     so on mobile it becomes a hidden-scrollbar rail at a legible height
-     instead. YOUR CHOICE — Figma has no mobile treatment for this band. */
-  .partners--band {
-    height: auto;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .partners--band::-webkit-scrollbar {
-    display: none;
-  }
-
-  .partners--band .partners-band {
-    width: auto;
-    height: 200px;
-    max-width: none;
-    display: block;
-  }
+  /* The mobile partner-band rail lives in css/components.css @900. */
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -2515,15 +2411,6 @@ html[data-theme="light"] .cta-wrap {
   .ab-legacy-content {
     width: 100%;
     max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* the page-local .cta copy is a fixed 1060px card */
-  .cta {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    padding: 56px 40px;
     box-sizing: border-box;
   }
 

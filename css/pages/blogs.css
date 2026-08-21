@@ -351,131 +351,12 @@
   vertical-align: 0.2em;
 }
 
-/* ——— Featured blogs listing ——— */
-
-.featured-blogs {
-  background: #010101;
-  padding: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: 36.72px;
-  width: 100%;
-}
-
-.featured-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
-  font-size: 37.5px;
-  line-height: 48px;
-  letter-spacing: -0.5px;
-  color: #f9f9ff;
-}
-
-.featured-sub {
-  font-family: "Figtree", sans-serif;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-  color: #8c8c8c;
-  max-width: 754px;
-}
-
-.featured-grid {
-  display: flex;
-  gap: 16px;
-  padding-top: 40px;
-  height: 743px;
-  width: 100%;
-}
-
-.featured-card {
-  position: relative;
-  flex: 1;
-  min-height: 492px;
-  border-radius: 20px;
-  overflow: hidden;
-  /* Opaque dark ground beneath the cover photo. The card's type is white in
-     both themes, so without this a failed image load would leave white text
-     on the light-mode #f5f5f5 section. Never visible when the photo loads. */
-  background: #1d1d1d;
-}
-
-.featured-cover {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.featured-gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.36) 100%);
-}
-
-.featured-content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.featured-cat-wrap {
-  position: relative;
-  padding-bottom: 12px;
-  margin-bottom: 32px;
-}
-
-.featured-cat {
-  font-family: "Figtree", sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 1.75px;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.featured-cat-bar {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 28px;
-  height: 4px;
-  background: #fff;
-  border-radius: 9999px;
-}
-
-.featured-heading {
-  font-family: "Fustat", sans-serif;
-  font-weight: 700;
-  font-size: 20.6px;
-  line-height: 33px;
-  color: #fff;
-}
-
-.featured-know {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Figtree", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 0.12px;
-  text-transform: uppercase;
-  color: #fff;
-  padding-top: 16px;
-}
-
-.featured-know img {
-  width: 26px;
-  height: 26px;
-}
+/* ——— Featured blogs listing ———
+   The markup now uses the homepage's .blogs / .blog-cards / .blog-card class
+   set, so the whole strip is styled by css/components.css. The .featured-*
+   set that used to live here was a near-copy of it that had drifted:
+   no max-width on the title, a #1d1d1d card ground instead of #0a0a0a,
+   margin-bottom instead of .blog-top's gap, and a white light-mode band. */
 
 /* ——— CTA + Partners ———
    Intentionally NOT redefined here. components.css already declares an
@@ -486,14 +367,14 @@
    partner strip on phones). Leave these to the shared layer. */
 
 @media (max-width: 768px) {
-  .blog-hero,
-  .blogs-hero {
+  .blog-hero {
     padding: 100px 20px 40px !important;
   }
 
-  .blog-hero h1,
-  .featured-title,
-  .blogs-title {
+  /* .blogs-title dropped from this list: it is the Featured Blogs strip
+     heading, which is sized by css/responsive.css @768 to the homepage's
+     28px/1.2. .blogs-hero / .featured-title are not in any markup. */
+  .blog-hero h1 {
     font-size: clamp(28px, 8vw, 40px) !important;
   }
 
@@ -549,16 +430,8 @@
     font-size: 16px !important;
   }
 
-  .blog-cards,
-  .featured-grid {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .blog-card {
-    width: 100%;
-    height: 400px;
-  }
+  /* .blog-cards / .blog-card mobile sizing is shared: css/footer.css @1440
+     stacks the rail and sets the 420px card height that the homepage uses. */
 
   .blog-connect,
   .blog-connect-form {
@@ -753,32 +626,7 @@
   color: #bbb;
 }
 
-/* whole-card hit area for featured cards */
-
-.featured-hit {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-}
-
-.featured-card .featured-cover {
-  transition: transform .6s cubic-bezier(.22, 1, .36, 1);
-}
-
-.featured-card:hover .featured-cover,
-.featured-card:focus-within .featured-cover {
-  transform: scale(1.1);
-}
-
-.featured-content {
-  pointer-events: none;
-}
-
-.featured-know {
-  pointer-events: auto;
-  position: relative;
-  z-index: 3;
-}
+/* Cover zoom + full-card hit area now come from css/components.css. */
 
 /* ——— Article hero (Figma 1301:2559) ——— */
 
@@ -1149,18 +997,8 @@ html[data-theme="light"] .bx-other-date {
 /* .bx-rule and .bx-other-item borders stay #868686 — Figma keeps that
    mid-grey identical in both themes. */
 
-/* ---- Featured / related strip ---- */
-html[data-theme="light"] .featured-blogs {
-  background: var(--bg-card);
-}
-
-html[data-theme="light"] .featured-title {
-  color: var(--text);
-}
-
-html[data-theme="light"] .featured-sub {
-  color: var(--text-secondary);
-}
+/* ---- Featured / related strip — light rules live in css/components.css
+   (the band stays dark ink in both themes, per the homepage). ---- */
 
 /* ---- Article shell ---- */
 html[data-theme="light"] .blog-article {
@@ -1234,17 +1072,7 @@ html[data-theme="light"] .blog-connect-social img {
    Verified at 375px on the index and all four articles.
    ═════════════════════════════════════════════════════════════════════ */
 
-@media (max-width: 1100px) {
-  /* 120px of padding left ~135px of content at phone widths */
-  .featured-blogs {
-    padding: 72px 24px;
-    gap: 24px;
-  }
-
-  .featured-grid {
-    padding-top: 24px;
-  }
-}
+/* @1100 gutters for the strip come from css/footer.css + css/responsive.css. */
 
 @media (max-width: 768px) {
 
@@ -1404,48 +1232,8 @@ html[data-theme="light"] .blog-connect-social img {
     gap: 20px;
   }
 
-  /* ---- Featured / related strip ---- */
-  .featured-blogs {
-    padding: 56px 16px;
-    gap: 16px;
-  }
-
-  .featured-sub {
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  /* NB: do not hide .featured-sub's <br> elements — the markup is
-     "business<br />goals" with no surrounding space, so collapsing them
-     welds the words together. */
-
-  .featured-grid {
-    gap: 20px;
-    padding-top: 20px;
-  }
-
-  .featured-card {
-    min-height: 0;
-    height: 420px;
-  }
-
-  .featured-content {
-    padding: 24px;
-  }
-
-  .featured-cat-wrap {
-    margin-bottom: 20px;
-  }
-
-  .featured-heading {
-    font-size: 19px;
-    line-height: 28px;
-  }
-
-  .featured-know {
-    min-height: 44px;
-    padding-top: 12px;
-  }
+  /* ---- Featured / related strip — mobile sizing is shared
+     (css/responsive.css @768 + css/footer.css @1440). ---- */
 }
 
 @media (max-width: 768px) {
@@ -1455,33 +1243,12 @@ html[data-theme="light"] .blog-connect-social img {
   }
 }
 
-/* ─── Page-scoped patches for two defects that actually live in the shared
-   layer. Both are listed under SHARED CHANGES NEEDED; once they are fixed
-   in css/responsive.css these two blocks should be deleted. ─── */
-
-@media (max-width: 1100px) {
-  /* responsive.css pins .partners to 220px, which out-ranks
-     components.css's `.partners--band { height: auto }` (same specificity,
-     later file). The 1920x320 band scales to ~62px tall on a phone, so the
-     fixed height leaves a large empty white slab beneath it. */
-  .partners.partners--band {
-    height: auto;
-  }
-
-  .cta-wrap {
-    gap: 56px;
-    padding-top: 72px;
-  }
-}
-
-@media (max-width: 768px) {
-  /* responsive.css scales .cta-title's font-size down to ~26px but leaves
-     components.css's fixed `line-height: 56px`, so the three wrapped lines
-     drift apart. */
-  .cta-title {
-    line-height: 1.15;
-  }
-}
+/* ─── The two page-scoped patches that used to sit here are gone:
+   responsive.css no longer pins .partners at 1100 (that rule was scoped to
+   .partners:not(.partners--band), which no page uses, and has been deleted),
+   and components.css's .cta-title is line-height 1.15 / 1.2@768, not 56px.
+   The .cta-wrap gap/padding override was page-only drift — the shared block
+   is 120px gap / 110px top, as on the homepage. ─── */
 
 /* ─── Article layout stacks at 1024, not 768 ───
    The sidebar's floor is 300px, so between 769px and 1024px the article

@@ -867,19 +867,6 @@
     line-height: 1.4 !important;
   }
 
-  .blogs {
-    padding: 48px 16px !important;
-  }
-
-  .blog-cards {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .blog-card {
-    height: 400px;
-  }
-
   /* Awards rows have a fixed 469px title column on desktop (Figma) — stack them
      rather than let the row overflow on a phone. */
   .pd-awards {

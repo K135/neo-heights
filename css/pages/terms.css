@@ -119,20 +119,9 @@
   padding-left: 36px;
 }
 
-/* Scoped away from .partners--band: components.css turns that variant into a
-   swipeable 1200x200 strip below 900px, and an unscoped `overflow:hidden`
-   here would clobber its overflow-x:auto. */
-.partners:not(.partners--band) {
-  position: relative;
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-  background: #fff;
-}
-
-.partners-standalone {
-  margin-top: 0;
-}
+/* .partners:not(.partners--band) and .partners-standalone were dead code:
+   terms.html / privacy.html both ship <div class="partners partners--band">,
+   which is styled entirely by css/components.css. */
 
 /* ============ LIGHT MODE ============
    Terms/Privacy are pure text documents, so every surface flips.

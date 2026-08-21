@@ -348,77 +348,11 @@
   flex-shrink: 0;
 }
 
-/* CTA + partners */
-
-.cta-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 120px;
-  padding: 120px 0 0;
-  width: 100%;
-  background: #1d1d1d;
-}
-
-.cta {
-  width: 1060px;
-  height: 398px;
-  background: rgba(83, 83, 83, 0.3);
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 110px;
-}
-
-.cta-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  max-width: 790px;
-  width: 100%;
-}
-
-.cta-title {
-  font-family: "Fustat", sans-serif;
-  font-weight: 500;
-  font-size: 46.3px;
-  line-height: 56px;
-  color: #fff;
-  text-transform: capitalize;
-  max-width: 521px;
-}
-
-.cta-sub {
-  font-family: "Fustat", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.16px;
-  color: #b9b9b9;
-  max-width: 477px;
-  margin-bottom: 35px;
-}
-
-/* Scoped away from .partners--band: components.css turns that variant into a
-   swipeable 1200x200 strip below 900px, and an unscoped `overflow:hidden`
-   here would clobber its overflow-x:auto. */
-.partners:not(.partners--band) {
-  width: 100%;
-  height: auto;
-  background: #fff;
-  overflow: hidden;
-}
-
-.partners-full {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
+/* CTA + partners — styled entirely by css/components.css. The copy removed
+   from here ran .cta-wrap at 120px top padding (shared is 110px), pinned
+   .cta-title to a 56px leading and .cta-sub to a 35px bottom margin.
+   .partners:not(.partners--band) and .partners-full were dead: every page
+   ships <div class="partners partners--band">. */
 
 
 /* ============ LIGHT MODE ============
@@ -613,16 +547,6 @@ html[data-theme="light"] .ct-building {
 
   .ct-office-row p {
     max-width: none;
-  }
-}
-
-@media (max-width: 1100px) {
-  /* .cta is a hard 1060px here; shared responsive.css only relaxes it at 768 */
-  .cta {
-    width: calc(100% - 48px);
-    max-width: 1060px;
-    height: auto;
-    padding: 56px 40px;
   }
 }
 
@@ -835,21 +759,7 @@ html[data-theme="light"] .ct-building {
     min-width: 0;
   }
 
-  .cta-title {
-    font-size: clamp(26px, 7vw, 34px);
-    line-height: 1.2;
-    max-width: 100%;
-  }
-
-  .cta-sub {
-    max-width: 100%;
-    margin-bottom: 24px;
-  }
-
-  .cta-wrap {
-    gap: 64px;
-    padding-top: 64px;
-  }
+  /* CTA mobile sizing is shared (css/responsive.css @768). */
 }
 
 @media (max-width: 390px) {

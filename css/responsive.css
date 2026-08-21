@@ -23,6 +23,22 @@
     padding-right: 24px !important;
   }
 
+  /* The partner band normally inherits its gutter from .cta-wrap, which wraps
+     it on every page that has a CTA. terms.html / privacy.html render it
+     standalone, so it gets the same inset from its own margins instead —
+     same resulting geometry as the homepage. */
+  .partners--band {
+    margin-left: 24px;
+    margin-right: 24px;
+    width: auto;
+  }
+
+  .cta-wrap > .partners--band {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
   .footer-inner {
     padding-left: 24px;
     padding-right: 24px;
@@ -120,9 +136,14 @@
     padding: 8px 12px;
   }
 
-  .partners:not(.partners--band) {
-    overflow: hidden;
-    height: 220px;
+  /* ---- Shared mobile sizing for the sections that repeat off the homepage.
+     These carry the homepage's resolved 375 values so the CTA band, the
+     partner band (a child of .cta-wrap, so it inherits this gutter) and the
+     Featured Blogs strip are identical on every page. They used to be
+     re-stated per page in css/pages/*.css at 24px / 48px / 56px gutters. ---- */
+  .cta-wrap {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   .cta {
@@ -130,11 +151,42 @@
     margin-left: 16px;
     margin-right: 16px;
     height: auto !important;
-    padding: 48px 24px !important;
+    padding: 48px 16px !important;
   }
 
   .cta-title {
     font-size: clamp(26px, 7vw, 36px) !important;
+  }
+
+  .partners--band {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .cta-wrap > .partners--band {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .blogs {
+    padding: 64px 16px !important;
+  }
+
+  .blogs-title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .blogs-subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* 44px tap target on the card link (homepage value; was re-stated with
+     three different paddings in services/projects/home). */
+  .blog-know {
+    min-height: 44px;
+    box-sizing: content-box;
   }
 
   .enquire {
