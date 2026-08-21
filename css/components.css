@@ -36,6 +36,12 @@
   flex-shrink: 0;
 }
 
+/* Non-directional button icons (download, etc.) must not be mirrored. */
+.btn-primary img.btn-icon-plain,
+.link-accent img.btn-icon-plain {
+  transform: none;
+}
+
 .link-accent {
   display: inline-flex;
   align-items: center;
@@ -832,7 +838,7 @@
   font-family: "Fustat", sans-serif;
   font-weight: 500;
   font-size: 46.3px;
-  line-height: 56px;
+  line-height: 1.15;
   color: #fff;
   text-transform: capitalize;
   max-width: 521px;
@@ -854,88 +860,166 @@
 .partners {
   position: relative;
   width: 100%;
-  height: 320px;
   overflow: hidden;
   background: #fff;
 }
 
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
-}
-
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
-}
-
-.p-970 {
-  left: 0;
-  top: 0;
-  width: 668px;
-  height: 320px;
-}
-
-.p-974 {
-  left: 669px;
-  top: 28px;
-  width: 282px;
-  height: 279px;
-}
-
-.p-101 {
-  left: 656px;
-  top: 0;
-  width: 1264px;
-  height: 320px;
-  z-index: 0;
-}
-
-.p-973 {
-  left: 983px;
-  top: 34px;
-  width: 254px;
-  height: 252px;
-  z-index: 1;
-}
-
-.p-972 {
-  left: 1275px;
-  top: 33px;
-  width: 256px;
-  height: 253px;
-  z-index: 1;
-}
-
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
+/* One flat partner sheet. The old build stacked two full-width sheets plus
+   five cropped logo tiles at absolute 1920-canvas coordinates, so they
+   overlapped into an unreadable collage at every viewport. */
+.partners.partners--strip {
+  height: auto;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
+.partners--strip .partners-full {
+  display: block;
+  width: 100%;
+  max-width: 1920px;
+  height: auto;
+  object-fit: contain;
 }
 
-.p-url {
-  margin-top: 10px;
+
+
+/* ---- Partners band: single render of Figma 1361:2673 (1920x320).
+   Replaces the 6-layer absolute composite, which mis-cropped and dropped
+   the Neo Studio cell. ---- */
+.partners--band {
+  position: relative;
+  width: 100%;
+  height: auto;
   background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
+  overflow: hidden;
+}
+.partners--band .partners-band {
+  display: block;
+  width: 100%;
+  max-width: 1920px;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
 }
 
+
+/* ============ LIGHT MODE — shared components ============ */
+html[data-theme="light"] .cta {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+html[data-theme="light"] .cta h2,
+html[data-theme="light"] .cta-title { color: var(--text); }
+html[data-theme="light"] .cta p,
+html[data-theme="light"] .cta-sub { color: var(--text-secondary); }
+html[data-theme="light"] .cta-wrap { background: var(--bg-page); }
+
+/* Card glass sits ON photography — Figma's light frame (1264:9007) keeps this a
+   dark scrim with white type in BOTH themes. Flipping it to a white plate washed
+   the type out over bright photos and made .card-text-title invisible. */
+html[data-theme="light"] .card-glass,
+html[data-theme="light"] .card-glass-inner {
+  background: rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+html[data-theme="light"] .card-glass .card-title,
+html[data-theme="light"] .card-glass .card-loc { color: #fff; }
+
+html[data-theme="light"] .partners--band { background: var(--bg-elevated); }
+
+
+/* ---- Partners band on small screens ----
+   The band is one 1920-wide image. Scaled to 375 it collapses to ~47px tall and
+   every address / URL becomes unreadable, so below 900px it becomes a horizontally
+   scrollable rail at a legible height instead. */
+@media (max-width: 900px) {
+  .partners--band {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .partners--band::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .partners--band .partners-band {
+    width: 1200px;
+    max-width: none;
+    height: 200px;
+    object-fit: cover;
+    object-position: left center;
+  }
+}
+
+
+/* .cta-title has a fixed 56px line-height; at mobile clamp sizes that leaves
+   three loosely-spaced bands. */
+@media (max-width: 768px) {
+  .cta-title { line-height: 1.2; }
+  .cta { width: calc(100% - 32px); height: auto; padding: 48px 24px; }
+}
+
+/* FAQ +/- glyphs are shipped as <img> with a hardcoded white stroke, so they
+   cannot inherit currentColor — invert them on light grounds. */
+html[data-theme="light"] .home-faq-icon,
+html[data-theme="light"] .faq-item summary img,
+html[data-theme="light"] .sd-faq-item summary img,
+html[data-theme="light"] .pd-faq-item summary img,
+html[data-theme="light"] .ab-faq-item summary img {
+  filter: invert(1);
+}
+
+
+/* The eyebrow greys (#909090 / #8c8c8c) were picked against near-black and
+   land at 2.5–3.2:1 on paper. They all resolve to the light --text-grey. */
+html[data-theme="light"] .home-eyebrow,
+html[data-theme="light"] .ab-eyebrow,
+html[data-theme="light"] .sd-eyebrow,
+html[data-theme="light"] .pd-eyebrow,
+html[data-theme="light"] .enquire-eyebrow,
+html[data-theme="light"] .faq-eyebrow,
+html[data-theme="light"] .bx-eyebrow,
+html[data-theme="light"] .blogs-eyebrow,
+html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .pd-hero .year,
+html[data-theme="light"] .year {
+  color: var(--text-grey);
+}
+
+/* Accent-coloured TEXT on a light ground fails AA at #f68121 (2.6:1).
+   Buttons and fills are unaffected — only text switches to --accent-text. */
+html[data-theme="light"] .link-accent .link-label,
+html[data-theme="light"] .link-accent,
+html[data-theme="light"] .terms-updated,
+html[data-theme="light"] .home-stat-link,
+html[data-theme="light"] .home-faq-more a,
+html[data-theme="light"] .eyebrow-accent,
+html[data-theme="light"] .home-eyebrow.accent,
+html[data-theme="light"] .nav-item[aria-current="page"],
+html[data-theme="light"] .ab-method-pill,
+html[data-theme="light"] .home-legacy-role,
+html[data-theme="light"] .ab-legacy-role,
+html[data-theme="light"] .sus-init-num,
+html[data-theme="light"] .bx-other-title,
+html[data-theme="light"] .blog-toc-title,
+html[data-theme="light"] .sd-caps-label,
+html[data-theme="light"] .sd-label-orange,
+html[data-theme="light"] .sd-sustain-point strong,
+html[data-theme="light"] .sd-stat strong,
+html[data-theme="light"] .home-brand-icon span,
+html[data-theme="light"] .home-contact-body a,
+html[data-theme="light"] .ct-detail a,
+html[data-theme="light"] .home-form-sub a,
+html[data-theme="light"] .home-contact-left a {
+  color: var(--accent-text);
+}
+
+/* …except where the plate stays dark in light mode: there the darkened accent
+   drops to 3.2:1, so those keep the full-strength brand orange. */
+html[data-theme="light"] .card-text .link-accent,
+html[data-theme="light"] .card-text .link-accent .link-label,
+html[data-theme="light"] .footer .link-accent,
+html[data-theme="light"] .footer a.link-accent {
+  color: var(--accent);
+}

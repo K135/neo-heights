@@ -16,10 +16,11 @@
 .blog-article {
   position: relative;
   display: flex;
-  gap: 80px;
+  gap: clamp(32px, 4.2vw, 80px);
   align-items: flex-start;
-  padding: 90px 140px 109px;
+  padding: 90px clamp(24px, 7.3vw, 140px) 109px;
   width: 100%;
+  box-sizing: border-box;
   background: #1d1d1d;
 }
 
@@ -38,8 +39,8 @@
 }
 
 .blog-sidebar {
-  width: 501px;
-  flex-shrink: 0;
+  width: clamp(300px, 29vw, 501px);
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -57,7 +58,8 @@
 }
 
 .blog-toc-card {
-  width: 501px;
+  width: 100%;
+  box-sizing: border-box;
   min-height: 432px;
   background: rgba(69, 69, 69, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -80,7 +82,7 @@
 
 .blog-connect {
   position: relative;
-  width: 501px;
+  width: 100%;
 }
 
 .blog-connect-card {
@@ -185,8 +187,9 @@
 }
 
 .blog-main {
-  width: 1024px;
-  flex-shrink: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 1024px;
   display: flex;
   flex-direction: column;
   gap: 70px;
@@ -245,92 +248,107 @@
   margin-top: 0;
 }
 
+/* ——— Article image grid ———
+   Tiles lay out inside the article column instead of scrolling sideways, so
+   there is no scrollbar (and no need for prev/next arrows) to reach an image. */
 .blog-gallery {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
   width: 100%;
-  scrollbar-width: thin;
 }
 
-.blog-gallery img {
-  height: 400px;
-  width: auto;
-  object-fit: cover;
-  flex-shrink: 0;
+/* Three landscape images read better as a single row of thirds. */
+.blog-gallery--trio {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.blog-gallery > img:first-child {
-  width: 608px;
-}
-
+.blog-gallery > img,
 .blog-gallery-white {
-  background: #fff;
-  height: 400px;
-  width: 464px;
-  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.blog-gallery--trio > img,
+.blog-gallery--trio .blog-gallery-white {
+  aspect-ratio: 3 / 2;
+}
+
+.blog-gallery > img {
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Infographics carry text to the edges, so they are fitted, not cropped. */
+.blog-gallery > img.blog-gallery-diagram {
+  object-fit: contain;
+  background: #0f0f0f;
+}
+
+/* Diagrams and drawings need their own white ground and must not be cropped. */
+.blog-gallery-white {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 25px;
+  padding: 18px 22px;
+  box-sizing: border-box;
+  background: #fff;
 }
 
 .blog-gallery-white img {
   width: 100%;
-  height: auto;
-  max-height: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-.blog-gallery > img:nth-child(3) {
-  width: 711px;
+@media (max-width: 900px) {
+  .blog-gallery,
+  .blog-gallery--trio {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
-.blog-gallery-rounded {
-  width: 522px;
-  height: 297px !important;
-  border-radius: 6.117px;
-  align-self: center;
-}
-
-.blog-section#execution .blog-gallery > img:first-child {
-  width: 458px;
-}
-
-.blog-section#execution .blog-gallery > img:nth-child(2) {
-  width: 464px;
-}
-
-.blog-section#execution .blog-gallery > img:nth-child(3) {
-  width: 711px;
-}
-
+/* ——— Pull quote ———
+   The marks sit inline with the text: the opener hugs the first word and the
+   closer trails the last one, instead of floating on lines of their own. */
 .blog-quote {
   position: relative;
-  border-left: 1px solid #f68121;
-  padding-left: 42px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: flex-start;
-}
-
-.blog-quote-open {
-  transform: rotate(180deg) scaleY(-1);
+  border-left: 2px solid #f68121;
+  padding-left: clamp(24px, 3vw, 42px);
 }
 
 .blog-quote p {
   font-family: "Fustat", sans-serif;
   font-weight: 600;
-  font-size: 48px;
-  line-height: 1.2;
+  font-size: clamp(28px, 3.3vw, 48px);
+  line-height: 1.25;
   color: #dbdbdb;
+  text-wrap: balance;
+}
+
+.blog-quote-mark {
+  display: inline-block;
+  width: 0.6em;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* The asset is drawn as a closing mark, so the opener is turned to face in. */
+.blog-quote-open {
+  transform: rotate(180deg);
+  margin-right: 0.18em;
+  vertical-align: 0.2em;
 }
 
 .blog-quote-close {
-  align-self: flex-end;
-  margin-right: 36%;
+  margin-left: 0.16em;
+  vertical-align: 0.2em;
 }
 
 /* ——— Featured blogs listing ——— */
@@ -376,6 +394,10 @@
   min-height: 492px;
   border-radius: 20px;
   overflow: hidden;
+  /* Opaque dark ground beneath the cover photo. The card's type is white in
+     both themes, so without this a failed image load would leave white text
+     on the light-mode #f5f5f5 section. Never visible when the photo loads. */
+  background: #1d1d1d;
 }
 
 .featured-cover {
@@ -455,151 +477,13 @@
   height: 26px;
 }
 
-/* ——— CTA + Partners ——— */
-
-.cta-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 120px;
-  padding: 110px 0 0;
-  width: 100%;
-  background: #1d1d1d;
-}
-
-.cta {
-  width: 1060px;
-  height: 398px;
-  background: rgba(83, 83, 83, 0.3);
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 110px;
-  overflow: hidden;
-}
-
-.cta-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  max-width: 790px;
-  width: 100%;
-}
-
-.cta-title {
-  font-family: "Fustat", sans-serif;
-  font-weight: 500;
-  font-size: 46.3px;
-  line-height: 56px;
-  color: #fff;
-  text-transform: capitalize;
-  max-width: 521px;
-}
-
-.cta-sub {
-  font-family: "Fustat", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.16px;
-  color: #b9b9b9;
-  max-width: 477px;
-  margin-bottom: 24px;
-}
-
-.partners {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  overflow: hidden;
-  background: #fff;
-}
-
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
-}
-
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
-}
-
-.p-970 {
-  left: 0;
-  top: 0;
-  width: 668px;
-  height: 320px;
-}
-
-.p-974 {
-  left: 669px;
-  top: 28px;
-  width: 282px;
-  height: 279px;
-  z-index: 1;
-}
-
-.p-101 {
-  left: 656px;
-  top: 0;
-  width: 1264px;
-  height: 320px;
-  z-index: 0;
-}
-
-.p-973 {
-  left: 983px;
-  top: 34px;
-  width: 254px;
-  height: 252px;
-  z-index: 1;
-}
-
-.p-972 {
-  left: 1275px;
-  top: 33px;
-  width: 256px;
-  height: 253px;
-  z-index: 1;
-}
-
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
-}
-
-.p-url {
-  margin-top: 10px;
-  background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
-}
-
+/* ——— CTA + Partners ———
+   Intentionally NOT redefined here. components.css already declares an
+   identical .cta-wrap/.cta/.cta-inner/.cta-title/.cta-sub/.partners set,
+   and blogs.css loads after main.css — the duplicate was out-ranking
+   responsive.css's mobile overrides (it forced .cta-title's 56px leading
+   and pinned .partners to 320px, leaving a dead white band under the
+   partner strip on phones). Leave these to the shared layer. */
 
 @media (max-width: 768px) {
   .blog-hero,
@@ -683,5 +567,957 @@
     padding-left: 16px;
     padding-right: 16px;
     box-sizing: border-box;
+  }
+}
+
+/* ——— Blogs index / listing (Figma 1300:2545) ——— */
+
+.bx-top {
+  width: 100%;
+  background: #1d1d1d;
+  padding: 39px 67px 49px 91px;
+}
+
+.bx-crumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 16px;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.bx-crumb a {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color .25s ease;
+}
+
+.bx-crumb a:hover {
+  color: #f68121;
+}
+
+.bx-crumb span {
+  color: #fff;
+}
+
+.bx-crumb-sep {
+  width: 7px;
+  height: 12px;
+  margin: 0 8px;
+  transform: rotate(180deg);
+  opacity: .8;
+}
+
+.bx-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 37px;
+  padding-top: 42px;
+}
+
+.bx-lead {
+  width: 1079px;
+  max-width: 1079px;
+  flex: 0 1 1079px;
+}
+
+.bx-lead-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1079 / 671;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #2a2a2a;
+}
+
+.bx-lead-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+
+.bx-lead-card:hover .bx-lead-img,
+.bx-lead-card:focus-visible .bx-lead-img {
+  transform: scale(1.1);
+}
+
+.bx-lead-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+}
+
+.bx-lead-meta {
+  margin-top: 46px;
+  font-family: "Figtree", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 1.75px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.bx-lead-title {
+  margin-top: 13px;
+  font-family: "Fustat", sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.bx-lead-title a {
+  color: inherit;
+  transition: color .25s ease;
+}
+
+.bx-lead-title a:hover {
+  color: #f68121;
+}
+
+.bx-lead-more {
+  margin-top: 21px;
+}
+
+.bx-rule {
+  width: 1px;
+  align-self: stretch;
+  min-height: 834px;
+  background: #868686;
+  flex: 0 0 1px;
+}
+
+.bx-other {
+  width: 608px;
+  max-width: 608px;
+  flex: 0 1 608px;
+}
+
+.bx-other-title {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28.4px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #f68121;
+}
+
+.bx-other-list {
+  list-style: none;
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}
+
+.bx-other-item {
+  border-bottom: 1px solid #868686;
+  padding-bottom: 32px;
+}
+
+.bx-other-item a {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  color: inherit;
+}
+
+.bx-other-h {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  color: #fff;
+  transition: color .25s ease;
+}
+
+.bx-other-item a:hover .bx-other-h,
+.bx-other-item a:focus-visible .bx-other-h {
+  color: #f68121;
+}
+
+.bx-other-date {
+  font-family: "Figtree", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 1.75px;
+  text-transform: uppercase;
+  color: #bbb;
+}
+
+/* whole-card hit area for featured cards */
+
+.featured-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.featured-card .featured-cover {
+  transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+
+.featured-card:hover .featured-cover,
+.featured-card:focus-within .featured-cover {
+  transform: scale(1.1);
+}
+
+.featured-content {
+  pointer-events: none;
+}
+
+.featured-know {
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+/* ——— Article hero (Figma 1301:2559) ——— */
+
+.ba-hero {
+  position: relative;
+  width: 100%;
+  height: 900px;
+  overflow: hidden;
+  background: #1d1d1d;
+}
+
+.ba-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ba-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0) 86%);
+}
+
+.ba-hero-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 39px 120px 26px 71px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ba-hero-crumb {
+  padding: 24px 6px;
+}
+
+.ba-hero-copy {
+  margin-top: 96px;
+  max-width: 1137px;
+}
+
+.ba-hero-title {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1.05;
+  color: #fff;
+  max-width: 990px;
+}
+
+.ba-hero-sub {
+  margin-top: 12px;
+  font-family: "Fustat", sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 33px;
+  color: #fff;
+}
+
+.ba-hero-date {
+  margin-top: auto;
+  font-family: "Figtree", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 1.75px;
+  text-transform: uppercase;
+  color: #bbb;
+}
+
+/* ——— Article body extras ——— */
+
+.ba-toc-card {
+  min-height: 0;
+}
+
+.ba-toc-list a {
+  color: inherit;
+  transition: color .25s ease;
+}
+
+.ba-toc-list a:hover {
+  color: #f68121;
+}
+
+.ba-lede {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.ba-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+}
+
+.ba-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #fff;
+}
+
+.ba-tag-key {
+  background: rgba(255, 255, 255, 0.19);
+  border: 1px solid #f68121;
+  font-weight: 600;
+}
+
+.blog-body ul.ba-checklist {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.ba-checklist li {
+  position: relative;
+  padding-left: 38px;
+}
+
+.ba-checklist li::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 9px;
+  width: 7px;
+  height: 13px;
+  border-right: 2px solid #f68121;
+  border-bottom: 2px solid #f68121;
+  transform: rotate(45deg);
+}
+
+.ba-checklist strong {
+  display: block;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ba-figure {
+  margin: 0;
+  position: relative;
+  width: 100%;
+}
+
+.ba-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.ba-credit {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.19);
+  border: 1px solid #f68121;
+  backdrop-filter: blur(6px);
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #fff;
+}
+
+@media (max-width: 1500px) {
+  .bx-top {
+    padding: 30px 40px 40px;
+  }
+
+  .bx-row {
+    gap: 28px;
+  }
+
+  .bx-lead {
+    flex: 1079 1 0;
+    min-width: 0;
+  }
+
+  .bx-other {
+    flex: 608 1 0;
+    min-width: 0;
+  }
+
+  .ba-hero-inner {
+    padding: 30px 40px 26px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .bx-row {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .bx-rule {
+    display: none;
+  }
+
+  .bx-lead,
+  .bx-other {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ba-hero {
+    height: auto;
+    min-height: 520px;
+  }
+
+  .ba-hero-inner {
+    padding: 24px;
+  }
+
+  .ba-hero-copy {
+    margin-top: 120px;
+  }
+
+  .ba-hero-title {
+    font-size: clamp(32px, 5vw, 64px);
+  }
+}
+
+@media (max-width: 768px) {
+  .bx-top {
+    padding: 16px 16px 32px;
+  }
+
+  .bx-crumb {
+    padding: 12px 0;
+    font-size: 16px;
+  }
+
+  .bx-row {
+    padding-top: 24px;
+  }
+
+  .bx-lead-meta {
+    margin-top: 24px;
+  }
+
+  .bx-lead-title {
+    font-size: clamp(20px, 5.5vw, 32px);
+  }
+
+  .bx-other-list {
+    margin-top: 32px;
+    gap: 28px;
+  }
+
+  .bx-other-h {
+    font-size: 18px;
+  }
+
+  .bx-other-date {
+    font-size: 14px;
+  }
+
+  .ba-hero {
+    min-height: 420px;
+  }
+
+  .ba-hero-copy {
+    margin-top: 90px;
+  }
+
+  .ba-hero-sub {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .ba-lede {
+    font-size: clamp(24px, 6vw, 32px);
+  }
+
+  .ba-tag,
+  .ba-credit {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .ba-credit {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .ba-checklist {
+    gap: 20px;
+  }
+
+  .ba-checklist li {
+    padding-left: 26px;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   LIGHT MODE  —  reference: Figma 1695:10760 (light Blogs index)
+   Photographic surfaces (article hero, lead card, featured cards, image
+   credits) keep their dark gradient treatment in BOTH themes — this
+   matches the light landing frame 1264:9007, where the blog card strip
+   stays photo-dark with white type.
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* ---- Blogs index: page ground ---- */
+html[data-theme="light"] .bx-top {
+  background: var(--bg-page);
+}
+
+/* ---- Breadcrumb (index only — the article hero crumb sits on a photo) ---- */
+html[data-theme="light"] .bx-crumb:not(.ba-hero-crumb) a {
+  color: rgba(18, 18, 18, 0.7);
+}
+
+html[data-theme="light"] .bx-crumb:not(.ba-hero-crumb) a:hover {
+  color: var(--accent);
+}
+
+html[data-theme="light"] .bx-crumb:not(.ba-hero-crumb) span {
+  color: var(--text);
+}
+
+html[data-theme="light"] .bx-crumb:not(.ba-hero-crumb) .bx-crumb-sep {
+  filter: invert(1);
+}
+
+/* ---- Lead post ---- */
+html[data-theme="light"] .bx-lead-card {
+  background: var(--bg-card);
+}
+
+html[data-theme="light"] .bx-lead-meta,
+html[data-theme="light"] .bx-lead-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .bx-lead-title a:hover {
+  color: var(--accent);
+}
+
+/* ---- Other blogs list ---- */
+html[data-theme="light"] .bx-other-h {
+  color: var(--text);
+}
+
+/* Figma light frame specifies #bbbbbb for the date, which is ~1.6:1 on
+   white. Using the light --text-grey token (#909090 ≈ 3.2:1) instead. */
+html[data-theme="light"] .bx-other-date {
+  color: var(--text-grey);
+}
+
+/* .bx-rule and .bx-other-item borders stay #868686 — Figma keeps that
+   mid-grey identical in both themes. */
+
+/* ---- Featured / related strip ---- */
+html[data-theme="light"] .featured-blogs {
+  background: var(--bg-card);
+}
+
+html[data-theme="light"] .featured-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .featured-sub {
+  color: var(--text-secondary);
+}
+
+/* ---- Article shell ---- */
+html[data-theme="light"] .blog-article {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .blog-article::before {
+  background: rgba(224, 105, 0, 0.18);
+}
+
+html[data-theme="light"] .blog-hero {
+  background: var(--bg-card);
+}
+
+/* ---- Table of contents ---- */
+html[data-theme="light"] .blog-toc-card {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .blog-toc-list {
+  color: var(--text-secondary);
+}
+
+/* ---- Long-form body copy ---- */
+html[data-theme="light"] .blog-title,
+html[data-theme="light"] .blog-h2,
+html[data-theme="light"] .ba-lede,
+html[data-theme="light"] .ba-checklist strong {
+  color: var(--text);
+}
+
+html[data-theme="light"] .blog-body {
+  color: var(--text-secondary);
+}
+
+/* ---- Pull quote ---- */
+html[data-theme="light"] .blog-quote p {
+  color: var(--text);
+}
+
+/* ---- Tag chips ---- */
+html[data-theme="light"] .ba-tag {
+  /* opaque, not an alpha tint — keeps the chip readable over any ground */
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+html[data-theme="light"] .ba-tag-key {
+  /* #f68121 @ 12% flattened onto white */
+  background: #fef0e4;
+  border-color: var(--accent);
+}
+
+/* ---- "Let's connect" panel: deliberately stays dark, matching the
+        identical card on the light landing page (home contact). ---- */
+html[data-theme="light"] .blog-connect-card {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* the social glyphs sit OUTSIDE the dark card, on the white page */
+html[data-theme="light"] .blog-connect-social img {
+  filter: invert(1);
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════
+   MOBILE / NARROW VIEWPORTS
+   Verified at 375px on the index and all four articles.
+   ═════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  /* 120px of padding left ~135px of content at phone widths */
+  .featured-blogs {
+    padding: 72px 24px;
+    gap: 24px;
+  }
+
+  .featured-grid {
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* ---- Article shell: stack, and give the TOC room under the hero ---- */
+  .blog-article {
+    padding: 44px 16px 64px;
+    gap: 32px;
+    align-items: stretch;
+  }
+
+  /* The sidebar wrapper dissolves so the TOC can sit ABOVE the article
+     and the enquiry form BELOW it — a contact form should not stand
+     between the reader and the first paragraph. */
+  .blog-sidebar {
+    display: contents;
+  }
+
+  .blog-toc {
+    order: 1;
+  }
+
+  .blog-main {
+    order: 2;
+    gap: 44px;
+  }
+
+  .blog-connect {
+    order: 3;
+  }
+
+  .blog-intro {
+    gap: 28px;
+  }
+
+  .blog-section {
+    gap: 20px;
+  }
+
+  .blog-toc-title {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  /* 44px tap rows in the table of contents. Scoped to .ba-toc-list —
+     gold-platinum's TOC is plain text and keeps the wider 16px gap. */
+  .ba-toc-list {
+    gap: 4px;
+  }
+
+  .ba-toc-list a {
+    display: inline-block;
+    padding: 11px 0;
+  }
+
+  /* ---- Decorative full-bleed hero (gold-platinum) ---- */
+  .blog-hero {
+    height: 260px;
+    padding: 0 !important;
+  }
+
+  /* ---- Enquiry card: the outer padding was doubling up with the
+          card's own 16px inset ---- */
+  .blog-connect,
+  .blog-connect-form {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .blog-connect-card {
+    padding: 20px 16px;
+  }
+
+  .blog-connect-title {
+    font-size: 24px;
+  }
+
+  .blog-connect-sub a {
+    display: inline-block;
+    padding: 11px 2px;
+    margin: -11px -2px;
+  }
+
+  .blog-connect-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* ---- Breadcrumbs: 44px rows ---- */
+  .bx-crumb a,
+  .bx-crumb span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* ---- Article hero: anchor the copy to the bottom of the photo ---- */
+  .ba-hero,
+  .ba-hero-inner {
+    min-height: 460px;
+  }
+
+  .ba-hero-inner {
+    box-sizing: border-box;
+    padding: 12px 16px 28px;
+  }
+
+  .ba-hero-crumb {
+    padding: 0;
+  }
+
+  /* the desktop scrim runs left→right; bottom-anchored copy needs a
+     vertical one to stay legible */
+  .ba-hero-scrim {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.28) 40%, rgba(0, 0, 0, 0.85) 100%);
+  }
+
+  .ba-hero-title {
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .ba-hero-copy {
+    margin-top: auto;
+  }
+
+  .ba-hero-date {
+    margin-top: 14px;
+    font-size: 14px;
+  }
+
+  /* ---- Pull quote ----
+     Sizing/marks are handled by the fluid .blog-quote rules above; only the
+     measure needs tightening on a phone. */
+  .blog-quote p {
+    font-size: clamp(22px, 6vw, 28px);
+  }
+
+  /* ---- Figures & galleries ----
+     .blog-gallery is a CSS grid that already collapses to one column at
+     900px; it just needs a tighter gutter here. */
+  .ba-figure img {
+    border-radius: 8px;
+  }
+
+  .blog-gallery {
+    gap: 12px;
+  }
+
+  .blog-gallery-white {
+    padding: 12px 14px;
+  }
+
+  /* ---- Checklist ---- */
+  .blog-body ul.ba-checklist {
+    gap: 20px;
+  }
+
+  /* ---- Featured / related strip ---- */
+  .featured-blogs {
+    padding: 56px 16px;
+    gap: 16px;
+  }
+
+  .featured-sub {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* NB: do not hide .featured-sub's <br> elements — the markup is
+     "business<br />goals" with no surrounding space, so collapsing them
+     welds the words together. */
+
+  .featured-grid {
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .featured-card {
+    min-height: 0;
+    height: 420px;
+  }
+
+  .featured-content {
+    padding: 24px;
+  }
+
+  .featured-cat-wrap {
+    margin-bottom: 20px;
+  }
+
+  .featured-heading {
+    font-size: 19px;
+    line-height: 28px;
+  }
+
+  .featured-know {
+    min-height: 44px;
+    padding-top: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bx-crumb a {
+    min-width: 44px;
+    justify-content: flex-start;
+  }
+}
+
+/* ─── Page-scoped patches for two defects that actually live in the shared
+   layer. Both are listed under SHARED CHANGES NEEDED; once they are fixed
+   in css/responsive.css these two blocks should be deleted. ─── */
+
+@media (max-width: 1100px) {
+  /* responsive.css pins .partners to 220px, which out-ranks
+     components.css's `.partners--band { height: auto }` (same specificity,
+     later file). The 1920x320 band scales to ~62px tall on a phone, so the
+     fixed height leaves a large empty white slab beneath it. */
+  .partners.partners--band {
+    height: auto;
+  }
+
+  .cta-wrap {
+    gap: 56px;
+    padding-top: 72px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* responsive.css scales .cta-title's font-size down to ~26px but leaves
+     components.css's fixed `line-height: 56px`, so the three wrapped lines
+     drift apart. */
+  .cta-title {
+    line-height: 1.15;
+  }
+}
+
+/* ─── Article layout stacks at 1024, not 768 ───
+   The sidebar's floor is 300px, so between 769px and 1024px the article
+   column was collapsing to a ~330px measure — narrower than it is on a
+   phone. Stack as soon as the two columns stop paying for themselves.
+   (Matches .bx-row, which already stacks at 1024 on the index.) */
+@media (max-width: 1024px) {
+  .blog-article {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* dissolve the sidebar so TOC / article / enquiry become siblings and
+     can be reordered around the body copy */
+  .blog-sidebar {
+    display: contents;
+  }
+
+  .blog-toc {
+    order: 1;
+  }
+
+  .blog-main {
+    order: 2;
+    max-width: 100%;
+  }
+
+  .blog-connect {
+    order: 3;
+  }
+
+  .blog-toc-card {
+    min-height: 0;
+  }
+
+  .blog-connect-form {
+    max-width: none;
   }
 }

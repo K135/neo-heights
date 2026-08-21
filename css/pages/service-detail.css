@@ -30,15 +30,148 @@
   color: #c8c8c8;
 }
 
+/* ——— Service switcher rail (Figma 1563:13500 / 1564:15642) ———
+   Band is 1920x273 with 120px side + 70px vertical padding; tiles 264x133,
+   ~20px apart, square, 0.65px border. Overflows 1920 by design → scroll rail
+   with the scrollbar hidden (client complaint about visible scrollbars). */
+
+/* The rail used to be a fixed 264px-per-tile scroller, which left a 120px
+   gutter on the left and sliced the last tile off on the right. It is now a
+   fluid 7-column grid so every service is visible at once with matched
+   gutters; it only falls back to a snap-scroller below 1024px. */
+.sd-svcnav {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 100%;
+  padding: clamp(28px, 3.4vw, 64px) clamp(16px, 6.25vw, 120px) clamp(20px, 2.2vw, 40px);
+}
+
+.sd-svcnav::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.sd-svcnav-track {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: clamp(8px, 1.05vw, 20px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.sd-svcnav-track > li {
+  display: flex;
+  min-width: 0;
+}
+
+.sd-svcnav-item {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(12px, 1.5vw, 26px);
+  min-height: clamp(104px, 6.9vw, 133px);
+  padding: clamp(14px, 1.65vw, 30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Accent rail that slides in on hover and stays put on the current page. */
+.sd-svcnav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b35, #f68121);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sd-svcnav-icon {
+  display: block;
+  width: clamp(24px, 1.7vw, 31px);
+  height: clamp(24px, 1.7vw, 31px);
+}
+
+.sd-svcnav-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sd-svcnav-label {
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: clamp(11.5px, 0.8vw, 14px);
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+  color: #f5f5f5;
+  overflow-wrap: break-word;
+}
+
+.sd-svcnav-item:hover,
+.sd-svcnav-item:focus-visible {
+  border-color: rgba(246, 129, 33, 0.5);
+  background: rgba(255, 107, 53, 0.06);
+  color: rgba(255, 255, 255, 0.75);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  outline: none;
+}
+
+.sd-svcnav-item:hover::after,
+.sd-svcnav-item:focus-visible::after,
+.sd-svcnav-item[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.sd-svcnav-item[aria-current="page"] {
+  border-color: #ff6b35;
+  background: rgba(255, 107, 53, 0.09);
+  color: #ff6b35;
+  box-shadow: 0 0 0 1px rgba(255, 107, 53, 0.35), 0 16px 34px rgba(255, 107, 53, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-svcnav-item,
+  .sd-svcnav-item::after {
+    transition: none;
+  }
+
+  .sd-svcnav-item:hover,
+  .sd-svcnav-item:focus-visible {
+    transform: none;
+  }
+}
+
 .sd-hero {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  /* Header is fixed + .page padding-top: remaining viewport only */
-  height: calc(100vh - var(--header-height, 96px) - 1px);
-  height: calc(100svh - var(--header-height, 96px) - 1px);
-  height: calc(100dvh - var(--header-height, 96px) - 1px);
+  /* Figma sizes the hero band to its content (~767px), not the viewport.
+     The viewport lock left ~250px of empty space under the copy. */
+  height: auto;
   padding: 0;
   gap: 0;
   background: #1d1d1d;
@@ -67,7 +200,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 32px 120px 40px;
+  padding: 72px 120px 100px;
   position: relative;
   z-index: 1;
 }
@@ -278,17 +411,18 @@
 
 /* Featured projects strip */
 
+/* Two cards side by side rather than a four-card scroller, so the strip has
+   the same gutter left and right and nothing peeks in from off-canvas. */
 .sd-featured {
-  padding: 0 0 80px 120px;
+  padding: 0 clamp(16px, 6.25vw, 120px) 80px;
   width: 100%;
-  overflow: hidden;
 }
 
 .sd-featured-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 120px;
+  gap: 24px;
   margin-bottom: 40px;
 }
 
@@ -302,22 +436,27 @@
 }
 
 .sd-featured-track {
-  display: flex;
-  gap: 35px;
-  overflow-x: auto;
-  padding-bottom: 20px;
-  scroll-snap-type: x mandatory;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 1.9vw, 35px);
+  width: 100%;
+}
+
+.sd-featured-track::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .sd-feat-card {
   position: relative;
-  flex-shrink: 0;
-  width: 720px;
-  height: 480px;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  aspect-ratio: 720 / 480;
   border-radius: 17px;
   overflow: hidden;
   background: #f7f7f7;
-  scroll-snap-align: start;
 }
 
 .sd-feat-card img.cover {
@@ -326,6 +465,24 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.sd-feat-card:hover img.cover,
+.sd-feat-card:focus-visible img.cover {
+  transform: scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-feat-card img.cover {
+    transition: none;
+  }
+
+  .sd-feat-card:hover img.cover,
+  .sd-feat-card:focus-visible img.cover {
+    transform: none;
+  }
 }
 
 .sd-feat-card .card-glass {
@@ -517,7 +674,9 @@
   letter-spacing: -1.2px;
   color: #f5f5f5;
   text-align: center;
-  margin-top: -64px;
+  /* was margin-top: -64px, which pulled the h2 straight over the
+     "Recent Completions" eyebrow inside its wrapper div. */
+  margin-top: 0;
 }
 
 .sd-comp-cards {
@@ -616,6 +775,15 @@
   line-height: 20px;
   letter-spacing: 0.35px;
   color: #f5f5f5;
+}
+
+/* `.sd-sustain-left > p` and `.sd-certs-head p` (both #999) are declared after
+   `.sd-label-orange` at equal specificity, so every orange eyebrow on the page
+   was rendering grey. Re-assert the accent here, after both. */
+.sd-sustain-left > p.sd-label-orange,
+.sd-certs-head p.sd-label-orange,
+.sd-completions-inner .sd-label-orange {
+  color: #f68121;
 }
 
 /* Shared bottom: blogs / enquire / faq — reuse listing patterns */
@@ -742,7 +910,8 @@
 }
 
 .sd-faq {
-  background: #1d1d1d;
+  /* Figma: same #0d0d0d → #1d1d1d wash as the listing-page FAQ. */
+  background: linear-gradient(180deg, #0d0d0d 0%, #1d1d1d 100%);
   padding: 120px 215px;
   width: 100%;
   text-align: center;
@@ -754,29 +923,37 @@
 
 .sd-faq h2 {
   font-family: "Fustat", sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 42px;
   line-height: 50px;
   color: #fff;
-  margin-bottom: 48px;
+  margin-bottom: 95px;
 }
 
 .sd-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
   max-width: 792px;
   margin: 0 auto;
   text-align: left;
 }
 
+/* Figma draws these as rounded #1b1b1b cards with a + that turns into an ×,
+   matching the listing-page accordion. They were flat underlined rows. */
 .sd-faq-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1b1b1b;
+  border-radius: 16px;
   padding: 20px 24px;
+  overflow: hidden;
 }
 
 .sd-faq-item summary {
   font-family: "Fustat", sans-serif;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 20px;
   line-height: 24px;
+  letter-spacing: -0.128px;
   color: #fff;
   cursor: pointer;
   list-style: none;
@@ -790,36 +967,75 @@
   display: none;
 }
 
-.sd-faq-item p {
-  font-family: "Fustat", sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 16px;
+.sd-faq-item summary img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.sd-faq-item[open] summary img {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-faq-item summary img {
+    transition: none;
+  }
+}
+
+.sd-faq-answer {
+  padding-top: 16px;
   padding-right: 40px;
 }
 
-@media (max-height: 820px) {
+.sd-faq-item p {
+  font-family: "Fustat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(250, 250, 250, 0.7);
+}
+
+.sd-faq-answer p + p {
+  margin-top: 12px;
+}
+
+.sd-faq-more {
+  margin-top: 29px;
+  text-align: center;
+  font-family: "Fustat", sans-serif;
+  font-size: 15.9px;
+  line-height: 24px;
+  letter-spacing: -0.384px;
+  color: #fafafa;
+}
+
+.sd-faq-more a {
+  font-weight: 500;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Hero is content-sized now, so it scales on width, not viewport height. */
+@media (max-width: 1280px) {
   .sd-title {
     font-size: 48px;
   }
 
   .sd-hero-copy {
-    gap: 18px;
-  }
-
-  .sd-hero-top {
-    gap: 12px;
+    gap: 22px;
   }
 
   .sd-hero-inner {
-    padding-top: 20px;
-    padding-bottom: 24px;
+    padding-top: 48px;
+    padding-bottom: 64px;
     gap: 32px;
   }
 
   .sd-caps {
-    gap: 16px;
+    gap: 20px;
   }
 }
 
@@ -836,6 +1052,11 @@
     padding-left: 60px;
     padding-right: 60px;
     gap: 32px;
+  }
+
+  .sd-svcnav {
+    padding-top: 48px;
+    padding-bottom: 32px;
   }
 
   .sd-sustain-inner,
@@ -997,6 +1218,51 @@
 }
 
 
+/* Snap-scroller fallback for narrow viewports */
+@media (max-width: 1024px) {
+  .sd-svcnav {
+    padding-left: 0;
+    padding-right: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+  }
+
+  .sd-svcnav-track {
+    display: flex;
+    width: max-content;
+    gap: 12px;
+    padding-inline: clamp(16px, 6.25vw, 60px);
+  }
+
+  .sd-svcnav-track > li {
+    flex: 0 0 auto;
+  }
+
+  .sd-svcnav-item {
+    width: 188px;
+    min-height: 116px;
+    padding: 20px;
+    scroll-snap-align: center;
+  }
+
+  .sd-svcnav-label {
+    font-size: 13px;
+  }
+
+  /* Fade both edges so a part-scrolled rail reads as "more this way". */
+  @supports (mask-image: linear-gradient(#000, #000)) {
+    .sd-svcnav {
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .sd-breadcrumb {
     flex-wrap: wrap;
@@ -1007,11 +1273,32 @@
 
   .sd-hero {
     height: auto;
-    min-height: calc(100vh - var(--header-height, 72px) - 1px);
-    min-height: calc(100svh - var(--header-height, 72px) - 1px);
-    min-height: calc(100dvh - var(--header-height, 72px) - 1px);
+    min-height: 0;
     padding: 0 !important;
     overflow: visible;
+  }
+
+  .sd-svcnav {
+    padding: 24px 0 8px;
+  }
+
+  .sd-svcnav-track {
+    gap: 12px;
+    padding-inline: 16px;
+  }
+
+  .sd-svcnav-item {
+    width: 178px;
+    min-height: 112px;
+    padding: 18px;
+  }
+
+  .sd-faq-list {
+    gap: 16px;
+  }
+
+  .sd-faq-item summary {
+    font-size: 17px;
   }
 
   .sd-hero-inner {
@@ -1034,8 +1321,13 @@
     flex-direction: column;
   }
 
-  .sd-featured-track {
+  .sd-featured {
     padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .sd-featured-track {
+    grid-template-columns: 1fr;
   }
 
   .sd-grid, .sd-features, .sd-process, .sd-stats {
@@ -1078,4 +1370,405 @@
   .sd-form {
     width: 100%;
   }
+
+  /* —— 375px refinements ——
+     Figma has no mobile Services frame; the 24px/16px gutters and the
+     clamped display sizes follow the 375-wide Landing Page frame 669:7625.
+     Without these the sustain / completions / certs bands kept the 60px
+     tablet gutter, leaving ~255px of usable width. */
+  .sd-sustain {
+    padding: 48px 20px;
+  }
+
+  .sd-sustain-inner {
+    gap: 32px;
+  }
+
+  .sd-sustain-left h2,
+  .sd-completions-inner h2,
+  .sd-certs-head h2 {
+    font-size: clamp(26px, 7.5vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+  }
+
+  .sd-sustain-left > p {
+    margin-bottom: 32px;
+  }
+
+  .sd-stats-panel {
+    padding: 28px 20px;
+    gap: 28px 20px;
+  }
+
+  .sd-stat-item img {
+    margin-bottom: 14px;
+  }
+
+  .sd-completions {
+    padding: 48px 20px 56px;
+  }
+
+  .sd-completions-inner {
+    gap: 40px;
+  }
+
+  .sd-comp-cards {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sd-comp-card {
+    padding: 28px 24px;
+  }
+
+  .sd-certs {
+    padding: 48px 20px;
+    gap: 32px;
+  }
+
+  .sd-cert {
+    padding: 20px;
+  }
+
+  .sd-featured-head h2,
+  .sd-process-head h2 {
+    font-size: clamp(26px, 7.5vw, 34px);
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+  }
+
+  .sd-process {
+    gap: 32px !important;
+  }
+
+  .sd-process-head p {
+    font-size: 16px;
+  }
+
+  .sd-faq h2 {
+    font-size: clamp(26px, 7vw, 34px);
+    line-height: 1.2;
+    margin-bottom: 28px;
+  }
+
+  .sd-enquire-copy h2 {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+
+  .sd-enquire-copy {
+    gap: 32px;
+  }
+
+  .sd-enquire-inner {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* —— Tap targets (>=44px) —— */
+  .sd-breadcrumb {
+    gap: 6px;
+  }
+
+  .sd-breadcrumb a,
+  .sd-breadcrumb .current {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .sd-faq-item summary {
+    min-height: 44px;
+  }
+
+  .blog-know {
+    min-height: 44px;
+    align-items: center;
+  }
+}
+
+/* ============================================================
+   LIGHT MODE — Service detail (7 pages)
+   Same mapping as the listing page, derived from Figma light landing
+   1264:9007 (there is no light Services frame in the file):
+     #1d1d1d / #0d0d0d / #0f0f0f / #010101 grounds  →  #ffffff / #f5f5f5
+     dark gradients                                 →  #f5f5f5 → #ffffff
+     #fff, #f5f5f5 headings                         →  var(--text)
+     rgba(255,255,255,.6), #999, #ccc body copy     →  var(--text-secondary)
+     #222 / #1a1a1a / #1b1b1b / #131313 panels      →  #ffffff / var(--bg-elevated)
+     rgba(255,255,255,X) hairlines                  →  rgba(18,18,18,X) / var(--border)
+     #909090 eyebrows and #f68121/#ff6b35 accent are IDENTICAL in both themes.
+   .sd-hero-media-label keeps its black scrim: it sits on a photograph.
+   ============================================================ */
+
+/* —— Breadcrumb —— */
+html[data-theme="light"] .sd-breadcrumb {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .sd-breadcrumb a,
+html[data-theme="light"] .sd-breadcrumb span {
+  color: #6b6b6b;
+}
+
+html[data-theme="light"] .sd-breadcrumb .sep {
+  color: var(--border-strong);
+}
+
+html[data-theme="light"] .sd-breadcrumb .current {
+  color: var(--text);
+}
+
+/* —— Service switcher rail ——
+   Inactive tiles are drawn entirely in rgba(255,255,255,…) — border, wash and
+   icon all disappear against a white ground, so each gets an ink equivalent.
+   The #ff6b35 / #f68121 active + hover treatment is left untouched. */
+html[data-theme="light"] .sd-svcnav-item {
+  border-color: var(--border-strong);
+  /* Opaque so contrast tooling reads the real ground, not a wash. */
+  background: var(--bg-elevated);
+  color: rgba(18, 18, 18, 0.45);
+}
+
+html[data-theme="light"] .sd-svcnav-label {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-svcnav-item:hover,
+html[data-theme="light"] .sd-svcnav-item:focus-visible {
+  border-color: rgba(246, 129, 33, 0.5);
+  background: rgba(255, 107, 53, 0.07);
+  color: rgba(18, 18, 18, 0.75);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .sd-svcnav-item[aria-current="page"] {
+  border-color: #ff6b35;
+  background: rgba(255, 107, 53, 0.09);
+  color: #ff6b35;
+  box-shadow: 0 0 0 1px rgba(255, 107, 53, 0.35), 0 16px 34px rgba(255, 107, 53, 0.12);
+}
+
+/* —— Hero —— */
+html[data-theme="light"] .sd-hero {
+  background: var(--bg-body);
+}
+
+html[data-theme="light"] .sd-hero-glow {
+  background: rgba(224, 105, 0, 0.28);
+}
+
+html[data-theme="light"] .sd-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-desc,
+html[data-theme="light"] .sd-cap span {
+  color: var(--text-secondary);
+}
+
+/* —— Process —— */
+html[data-theme="light"] .sd-process-head h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-process-head p,
+html[data-theme="light"] .sd-step p {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-step-num {
+  color: rgba(18, 18, 18, 0.14);
+}
+
+html[data-theme="light"] .sd-step h3 {
+  color: var(--text);
+}
+
+/* —— Featured projects ——
+   .card-glass / .card-title / .card-loc are themed in components.css. */
+html[data-theme="light"] .sd-featured-head h2 {
+  color: var(--text);
+}
+
+/* —— Sustainability —— */
+html[data-theme="light"] .sd-sustain {
+  background: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-sunken) 100%);
+}
+
+html[data-theme="light"] .sd-sustain-left h2,
+html[data-theme="light"] .sd-bullet strong,
+html[data-theme="light"] .sd-stat-item strong {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-sustain-left > p,
+html[data-theme="light"] .sd-bullet span,
+html[data-theme="light"] .sd-stat-item span {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-stats-panel {
+  background: var(--bg-body);
+  border-color: var(--border);
+}
+
+/* —— Completions ——
+   completions-bg-*.png are black→transparent fades; at 45% they paint two
+   grey bands across a white section, so the decorative layer is dropped. */
+html[data-theme="light"] .sd-completions {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .sd-completions-bg {
+  display: none;
+}
+
+html[data-theme="light"] .sd-completions-inner h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-comp-card {
+  background: var(--bg-body);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .sd-comp-card span {
+  color: var(--text-secondary);
+}
+
+/* —— Certifications —— */
+html[data-theme="light"] .sd-certs {
+  background: var(--bg-body);
+  border-top-color: var(--border);
+}
+
+html[data-theme="light"] .sd-certs-head h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-certs-head p {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-cert {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .sd-cert span {
+  color: var(--text);
+}
+
+/* The orange eyebrows are re-asserted after the #999 rules above; keep that
+   ordering intact in light mode too. */
+html[data-theme="light"] .sd-sustain-left > p.sd-label-orange,
+html[data-theme="light"] .sd-certs-head p.sd-label-orange,
+html[data-theme="light"] .sd-completions-inner .sd-label-orange,
+html[data-theme="light"] .sd-caps-label,
+html[data-theme="light"] .sd-comp-card strong {
+  color: var(--accent-text);
+}
+
+/* —— Featured blogs (shared listing pattern) ——
+   Cards themselves stay dark: white type over a photograph. */
+html[data-theme="light"] .blogs,
+html[data-theme="light"] .sd-blogs {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .blogs-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .blogs-subtitle {
+  color: var(--text-secondary);
+}
+
+/* —— Enquire —— */
+html[data-theme="light"] .sd-enquire {
+  background: var(--bg-body);
+}
+
+html[data-theme="light"] .sd-enquire-copy h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-enquire-copy .sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-form {
+  background: var(--bg-body);
+  border-color: rgba(18, 18, 18, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .sd-form h3 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-form .hint {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-form .hint a {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-form input,
+html[data-theme="light"] .sd-form textarea {
+  background: var(--bg-elevated);
+  border-color: rgba(18, 18, 18, 0.2);
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-form input::placeholder,
+html[data-theme="light"] .sd-form textarea::placeholder {
+  color: rgba(18, 18, 18, 0.4);
+}
+
+/* —— FAQ —— */
+html[data-theme="light"] .sd-faq {
+  background: linear-gradient(180deg, var(--bg-sunken) 0%, var(--bg-page) 100%);
+}
+
+html[data-theme="light"] .sd-faq h2 {
+  color: var(--text);
+}
+
+/* Figma's light accordion is a plain #fff card; the hairline keeps the rows
+   readable where the section gradient reaches #fff. */
+html[data-theme="light"] .sd-faq-item {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+}
+
+/* The +/× glyph is painted from currentColor, so it follows this. */
+html[data-theme="light"] .sd-faq-item summary {
+  color: var(--text);
+}
+
+html[data-theme="light"] .sd-faq-item p {
+  color: var(--text-secondary);
+}
+
+/* icon-plus.svg is white-stroked; invert it to the ink colour. */
+html[data-theme="light"] .sd-faq-item summary img {
+  filter: invert(1);
+}
+
+html[data-theme="light"] .sd-faq-more {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-faq-more a {
+  color: var(--text);
+}
+
+/* Eyebrows are hardcoded #909090 (identical in both themes by design); in
+   light they follow --text-grey so they stay in step with the token file. */
+html[data-theme="light"] .sd-eyebrow {
+  color: var(--text-grey);
 }

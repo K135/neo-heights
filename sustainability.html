@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600&family=Fustat:wght@400;500;600;700&family=Hubballi&family=Instrument+Sans:wght@500&family=Inter:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=4" />
+  <link rel="stylesheet" href="css/main.css?v=9" />
   <link rel="stylesheet" href="css/pages/sustainability.css" />
 </head>
 <body data-root="">
@@ -18,14 +18,14 @@
 
     <!-- Hero -->
     <section class="sus-hero">
-      <img class="sus-hero-bg" src="assets/pages/sustainability/hero-bg.png" alt="" />
+      <img class="sus-hero-bg" src="assets/pages/sustainability/hero-bg.png" alt="" decoding="async" />
       <div class="sus-hero-overlay" aria-hidden="true"></div>
       <div class="sus-hero-content">
         <h1 class="sus-hero-title">Building sustainably for a<br />better tomorrow.</h1>
         <p class="sus-hero-sub">Globally, developers are focusing on high-performance buildings that lower environmental impact and improve efficiency.</p>
         <a class="btn-primary" href="contact.html">
           <span class="btn-label">Start a Project</span>
-          <img src="assets/shared/arrow-btn.svg" alt="" width="24" height="24" />
+          <img src="assets/shared/arrow-btn.svg" alt="" width="24" height="24" decoding="async" />
         </a>
       </div>
     </section>
@@ -45,7 +45,7 @@
           </div>
           <div class="sus-stat sus-stat--iso">
             <div class="sus-iso-badge">
-              <img src="assets/pages/sustainability/badge-iso.png" alt="ISO certification" />
+              <img loading="lazy" src="assets/pages/sustainability/badge-iso.png" alt="ISO certification" decoding="async" />
             </div>
             <p class="sus-stat-label">Quality, safety &amp; environmental standards</p>
           </div>
@@ -59,13 +59,13 @@
         <h2 class="sus-related-title">Realted Projects</h2>
         <a class="link-accent" href="projects.html">
           <span class="link-label">View More</span>
-          <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" />
+          <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
         </a>
       </div>
       <div class="sus-related-track">
         <article class="sus-proj-card">
-          <img class="cover" src="assets/pages/sustainability/proj-schaeffler.png" alt="SCHAEFFLER INDIA LIMITED" />
-          <img class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" />
+          <img loading="lazy" class="cover" src="assets/pages/sustainability/proj-schaeffler.png" alt="SCHAEFFLER INDIA LIMITED" decoding="async" />
+          <img loading="lazy" class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" decoding="async" />
           <div class="sus-proj-glass">
             <div class="sus-proj-glass-inner">
               <h3 class="sus-proj-name">SCHAEFFLER INDIA LIMITED</h3>
@@ -74,8 +74,8 @@
           </div>
         </article>
         <article class="sus-proj-card">
-          <img class="cover" src="assets/pages/sustainability/proj-tata-rwh.png" alt="Tata Electronics. Rainwater Harvesting (RWH)" />
-          <img class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" />
+          <img loading="lazy" class="cover" src="assets/pages/sustainability/proj-tata-rwh.png" alt="Tata Electronics. Rainwater Harvesting (RWH)" decoding="async" />
+          <img loading="lazy" class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" decoding="async" />
           <div class="sus-proj-glass">
             <div class="sus-proj-glass-inner">
               <h3 class="sus-proj-name">Tata Electronics. Rainwater Harvesting (RWH)</h3>
@@ -84,8 +84,8 @@
           </div>
         </article>
         <article class="sus-proj-card">
-          <img class="cover" src="assets/pages/sustainability/proj-lmwind.png" alt="LM Windpower Rain water project" />
-          <img class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" />
+          <img loading="lazy" class="cover" src="assets/pages/sustainability/proj-lmwind.png" alt="LM Windpower Rain water project" decoding="async" />
+          <img loading="lazy" class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" decoding="async" />
           <div class="sus-proj-glass">
             <div class="sus-proj-glass-inner">
               <h3 class="sus-proj-name">LM Windpower Rain water project</h3>
@@ -97,38 +97,101 @@
     </section>
 
     <!-- Initiatives -->
-    <section class="sus-initiatives">
+    <section class="sus-initiatives" data-sus-carousel>
       <div class="sus-initiatives-inner">
         <div class="sus-initiatives-copy">
-          <h2 class="sus-initiatives-title">Initiatives That Shape<br />a Sustainable Future</h2>
-          <p class="sus-initiatives-sub">Through responsible engineering and future-focused infrastructure planning, Neo Heights delivers sustainable initiatives that reduce environmental impact while supporting industrial growth and operational excellence.</p>
-        </div>
-        <div class="sus-slide">
-          <img class="reel" src="assets/pages/sustainability/initiative-reel.png" alt="Smart Water Management" />
-          <div class="sus-slide-grad" aria-hidden="true"></div>
-          <div class="sus-slide-top">
-            <div class="sus-progress" aria-hidden="true">
-              <span><i></i></span>
-              <span><i></i></span>
-              <span><i></i></span>
-              <span><i></i></span>
-            </div>
-            <button class="sus-pause" type="button" aria-label="Pause">
-              <span class="sus-pause-bar"></span>
-              <span class="sus-pause-bar"></span>
+          <div class="sus-initiatives-head">
+            <h2 class="sus-initiatives-title">Initiatives That Shape<br />a Sustainable Future</h2>
+            <p class="sus-initiatives-sub">Through responsible engineering and future-focused infrastructure planning, Neo Heights delivers sustainable initiatives that reduce environmental impact while supporting industrial growth and operational excellence.</p>
+          </div>
+          <div class="sus-initiatives-list" role="tablist" aria-label="Sustainability initiatives">
+            <button class="sus-init is-active" type="button" role="tab" id="sus-tab-1" aria-controls="sus-panel-1" aria-selected="true" data-sus-tab="0">
+              <span class="sus-init-num">01</span>
+              <span class="sus-init-body">
+                <span class="sus-init-name">Smart Water Management</span>
+                <span class="sus-init-client">Schaeffler India Limited — Shoolagiri</span>
+              </span>
+              <span class="sus-init-rule" aria-hidden="true"></span>
+            </button>
+            <button class="sus-init" type="button" role="tab" id="sus-tab-2" aria-controls="sus-panel-2" aria-selected="false" tabindex="-1" data-sus-tab="1">
+              <span class="sus-init-num">02</span>
+              <span class="sus-init-body">
+                <span class="sus-init-name">Rainwater Harvesting</span>
+                <span class="sus-init-client">Tata Electronics — Shoolagiri</span>
+              </span>
+              <span class="sus-init-rule" aria-hidden="true"></span>
+            </button>
+            <button class="sus-init" type="button" role="tab" id="sus-tab-3" aria-controls="sus-panel-3" aria-selected="false" tabindex="-1" data-sus-tab="2">
+              <span class="sus-init-num">03</span>
+              <span class="sus-init-body">
+                <span class="sus-init-name">Rain Water Project</span>
+                <span class="sus-init-client">LM Windpower — Shoolagiri</span>
+              </span>
+              <span class="sus-init-rule" aria-hidden="true"></span>
             </button>
           </div>
-          <button class="sus-nav sus-nav--prev" type="button" aria-label="Previous">
-            <img src="assets/pages/sustainability/icon-chevron-l.svg" alt="" />
-          </button>
-          <button class="sus-nav sus-nav--next" type="button" aria-label="Next">
-            <img src="assets/pages/sustainability/icon-chevron-r.svg" alt="" />
-          </button>
-          <div class="sus-slide-caption">
-            <p class="sus-slide-client">Schaeffler India Limited — Shoolagiri</p>
-            <h3 class="sus-slide-title">Smart Water Management</h3>
-            <p class="sus-slide-desc">Integrated rainwater harvesting and water conservation systems designed to improve resource efficiency and support long-term environmental sustainability.</p>
+        </div>
+
+        <div class="sus-slide">
+          <div class="sus-slides">
+            <figure class="sus-slide-item is-active" role="tabpanel" id="sus-panel-1" aria-labelledby="sus-tab-1" data-sus-slide="0">
+              <img class="reel" src="assets/pages/sustainability/initiative-reel.png" alt="Aerial view of the Schaeffler India plant at Shoolagiri with its water retention pond" decoding="async" />
+              <div class="sus-slide-grad" aria-hidden="true"></div>
+              <figcaption class="sus-slide-caption">
+                <p class="sus-slide-client">Schaeffler India Limited — Shoolagiri</p>
+                <h3 class="sus-slide-title">Smart Water Management</h3>
+                <p class="sus-slide-desc">Integrated rainwater harvesting and water conservation systems designed to improve resource efficiency and support long-term environmental sustainability.</p>
+              </figcaption>
+            </figure>
+            <figure class="sus-slide-item" role="tabpanel" id="sus-panel-2" aria-labelledby="sus-tab-2" data-sus-slide="1" hidden>
+              <img loading="lazy" class="reel" src="assets/pages/sustainability/proj-tata-rwh.png" alt="Rainwater harvesting works at the Tata Electronics site in Shoolagiri" decoding="async" />
+              <div class="sus-slide-grad" aria-hidden="true"></div>
+              <figcaption class="sus-slide-caption">
+                <p class="sus-slide-client">Tata Electronics — Shoolagiri</p>
+                <h3 class="sus-slide-title">Rainwater Harvesting</h3>
+                <p class="sus-slide-desc">A site-wide rainwater harvesting network that captures runoff, recharges groundwater and reduces the plant's dependence on external water supply.</p>
+              </figcaption>
+            </figure>
+            <figure class="sus-slide-item" role="tabpanel" id="sus-panel-3" aria-labelledby="sus-tab-3" data-sus-slide="2" hidden>
+              <img loading="lazy" class="reel" src="assets/pages/sustainability/proj-lmwind.png" alt="LM Windpower rain water project at Shoolagiri" decoding="async" />
+              <div class="sus-slide-grad" aria-hidden="true"></div>
+              <figcaption class="sus-slide-caption">
+                <p class="sus-slide-client">LM Windpower — Shoolagiri</p>
+                <h3 class="sus-slide-title">Rain Water Project</h3>
+                <p class="sus-slide-desc">Collection, storage and reuse infrastructure built into the industrial campus so seasonal rainfall is retained on site instead of being lost to drainage.</p>
+              </figcaption>
+            </figure>
           </div>
+
+          <div class="sus-slide-top">
+            <div class="sus-progress" aria-hidden="true">
+              <span data-sus-bar="0"><i></i></span>
+              <span data-sus-bar="1"><i></i></span>
+              <span data-sus-bar="2"><i></i></span>
+            </div>
+            <button class="sus-pause" type="button" aria-label="Pause slideshow" aria-pressed="false" data-sus-pause>
+              <span class="sus-pause-icon" aria-hidden="true">
+                <span class="sus-pause-bar"></span>
+                <span class="sus-pause-bar"></span>
+              </span>
+              <svg class="sus-play-icon" viewBox="0 0 12 14" width="12" height="14" aria-hidden="true" focusable="false">
+                <path d="M1.5 1.2 11 7l-9.5 5.8z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+
+          <button class="sus-nav sus-nav--prev" type="button" aria-label="Previous initiative" data-sus-prev>
+            <svg viewBox="0 0 8 14" width="8" height="14" fill="none" aria-hidden="true" focusable="false">
+              <path d="M7 1 1 7l6 6" stroke="currentColor" stroke-width="1.92" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button class="sus-nav sus-nav--next" type="button" aria-label="Next initiative" data-sus-next>
+            <svg viewBox="0 0 8 14" width="8" height="14" fill="none" aria-hidden="true" focusable="false">
+              <path d="m1 1 6 6-6 6" stroke="currentColor" stroke-width="1.92" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <p class="sus-slide-live" aria-live="polite" role="status"></p>
         </div>
       </div>
     </section>
@@ -143,7 +206,7 @@
       </p>
       <div class="blog-cards">
         <article class="blog-card">
-          <img class="blog-bg" src="assets/shared/blog-1.png" alt="" />
+          <img loading="lazy" class="blog-bg" src="assets/shared/blog-1.png" alt="" decoding="async" />
           <div class="blog-overlay"></div>
           <div class="blog-content">
             <div class="blog-top">
@@ -155,12 +218,12 @@
             </div>
             <a class="blog-know" href="blogs.html">
               KNOW MORE
-              <img src="assets/shared/arrow-know.svg" alt="" width="26" height="26" />
+              <img loading="lazy" src="assets/shared/arrow-know.svg" alt="" width="26" height="26" decoding="async" />
             </a>
           </div>
         </article>
         <article class="blog-card">
-          <img class="blog-bg" src="assets/shared/blog-2.png" alt="" />
+          <img loading="lazy" class="blog-bg" src="assets/shared/blog-2.png" alt="" decoding="async" />
           <div class="blog-overlay"></div>
           <div class="blog-content">
             <div class="blog-top">
@@ -172,12 +235,12 @@
             </div>
             <a class="blog-know" href="blogs.html">
               KNOW MORE
-              <img src="assets/shared/arrow-know.svg" alt="" width="26" height="26" />
+              <img loading="lazy" src="assets/shared/arrow-know.svg" alt="" width="26" height="26" decoding="async" />
             </a>
           </div>
         </article>
         <article class="blog-card">
-          <img class="blog-bg" src="assets/shared/blog-3.png" alt="" />
+          <img loading="lazy" class="blog-bg" src="assets/shared/blog-3.png" alt="" decoding="async" />
           <div class="blog-overlay"></div>
           <div class="blog-content">
             <div class="blog-top">
@@ -189,7 +252,7 @@
             </div>
             <a class="blog-know" href="blogs.html">
               KNOW MORE
-              <img src="assets/shared/arrow-know.svg" alt="" width="26" height="26" />
+              <img loading="lazy" src="assets/shared/arrow-know.svg" alt="" width="26" height="26" decoding="async" />
             </a>
           </div>
         </article>
@@ -220,13 +283,13 @@
               <textarea name="message" placeholder="Write your message"></textarea>
               <button class="btn-primary" type="submit">
                 <span class="btn-label">Send Enquiry</span>
-                <img src="assets/shared/arrow-btn.svg" alt="" width="24" height="24" />
+                <img loading="lazy" src="assets/shared/arrow-btn.svg" alt="" width="24" height="24" decoding="async" />
               </button>
             </div>
           </form>
         </div>
       </div>
-      <img class="enquire-glow-img" src="assets/pages/sustainability/enquire-glow.svg" alt="" aria-hidden="true" />
+      <img loading="lazy" class="enquire-glow-img" src="assets/pages/sustainability/enquire-glow.svg" alt="" aria-hidden="true" decoding="async" />
     </section>
 
     <!-- FAQ -->
@@ -240,7 +303,7 @@
           <details class="faq-item" open>
             <summary>
               What services does Neo Heights Construction provide?
-              <img src="assets/pages/sustainability/faq-plus.svg" alt="" width="20" height="20" />
+              <img loading="lazy" src="assets/pages/sustainability/faq-plus.svg" alt="" width="20" height="20" decoding="async" />
             </summary>
             <div class="faq-body">
               <p>Neo Heights Construction specializes in residential and commercial construction, including new builds, renovations, structural work, interior finishing, and project management from start to completion.</p>
@@ -250,7 +313,7 @@
           <details class="faq-item">
             <summary>
               Do you handle both residential and commercial projects?
-              <img src="assets/pages/sustainability/faq-minus.svg" alt="" width="20" height="20" />
+              <img loading="lazy" src="assets/pages/sustainability/faq-minus.svg" alt="" width="20" height="20" decoding="async" />
             </summary>
             <div class="faq-body">
               <p>Yes. We deliver both residential and commercial projects across civil, PEB, interiors, MEP, and EPC scopes.</p>
@@ -259,7 +322,7 @@
           <details class="faq-item">
             <summary>
               How do I request a quote or consultation?
-              <img src="assets/pages/sustainability/faq-minus.svg" alt="" width="20" height="20" />
+              <img loading="lazy" src="assets/pages/sustainability/faq-minus.svg" alt="" width="20" height="20" decoding="async" />
             </summary>
             <div class="faq-body">
               <p>You can request a quote by contacting us through our website or by phone.</p>
@@ -268,13 +331,13 @@
           <details class="faq-item">
             <summary>
               Are you licensed and insured?
-              <img src="assets/pages/sustainability/faq-minus.svg" alt="" width="20" height="20" />
+              <img loading="lazy" src="assets/pages/sustainability/faq-minus.svg" alt="" width="20" height="20" decoding="async" />
             </summary>
             <div class="faq-body">
               <p>Yes. Neo Heights operates with the required licensing and insurance coverage for the projects we deliver.</p>
             </div>
           </details>
-          <p class="faq-more">Still have more questions? <a href="contact.html">Contact our team</a>.</p>
+          <p class="faq-more">Still have more questions? Find answers in our <a href="contact.html">help center</a>.</p>
         </div>
       </div>
     </section>
@@ -287,30 +350,24 @@
           <p class="cta-sub">Whether it’s a new build or renovation, we manage your project with transparency, efficiency, and uncompromising standards.</p>
           <a class="btn-primary" href="contact.html">
             <span class="btn-label">Start your project</span>
-            <img src="assets/shared/arrow-btn.svg" alt="" width="24" height="24" />
+            <img loading="lazy" src="assets/shared/arrow-btn.svg" alt="" width="24" height="24" decoding="async" />
           </a>
         </div>
       </div>
 
-      <div class="partners">
-        <div class="partners-collage">
-          <img class="p-970" src="assets/shared/partner-970.png" alt="Arul Group" />
-          <img class="p-101" src="assets/shared/partner-101.png" alt="Partners collage" />
-          <img class="p-974" src="assets/shared/partner-974.png" alt="Partner" />
-          <img class="p-973" src="assets/shared/partner-973.png" alt="Partner" />
-          <img class="p-972" src="assets/shared/partner-972.png" alt="Partner" />
-          <div class="p-3-wrap">
-            <img class="p-3" src="assets/shared/partner-3.png" alt="The Neo Studio" />
-            <p class="p-url">www.theneostudio.com</p>
-          </div>
+      <div class="partners partners--band">
+          <img loading="lazy" decoding="async" class="partners-band" src="assets/shared/partners-band.png?v=2"
+               alt="Arul Group companies — Arul Rubbers, Arul Polymers, Neo Heights, Vajra Panels and The Neo Studio"
+               width="1920" height="320" />
         </div>
-      </div>
-    </section>
+      </section>
 
     <div data-nh-footer></div>
   </div>
-  <script src="js/chrome.js?v=2"></script>
-  <script src="js/site.js?v=3"></script>
+  <script src="js/vendor/lenis.min.js?v=1"></script>
+  <script src="js/smooth-scroll.js?v=1"></script>
+  <script src="js/chrome.js?v=3"></script>
+  <script src="js/site.js?v=8"></script>
   <script>NH.mount("sustainability.html");</script>
 </body>
 </html>

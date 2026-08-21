@@ -65,6 +65,7 @@
   position: relative;
   z-index: 1;
   flex-shrink: 0;
+  margin-bottom: auto;
   background: #111;
   border: 1.333px solid rgba(255, 255, 255, 0.05);
   height: 59px;
@@ -331,7 +332,7 @@
 
 .pd-award-featured .year {
   position: absolute;
-  right: 30px;
+  right: 77px;
   top: 39px;
   font-family: "Fustat", sans-serif;
   font-weight: 800;
@@ -346,8 +347,8 @@
   height: 57px;
   display: flex;
   align-items: center;
-  padding: 0 30px;
-  gap: 24px;
+  padding: 0 31px;
+  gap: 0;
 }
 
 .pd-award-row strong {
@@ -355,20 +356,27 @@
   font-weight: 600;
   font-size: 17px;
   color: #d9d9d9;
-  width: 420px;
+  width: 469px;
   flex-shrink: 0;
 }
 
-.pd-award-row span {
-  flex: 1;
+.pd-award-row span:not(.arrow) {
+  flex: 1 1 auto;
+  min-width: 0;
   font-family: "Fustat", sans-serif;
   font-size: 16px;
   color: #888;
 }
 
+/* Figma pins the row arrow to the right edge of the row, not to the end of the
+   description column. */
 .pd-award-row .arrow {
+  flex: 0 0 auto;
   color: #888;
   font-size: 19px;
+  margin-left: auto;
+  padding-left: 24px;
+  padding-right: 32px;
 }
 
 .pd-related {
@@ -396,7 +404,22 @@
   display: flex;
   gap: 23px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 16px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.pd-related-track::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.pd-related-track > * {
+  scroll-snap-align: start;
 }
 
 .pd-rel-card {
@@ -422,12 +445,32 @@
 }
 
 .pd-enquire {
+  position: relative;
+  overflow: hidden;
   background: #0d0d0d;
   padding: 180px 215px 200px;
   width: 100%;
 }
 
+/* Figma 1639:16175 carries a bottom-centred line-art skyline that bleeds off the
+   section edge — same asset the contact page uses. */
+.pd-enquire::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -110px;
+  width: 776px;
+  height: 346px;
+  transform: translateX(-50%);
+  background: url("../../assets/pages/contact/building.svg") center / contain no-repeat;
+  opacity: 0.95;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .pd-enquire-inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: 111px;
   align-items: center;
@@ -476,7 +519,9 @@
   left: 0;
   top: 0;
   width: 471px;
+  max-width: 100%;
   height: 531px;
+  max-height: 100%;
   background: linear-gradient(90deg, rgba(255, 131, 43, 0.2), rgba(246, 129, 33, 0.2));
   filter: blur(100px);
   pointer-events: none;
@@ -552,28 +597,38 @@
 
 .pd-faq h2 {
   font-family: "Fustat", sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 42px;
   line-height: 50px;
   color: #fff;
-  margin-bottom: 48px;
+  margin-bottom: 95px;
 }
 
+/* Figma 1639:16264 — each question is its own #1b1b1b card (r16) with a 29px
+   gutter, not a hairline-separated list, and carries a +/x affordance. */
 .pd-faq-list {
   max-width: 792px;
   margin: 0 auto;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
 }
 
 .pd-faq-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1b1b1b;
+  border-radius: 16px;
   padding: 20px 24px;
 }
 
 .pd-faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   font-family: "Fustat", sans-serif;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 20px;
   line-height: 24px;
   color: #fff;
   cursor: pointer;
@@ -584,13 +639,55 @@
   display: none;
 }
 
+.pd-faq-item summary::after {
+  content: "";
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  -webkit-mask: var(--pd-faq-icon) center / contain no-repeat;
+  mask: var(--pd-faq-icon) center / contain no-repeat;
+  --pd-faq-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 3.5v13M3.5 10h13' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.pd-faq-item[open] summary::after {
+  --pd-faq-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 5l10 10M15 5L5 15' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
 .pd-faq-item p {
   font-family: "Fustat", sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 16px;
+  color: rgba(250, 250, 250, 0.7);
+  margin-top: 20px;
+  padding-bottom: 24px;
 }
+
+.pd-faq-item p:not(:last-of-type) {
+  padding-bottom: 12px;
+}
+
+.pd-faq-item p + p {
+  margin-top: 0;
+}
+
+.pd-faq-more {
+  margin-top: 14px;
+  text-align: center;
+  font-family: "Fustat", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.384px;
+  color: #fafafa;
+}
+
+.pd-faq-more a {
+  color: #fff;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 
 @media (max-width: 1440px) {
   .pd-body,
@@ -637,7 +734,6 @@
     width: 100%;
   }
 }
-
 
 @media (max-width: 768px) {
   .pd-hero {
@@ -707,6 +803,29 @@
 
   .pd-enquire-copy, .pd-form {
     width: 100% !important;
+    max-width: 100%;
+  }
+
+  /* .pd-enquire-inner stayed a row with a non-shrinking 803px copy column, so the
+     form was pushed off the side of the phone. */
+  .pd-enquire-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 32px;
+  }
+
+  .pd-enquire-copy {
+    flex-shrink: 1;
+    gap: 24px;
+  }
+
+  .pd-enquire-copy h2 {
+    font-size: clamp(28px, 8vw, 40px);
+    margin-bottom: 12px;
+  }
+
+  .pd-enquire-copy .sub {
+    font-size: 16px;
   }
 
   .pd-body,
@@ -759,5 +878,432 @@
 
   .blog-card {
     height: 400px;
+  }
+
+  /* Awards rows have a fixed 469px title column on desktop (Figma) — stack them
+     rather than let the row overflow on a phone. */
+  .pd-awards {
+    padding: 48px 16px !important;
+  }
+
+  .pd-awards h2 {
+    font-size: clamp(28px, 7vw, 36px);
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+
+  .pd-award-featured {
+    height: auto;
+    padding: 20px 16px;
+  }
+
+  .pd-award-featured .year {
+    position: static;
+    display: block;
+    margin-top: 12px;
+    font-size: 28px;
+  }
+
+  .pd-award-row {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 16px;
+  }
+
+  .pd-award-row strong {
+    width: 100%;
+  }
+
+  .pd-award-row .arrow {
+    display: none;
+  }
+
+  .pd-related {
+    padding: 0 16px 48px !important;
+  }
+
+  .pd-related-head {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .pd-related-head h2 {
+    font-size: clamp(28px, 7vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -1px;
+  }
+
+  .pd-rel-card {
+    width: min(84vw, 719px);
+    height: auto;
+    aspect-ratio: 719 / 480;
+  }
+
+  .pd-faq-item summary {
+    font-size: 17px;
+    gap: 16px;
+  }
+
+  .pd-enquire::after {
+    width: min(90%, 776px);
+    height: auto;
+    aspect-ratio: 776 / 346;
+    bottom: -40px;
+  }
+}
+
+/* ==========================================================================
+   Light theme — Project detail
+   Reference: Figma light landing 1264:9007 (fl-08 text bands, fl-10 blogs band,
+   fl-11 enquiry section, fl-12/fl-13 FAQ). Anything sitting on a photograph —
+   the hero bar and the related-rail glass plates — keeps its dark scrim and
+   white type. Everything else flips to the light ground. #f68121 is never themed.
+   ========================================================================== */
+
+/* --- Hero: photo-backed, stays dark -------------------------------------- */
+html[data-theme="light"] .pd-hero-bar {
+  background: rgba(63, 63, 63, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="light"] .pd-hero-bar-text h1,
+html[data-theme="light"] .pd-hero-bar-text .loc {
+  color: #fff;
+}
+
+/* --- Breadcrumb ---------------------------------------------------------- */
+html[data-theme="light"] .pd-breadcrumb {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .pd-breadcrumb a,
+html[data-theme="light"] .pd-breadcrumb span {
+  color: #6b6b6b;
+}
+
+html[data-theme="light"] .pd-breadcrumb .sep {
+  color: var(--border-strong);
+}
+
+html[data-theme="light"] .pd-breadcrumb .current {
+  color: var(--text);
+}
+
+/* --- Meta block ---------------------------------------------------------- */
+html[data-theme="light"] .pd-label {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-client-name,
+html[data-theme="light"] .pd-desc {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-client-logo {
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+html[data-theme="light"] .pd-tag {
+  /* Opaque equivalent of the wash over the paper ground. */
+  background: var(--bg-sunken);
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-stat {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .pd-stat strong {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-stat span {
+  color: #6b6b6b;
+}
+
+/* --- Scope / awards / related headings ----------------------------------- */
+html[data-theme="light"] .pd-scope h2,
+html[data-theme="light"] .pd-awards h2,
+html[data-theme="light"] .pd-related-head h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-scope-item {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .pd-scope-item p {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-award-featured,
+html[data-theme="light"] .pd-award-row {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .pd-award-featured strong,
+html[data-theme="light"] .pd-award-row strong {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-award-featured p,
+html[data-theme="light"] .pd-award-row span:not(.arrow),
+html[data-theme="light"] .pd-award-row .arrow {
+  color: #6b6b6b;
+}
+
+/* The oversized year is a ghost numeral behind the award copy — it inverts from
+   near-black on dark to near-white on light. */
+html[data-theme="light"] .pd-award-featured .year {
+  /* ghost numeral behind the award copy — #bdbdbd is 1.9:1 on the card */
+  color: #938d84;
+}
+
+html[data-theme="light"] .pd-faq .eyebrow,
+html[data-theme="light"] .pd-enquire .eyebrow,
+html[data-theme="light"] .pd-enquire-copy .eyebrow {
+  color: var(--text-grey);
+}
+
+/* --- Related rail: photo cards keep the dark glass ------------------------ */
+html[data-theme="light"] .pd-rel-card {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .pd-rel-card .card-glass {
+  background: rgba(63, 63, 63, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="light"] .pd-rel-card .card-glass .card-glass-inner {
+  background: transparent;
+  border-color: transparent;
+}
+
+html[data-theme="light"] .pd-rel-card .card-title,
+html[data-theme="light"] .pd-rel-card .card-loc {
+  color: #fff;
+}
+
+/* --- Enquiry section (fl-11) ---------------------------------------------
+   White ground, a soft warm glow behind the form instead of inside it, and the
+   skyline line-art dropped back so it reads as a watermark on white. */
+html[data-theme="light"] .pd-enquire {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .pd-enquire::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: min(1000px, 70%);
+  height: 700px;
+  background: radial-gradient(
+    60% 60% at 70% 25%,
+    rgba(246, 129, 33, 0.16),
+    rgba(246, 129, 33, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+html[data-theme="light"] .pd-enquire::after {
+  opacity: 0.14;
+}
+
+html[data-theme="light"] .pd-enquire-copy h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-enquire-copy .sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-form {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  box-shadow: 0 12px 40px rgba(18, 18, 18, 0.07);
+}
+
+html[data-theme="light"] .pd-form::before {
+  display: none;
+}
+
+html[data-theme="light"] .pd-form h3 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-form .hint {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-form .hint a {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-form input,
+html[data-theme="light"] .pd-form textarea {
+  background: var(--bg-page);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-form input::placeholder,
+html[data-theme="light"] .pd-form textarea::placeholder {
+  color: #8a8a8a;
+}
+
+/* --- FAQ (fl-12 / fl-13): sunken grey band, white question cards ---------- */
+html[data-theme="light"] .pd-faq {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .pd-faq h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-faq-item {
+  background: var(--bg-elevated);
+  box-shadow: 0 2px 10px rgba(18, 18, 18, 0.05);
+}
+
+html[data-theme="light"] .pd-faq-item summary {
+  color: var(--text);
+}
+
+html[data-theme="light"] .pd-faq-item p {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-faq-more {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-faq-more a {
+  color: var(--text);
+}
+
+/* ==========================================================================
+   Phone (375) — Project detail
+   ========================================================================== */
+@media (max-width: 768px) {
+  .pd-body {
+    gap: 48px;
+  }
+
+  /* Related rail glass: a nowrap location beside a flexible title collides on a
+     ~315px card, so the two run over each other. Stack them instead. */
+  .pd-rel-card .card-glass {
+    min-height: 0;
+    padding: 12px 16px;
+  }
+
+  .pd-rel-card .card-glass-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+
+  .pd-rel-card .card-title {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .pd-rel-card .card-loc {
+    font-size: 14px;
+    white-space: normal;
+  }
+
+  .pd-tags {
+    gap: 8px;
+  }
+
+  .pd-tag {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+
+  .pd-stat {
+    height: auto;
+    padding: 18px 20px;
+  }
+
+  .pd-stat strong {
+    font-size: 26px;
+  }
+
+  .pd-scope {
+    gap: 24px;
+  }
+
+  .pd-scope h2 {
+    font-size: clamp(28px, 7.5vw, 36px);
+    line-height: 1.2;
+  }
+
+  .pd-scope-item p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* A 420px-tall crop of a 343px-wide frame reads as a portrait sliver on a
+     phone — bring it back to a landscape band. */
+  .pd-gallery-row img {
+    height: 240px;
+  }
+
+  .pd-form h3 {
+    font-size: 24px;
+  }
+
+  /* 16px avoids the iOS focus zoom; 48px keeps the field a comfortable target. */
+  .pd-form input,
+  .pd-form textarea {
+    font-size: 16px;
+    min-height: 48px;
+  }
+
+  .pd-form textarea {
+    min-height: 120px;
+  }
+
+  .pd-form .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pd-faq h2 {
+    font-size: clamp(26px, 7vw, 32px);
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+
+  .pd-faq-list {
+    gap: 16px;
+  }
+
+  .pd-faq-item {
+    padding: 16px 18px;
+  }
+
+  .pd-faq-item summary {
+    min-height: 44px;
+  }
+
+  .pd-breadcrumb a,
+  .pd-breadcrumb .current {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 }

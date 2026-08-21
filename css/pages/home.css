@@ -35,8 +35,8 @@
   right: auto;
   transform: translateX(-50%);
   z-index: 1000;
-  height: 96px;
-  padding: 18px 80px;
+  height: var(--header-height);
+  padding: 0 80px;
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -45,6 +45,9 @@
 }
 
 .page-home .header.is-scrolled {
+  height: 72px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background: rgba(10, 10, 10, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -53,11 +56,16 @@
 }
 
 .page-home .header .logo {
-  width: 110px;
-  height: 82px;
+  width: 126px;
+  height: 101px;
   object-fit: cover;
   border-radius: 40px 40px 0 0;
   transition: width 0.25s ease, height 0.25s ease;
+}
+
+.page-home .header.is-scrolled .logo {
+  width: 88px;
+  height: 58px;
 }
 
 .home-hero {
@@ -762,6 +770,9 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
+  /* land on a card edge, never mid-card */
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
 }
 
 .home-stats::-webkit-scrollbar {
@@ -772,14 +783,16 @@
 
 .home-stat-card {
   position: relative;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   flex: 0 0 358px;
   width: 358px;
   min-width: 358px;
-  height: auto;
+  height: 448px;
   border-radius: 20px;
   background: #262626;
   border: 1px solid #383737;
-  padding: 28px;
+  padding: 32px 34px;
   overflow: hidden;
   overflow: clip;
   display: flex;
@@ -790,8 +803,8 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .home-stat-card:hover {
-    transform: translate3d(0, -6px, 0);
+  .home-stat-card:hover,
+  .home-stat-card:focus-visible {
     border-color: #f68121;
   }
 }
@@ -804,27 +817,6 @@
   .home-stat-card:hover {
     transform: none;
   }
-}
-
-.home-stat-card--light {
-  background: #fff;
-  border-color: #ececec;
-}
-
-.home-stat-card--light .home-stat-num {
-  color: #434343;
-}
-
-.home-stat-card--light .home-stat-desc {
-  color: #434343;
-}
-
-.home-stat-card--light .home-stat-lines {
-  color: #8c8c8c;
-}
-
-.home-stat-card--light .home-stat-panel {
-  background: transparent;
 }
 
 .home-stat-num {
@@ -852,27 +844,108 @@
   color: #e6e5e6;
 }
 
+/* Figma 290:6076 — a 550px panel inside a clipped 448px card.
+   Hover moves it up by exactly 355px, revealing image + Know More. */
 .home-stat-panel {
-  position: relative;
-  margin-top: 12px;
-  padding: 14px 0 0;
-  background: transparent;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 262px;
+  height: 550px;
+  box-sizing: border-box;
+  padding: 32px;
+  background: #262626;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  flex: 0 0 auto;
+  gap: 22px;
+  z-index: 1;
+  transform: translateY(0);
+  transition: transform 0.38s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.home-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* The panel is 550px tall inside a 448px card, so anything past the tag row +
+   copy must sit BELOW the card's bottom edge or it peeks through at rest.
+   Reserving the copy block's height parks the hover image exactly out of view. */
+.home-stat-body .home-stat-lines {
+  min-height: 81px;
+}
+
+.home-stat-img {
+  display: block;
+  width: 292px;
+  height: 256px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.home-stat-link {
+  padding-top: 12px;
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f68121;
+  text-decoration: none;
+}
+.home-stat-link:hover { text-decoration: underline; }
+
+.home-stat-glow {
+  position: absolute;
+  left: 172px;
+  top: 425px;
+  width: 224px;
+  height: 160px;
+  border-radius: 9999px;
+  background: var(--glow, #f57f2a);
+  filter: blur(32px);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .home-stat-card:hover .home-stat-panel,
+  .home-stat-card:focus-within .home-stat-panel { transform: translateY(-355px); }
+  .home-stat-card:hover .home-stat-glow,
+  .home-stat-card:focus-within .home-stat-glow { opacity: 1; }
+}
+
+/* touch / coarse pointer — JS toggles .is-open */
+.home-stat-card.is-open { border-color: #f68121; }
+.home-stat-card.is-open .home-stat-panel { transform: translateY(-355px); }
+.home-stat-card.is-open .home-stat-glow { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-stat-panel { transition: none; }
 }
 
 .home-stat-tag-row {
   border-bottom: 1px solid #8b8b8b;
-  padding-bottom: 12px;
+  padding-bottom: 28px;
 }
 
+/* The partner wordmark is dark artwork, so it rides on a white chip to stay
+   readable now that every card shares the dark surface. */
 .home-stat-tag-row img {
   display: block;
   height: 28px;
   width: auto;
   max-width: 46%;
+  box-sizing: content-box;
+  padding: 7px 12px;
+  /* cancel the chip's vertical padding so the rule under it stays on the same
+     baseline as the text-tag cards */
+  margin: -7px 0;
+  border-radius: 8px;
+  background: #fff;
 }
 
 .home-stat-card:nth-child(n+3) .home-stat-tag-row {
@@ -927,11 +1000,66 @@
   display: flex;
   gap: 16px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 0 120px 80px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  /* a scrolled card always parks flush against the gutter, never half-cut */
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 120px;
 }
+.home-services-rail::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Explore All — Figma CTA row itemSpacing 32 */
+.home-services-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+/* prev/next sit right-aligned over the rail, matching the About Us stats nav */
+.home-services-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 120px 14px;
+  box-sizing: border-box;
+}
+.home-svc-arrow {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f4f4;
+  cursor: pointer;
+  transition: border-color .2s ease, background-color .2s ease, color .2s ease, opacity .2s ease;
+}
+.home-svc-arrow svg { display: block; width: 18px; height: 18px; }
+.home-svc-arrow:hover:not(:disabled) { border-color: #f68121; background: rgba(246,129,33,0.14); color: #f68121; }
+.home-svc-arrow:active:not(:disabled) { background: rgba(246,129,33,0.22); }
+.home-svc-arrow:disabled { opacity: 0.32; cursor: default; }
+.home-svc-arrow:focus-visible { outline: 2px solid #f68121; outline-offset: 3px; }
 
 .home-svc-card {
   position: relative;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   flex: 0 0 320px;
   height: 480px;
   border-radius: 20px;
@@ -1010,21 +1138,28 @@
 /* Clients */
 .home-clients {
   position: relative;
-  padding: 120px;
-  background: #010101;
+  padding: 140px 128px;
+  background: #0f0f0f;
   overflow: hidden;
 }
 
+/* Figma 687:19461 — neutral grey blob, mostly clipped off the bottom edge */
 .home-clients-glow {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(246,129,33,0.12), transparent 60%);
+  left: 794px;
+  top: 770px;
+  width: 391px;
+  height: 252px;
+  inset: auto auto auto 794px;
+  border-radius: 200px;
+  background: rgba(201, 201, 201, 0.32);
+  filter: blur(200px);
   pointer-events: none;
 }
 
 .home-clients-copy {
-  max-width: 900px;
-  margin-bottom: 64px;
+  max-width: 1017px;
+  margin-bottom: 128px;
   position: relative;
   z-index: 1;
 }
@@ -1034,27 +1169,63 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
+  gap: clamp(48px, 6vw, 97.9px);
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1536px;
+}
+
+/* Six even columns per row. The old rules left-packed the logos at fixed
+   117/133px gaps, which ran ~320px past the section's right padding — Wabtec,
+   Apex and AVTEC were being clipped away entirely and the row read as
+   left-heavy. Equal columns keep the block optically centred at any width. */
+.home-client-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  justify-items: center;
   gap: 40px;
 }
 
-.home-client-row {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 28px 24px;
-  align-items: center;
-  justify-items: center;
+.home-client-row + .home-client-row {
+  margin-left: 0;
 }
 
 .home-client-row img {
   display: block;
   width: auto;
   height: auto;
-  max-width: min(100%, 160px);
-  max-height: 52px;
+  max-width: 100%;
   object-fit: contain;
   object-position: center;
-  filter: brightness(0) invert(1);
-  opacity: 0.92;
+  /* Figma: full colour, 100% opacity — no filter (was brightness(0) invert(1)) */
+  filter: none;
+  opacity: 1;
+}
+
+/* exact Figma intrinsic heights, row 1 (687:19469) */
+.home-client-row:first-child img:nth-child(1) { max-height: 60px; }    /* TATA */
+.home-client-row:first-child img:nth-child(2) { max-height: 31.24px; } /* Volvo */
+.home-client-row:first-child img:nth-child(3) { max-height: 56.6px; }  /* Faiveley */
+.home-client-row:first-child img:nth-child(4) { max-height: 50.94px; } /* Voltas */
+.home-client-row:first-child img:nth-child(5) { max-height: 56.03px; } /* TVS */
+.home-client-row:first-child img:nth-child(6) { max-height: 48px; }    /* Wabtec */
+
+/* row 2 (687:19500) */
+.home-client-row + .home-client-row img:nth-child(1) { max-height: 110px; }    /* Wipro */
+.home-client-row + .home-client-row img:nth-child(2) { max-height: 104.79px; } /* Scania */
+.home-client-row + .home-client-row img:nth-child(3) { max-height: 104.02px; } /* Shimizu */
+.home-client-row + .home-client-row img:nth-child(4) { max-height: 90.47px; }  /* CUMI */
+.home-client-row + .home-client-row img:nth-child(5) { max-height: 107.62px; } /* Apex */
+.home-client-row + .home-client-row img:nth-child(6) { max-height: 45.14px; }  /* AVTEC */
+
+/* Figma 687:19465 — 42px/700 in a 1017px box wraps to exactly 2 lines */
+.home-clients-copy .home-section-title {
+  max-width: 1017px;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 50.4px;
+  letter-spacing: 0;
 }
 
 /* Sustainability banner */
@@ -1215,11 +1386,41 @@
 .home-legacy-brand img {
   display: block;
   width: auto;
-  height: auto;
-  max-width: 148px;
-  max-height: 40px;
   object-fit: contain;
   object-position: center;
+}
+
+/* ---- Rail edge fades ----------------------------------------------------
+   A horizontal rail always has to cut its last card somewhere. Hard-clipping
+   it against the section padding reads as a layout bug ("why is that card
+   half there?"), so the overflow is feathered out instead and the fade is
+   only painted on the side that actually has more content — driven by the
+   .can-scroll-* classes the carousel JS sets. */
+.rail-fade {
+  --rail-fade: 96px;
+  --rail-fade-start: 0px;
+  --rail-fade-end: 0px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--rail-fade-start),
+    #000 calc(100% - var(--rail-fade-end)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--rail-fade-start),
+    #000 calc(100% - var(--rail-fade-end)),
+    transparent 100%
+  );
+}
+
+.rail-fade.can-scroll-left { --rail-fade-start: var(--rail-fade); }
+.rail-fade.can-scroll-right { --rail-fade-end: var(--rail-fade); }
+
+@media (max-width: 768px) {
+  .rail-fade { --rail-fade: 40px; }
 }
 
 /* ——— Meet Our Experts ——— */
@@ -1319,17 +1520,41 @@
   line-height: 24px;
 }
 
+/* Right-aligned prev/next over the roster, matching the About Us stats nav */
+.home-team-nav {
+  display: none;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 1533px;
+  min-height: 44px;
+  margin-bottom: 14px;
+}
+
+.home-team-nav.is-scrollable {
+  display: flex;
+}
+
 .home-team-grid {
   display: flex;
-  gap: 35.44px;
+  justify-content: center;
+  gap: clamp(16px, 2vw, 35.44px);
   width: 100%;
   max-width: 1533px;
   margin-bottom: 56px;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   overscroll-behavior-x: contain;
+}
+
+.home-team-grid::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* Center the row when it fits; shrink to 0 when it overflows so the first card is not clipped. */
@@ -1341,9 +1566,11 @@
   pointer-events: none;
 }
 
+/* Five members, so the row is sized to fit them all rather than scroll —
+   the cards shrink from 278px down to whatever the gutter allows. */
 .home-member {
-  width: 278px;
-  flex-shrink: 0;
+  flex: 0 1 278px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1355,8 +1582,8 @@
 
 .home-member-photo {
   position: relative;
-  width: 278px;
-  height: 340px;
+  width: 100%;
+  aspect-ratio: 278 / 340;
   flex-shrink: 0;
   border-radius: 21.26px;
   overflow: hidden;
@@ -1382,7 +1609,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  width: 278px;
+  width: 100%;
   min-height: 98px;
   box-sizing: border-box;
 }
@@ -1822,10 +2049,6 @@
   margin-top: 24px;
 }
 
-.home-download-icon {
-  transform: none;
-}
-
 .home-brand-video {
   position: relative;
   flex: 1.5;
@@ -2125,6 +2348,10 @@
     gap: 12px;
   }
 
+  .home-services-nav {
+    padding: 0 16px 12px;
+  }
+
   .home-svc-card {
     flex: 0 0 min(260px, 78vw);
     width: min(260px, 78vw);
@@ -2285,11 +2512,6 @@
   .cta-title {
     font-size: clamp(28px, 7vw, 40px);
   }
-
-  .partners-collage {
-    transform: scale(0.55);
-    transform-origin: center top;
-  }
 }
 
 @media (max-width: 390px) {
@@ -2310,5 +2532,822 @@
   .theme-switch {
     width: 84px;
     height: 36px;
+  }
+}
+
+/* ---- FAQ: Figma 687:19932 ---- */
+.home-faq-icon {
+  flex: none;
+  transition: transform .2s ease;
+  transform-origin: 50% 50%;
+}
+details[open] > summary .home-faq-icon { transform: rotate(45deg); }
+.home-faq-more { color: #fafafa; margin-top: 29px; letter-spacing: -0.384px; }
+.home-faq-more a { color: #fff; font-weight: 500; text-decoration: underline; }
+
+/* ---- About Us stat typography — Figma 290:6076 ---- */
+.home-stat-desc { font-size: 18px; line-height: 26px; letter-spacing: 0.25px; }
+.home-stat-tag { font-size: 14px; line-height: 22px; letter-spacing: 1.75px; }
+.home-stat-lines p { font-size: 14px; line-height: 22px; letter-spacing: 0.25px; }
+
+/* ---- Featured blogs — Figma 75:1783: hover zooms the cover 1.1, nothing else moves ---- */
+.blog-card { position: relative; overflow: hidden; }
+.blog-card img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.blog-card:hover img,
+.blog-card:focus-within img { transform: scale(1.1); }
+.blog-card .blog-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+@media (prefers-reduced-motion: reduce) {
+  .blog-card img { transition: none; }
+  .blog-card:hover img { transform: none; }
+}
+
+/* ---- Legacy section — Figma 687:19611 ---- */
+.home-legacy-copy {
+  align-items: center;
+  text-align: center;
+}
+.home-legacy-title,
+.home-legacy-body { text-align: center; }
+
+.home-legacy-mark {
+  width: 122px;
+  height: 120px;
+  object-fit: contain;
+}
+
+/* sub-brands sit in boxes (687:19643/19666/19685).
+   A `max-height: 40px` further up was clamping every mark below the 48px
+   Figma calls for, which is what made the three chips read as odd sizes. */
+.home-legacy-brands {
+  display: flex;
+  /* one line on desktop — wrapping produced a 2 + 1 orphan between 1280
+     and 1400, where the row is just short of three full-width chips */
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 12px;
+  max-height: none;
+}
+
+@media (max-width: 900px) {
+  .home-legacy-brands { flex-wrap: wrap; }
+}
+.home-legacy-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 96px;
+  /* even chips: equal thirds of the copy column, capped at the Figma 210px,
+     so the row never breaks into a 2 + 1 orphan */
+  /* a real flex-basis so the chips don't collapse to nothing before the
+     logos decode, then grow to equal thirds up to the Figma 210px */
+  flex: 1 1 180px;
+  min-width: 0;
+  max-width: 210px;
+  padding: 0 14px;
+  border-radius: 20px;
+  background: #eff0f0;
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.home-legacy-brand:hover {
+  background: #e6e8e8;
+  transform: translateY(-2px);
+}
+.home-legacy-brand img {
+  height: auto;
+  width: auto;
+  max-height: 48px;
+  max-width: 100%;
+  min-width: 0;
+}
+.home-legacy-brand img[height="35"] { max-height: 35px; align-self: flex-end; }
+
+/* quote card (687:19615 / 19620) */
+.home-legacy-quote {
+  left: 60px;
+  right: 60px;
+  bottom: 40px;
+  border-radius: 30px;
+  padding: 32px;
+  gap: 18px;
+  background: rgba(33, 33, 33, 0.10);
+  border: 1px solid rgba(21, 21, 21, 0.09);
+  backdrop-filter: blur(150px);
+  -webkit-backdrop-filter: blur(150px);
+  display: flex;
+  flex-direction: column;
+}
+.home-legacy-quote > p {
+  font-size: 24px;
+  line-height: 28.8px;
+  letter-spacing: -0.24px;
+  color: #fff;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+.home-legacy-quote-icon {
+  flex: none;
+  width: 25px;
+  height: 20px;
+}
+.home-legacy-attr {
+  font-size: 16px;
+  line-height: 19.2px;
+  letter-spacing: -0.16px;
+  color: #fff;
+  font-weight: 700;
+  padding-left: 40px;
+}
+
+/* ---- Legacy: Figma 687:19611 is a WHITE section (#FFFFFF + 15% grain).
+   The Arul Group mark is navy artwork and is unreadable on dark. ---- */
+.home-legacy { background: #ffffff; padding: 100px 120px; }
+.home-legacy-title {
+  color: #121212;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 57.6px;
+  letter-spacing: -1px;
+}
+.home-legacy-body {
+  color: #555555;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+}
+.home-legacy-photo img { border-radius: 16px; }
+
+/* ---- CTA card: matched to the FAQ card treatment (your call; Figma has them
+   different — rgba(83,83,83,.30)/24px vs #1B1B1B/16px) ---- */
+.cta {
+  background: #1b1b1b;
+  border-radius: 16px;
+  box-shadow: 0 4px 4px rgba(151, 151, 151, 0.07);
+}
+
+
+/* ==========================================================================
+   Homepage polish
+   Shared motion tokens + the small interaction states the sections were
+   missing, so hover/focus behaves the same way everywhere on the page.
+   ========================================================================== */
+.page-home {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.28s;
+}
+
+/* Cards lift on the same curve instead of three slightly different ones */
+.page-home .home-svc-card,
+.page-home .home-member,
+.page-home .blog-card {
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page-home .home-svc-card:hover,
+  .page-home .home-member:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.65);
+  }
+
+  /* client marks are decorative, so this is a light touch only */
+  .page-home .home-client-row img {
+    transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+    opacity: 0.92;
+  }
+
+  .page-home .home-client-row img:hover {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+/* Arrow buttons: one consistent pressed/disabled treatment */
+.page-home .home-stats-arrow,
+.page-home .home-svc-arrow {
+  transition: border-color var(--dur) var(--ease-out),
+              background-color var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out),
+              opacity var(--dur) var(--ease-out),
+              transform 0.12s ease;
+}
+
+.page-home .home-stats-arrow:active:not(:disabled),
+.page-home .home-svc-arrow:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-home .home-stats,
+  .page-home .home-services-rail,
+  .page-home .home-team-grid {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+  }
+
+  .page-home .home-svc-card,
+  .page-home .home-member,
+  .page-home .blog-card,
+  .page-home .home-legacy-brand,
+  .page-home .home-client-row img {
+    transition: none;
+  }
+
+  .page-home .home-svc-card:hover,
+  .page-home .home-member:hover,
+  .page-home .home-legacy-brand:hover,
+  .page-home .home-client-row img:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   LIGHT MODE — homepage overrides (Figma light landing 1264:9007)
+   Deliberately NOT flipped, because the light frame still shows them dark:
+     .home-hero (video)          .home-trusted (black logo band)
+     .home-sustain (photo)       .home-svc-label (photo scrim)
+     .blog-card overlays         .home-brand-video
+     .home-projects .card-*      (project cards stay dark in both themes)
+   The accent (#f68121) is never themed.
+   ========================================================================== */
+
+/* --- Header: the light frame puts the nav on a solid white band ---------- */
+html[data-theme="light"] .page-home .header {
+  background: rgba(246, 243, 239, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--border);
+}
+
+html[data-theme="light"] .page-home .header.is-scrolled {
+  background: rgba(246, 243, 239, 0.95);
+  border-bottom-color: var(--border);
+  box-shadow: 0 12px 40px rgba(30, 26, 20, 0.1);
+}
+
+/* --- Generic section headings ------------------------------------------- */
+html[data-theme="light"] .home-section-title { color: var(--text); }
+
+/* --- About + stat cards -------------------------------------------------- */
+html[data-theme="light"] .home-about {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 46%, var(--bg-page) 100%);
+}
+
+html[data-theme="light"] .home-about-glow { background: rgba(246, 129, 33, 0.30); }
+html[data-theme="light"] .home-about-title { color: var(--text); }
+html[data-theme="light"] .home-about-body { color: var(--text-secondary); }
+
+html[data-theme="light"] .home-stat-card,
+html[data-theme="light"] .home-stat-panel { background: var(--bg-elevated); }
+
+html[data-theme="light"] .home-stat-card {
+  border-color: var(--border);
+  box-shadow: var(--card-shadow);
+}
+html[data-theme="light"] .home-stat-num { color: var(--text); }
+
+html[data-theme="light"] .home-stat-desc,
+html[data-theme="light"] .home-stat-lines,
+html[data-theme="light"] .home-stat-tag { color: var(--text-secondary); }
+
+html[data-theme="light"] .home-stat-tag-row,
+html[data-theme="light"] .home-stat-card:nth-child(n+3) .home-stat-tag-row {
+  border-bottom-color: var(--border-strong);
+}
+
+html[data-theme="light"] .home-stat-tag-row img {
+  background: var(--bg-page);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* rail arrows (About Us stats, Services, Team share the same treatment) */
+html[data-theme="light"] .home-stats-arrow,
+html[data-theme="light"] .home-svc-arrow {
+  border-color: var(--border-strong);
+  background: rgba(18, 18, 18, 0.04);
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .home-stats-arrow:hover:not(:disabled),
+html[data-theme="light"] .home-svc-arrow:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(246, 129, 33, 0.12);
+  color: var(--accent);
+}
+
+/* --- Services ------------------------------------------------------------ */
+html[data-theme="light"] .home-services { background: var(--bg-sunken); }
+
+/* --- Projects ------------------------------------------------------------ */
+html[data-theme="light"] .home-projects { background: var(--bg-page); }
+
+html[data-theme="light"] .home-filter {
+  background: var(--bg-sunken);
+  color: var(--text);
+}
+
+html[data-theme="light"] .home-filter.active {
+  background: var(--bg-elevated);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+/* Figma keeps the project cards dark in light mode. components.css flips
+   .card-title / .card-text-title / .card-desc to near-black for every page,
+   which would render them invisible here — pin them back to white. */
+html[data-theme="light"] .home-projects .card-glass {
+  background: rgba(63, 63, 63, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="light"] .home-projects .card-glass-inner { background: transparent; }
+
+html[data-theme="light"] .home-projects .card-title,
+html[data-theme="light"] .home-projects .card-loc,
+html[data-theme="light"] .home-projects .card-text-title,
+html[data-theme="light"] .home-projects .card-text.simple .card-desc { color: #ffffff; }
+
+html[data-theme="light"] .home-projects .card-desc { color: rgba(255, 255, 255, 0.7); }
+
+/* --- Clients ------------------------------------------------------------- */
+html[data-theme="light"] .home-clients { background: var(--bg-elevated); }
+html[data-theme="light"] .home-clients-glow { display: none; }
+
+/* --- Team ---------------------------------------------------------------- */
+html[data-theme="light"] .home-team { background: var(--bg-sunken); }
+html[data-theme="light"] .home-team-title { color: var(--text); }
+html[data-theme="light"] .home-team-body { color: var(--text-secondary); }
+html[data-theme="light"] .home-team-proof-text,
+html[data-theme="light"] .home-team-cta > p { color: var(--text); }
+html[data-theme="light"] .home-team-avatars img { border-color: var(--bg-page); }
+html[data-theme="light"] .home-member-photo { background: var(--bg-card); }
+
+html[data-theme="light"] .home-member-meta {
+  background: var(--bg-elevated);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+html[data-theme="light"] .home-member-copy h3 { color: var(--text); }
+/* the role line is #f57f2a — 2.6:1 on the white meta plate */
+html[data-theme="light"] .home-member-copy p { color: var(--accent-text); }
+html[data-theme="light"] .home-member-arrow { filter: invert(1); }
+
+/* --- Featured blogs ------------------------------------------------------ */
+html[data-theme="light"] .page-home .blogs { background: var(--bg-ink); }
+html[data-theme="light"] .page-home .blogs-title { color: #ffffff; }
+html[data-theme="light"] .page-home .blogs-subtitle { color: rgba(255, 255, 255, 0.68); }
+
+/* --- Contact ------------------------------------------------------------- */
+html[data-theme="light"] .home-contact {
+  color: var(--text);
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .home-contact-wire { opacity: 0.35; filter: invert(1); }
+html[data-theme="light"] .home-contact-title { color: var(--text); }
+html[data-theme="light"] .home-contact-body { color: var(--text-secondary); }
+html[data-theme="light"] .home-contact-left .home-eyebrow { color: var(--text-grey); }
+html[data-theme="light"] .home-form-glow { background: rgba(246, 129, 33, 0.25); }
+
+html[data-theme="light"] .home-form-inner {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  box-shadow: 0 20px 60px rgba(30, 26, 20, 0.1);
+}
+
+html[data-theme="light"] .home-form-inner h3 { color: var(--text); }
+html[data-theme="light"] .home-form-sub { color: var(--text-secondary); }
+
+html[data-theme="light"] .home-form-inner input,
+html[data-theme="light"] .home-form-inner textarea {
+  color: var(--text);
+  background: var(--bg-page);
+  border-color: var(--border-strong);
+}
+
+html[data-theme="light"] .home-form-inner input::placeholder,
+html[data-theme="light"] .home-form-inner textarea::placeholder {
+  color: var(--text-grey);
+}
+
+/* --- Brand / brochure ---------------------------------------------------- */
+html[data-theme="light"] .home-brand {
+  color: var(--text);
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .home-brand-since p { color: var(--text-grey); }
+html[data-theme="light"] .home-brand-wordmark { color: var(--text); }
+html[data-theme="light"] .home-brand-point-title { color: var(--text); }
+html[data-theme="light"] .home-brand-point-sub { color: var(--text-secondary); }
+
+html[data-theme="light"] .home-brand-icon {
+  background: var(--bg-page);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* --- FAQ ----------------------------------------------------------------- */
+html[data-theme="light"] .home-faq {
+  color: var(--text);
+  background: var(--bg-sunken);
+}
+
+html[data-theme="light"] .home-faq-item {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  box-shadow: var(--card-shadow);
+}
+
+html[data-theme="light"] .home-faq-item summary { color: var(--text); }
+html[data-theme="light"] .home-faq-item p { color: var(--text-secondary); }
+html[data-theme="light"] .home-faq-icon { filter: invert(1); }
+html[data-theme="light"] .home-faq-more { color: var(--text-secondary); }
+html[data-theme="light"] .home-faq-more a { color: var(--text); }
+
+/* White-artwork client marks would vanish on the light surface. The classic
+   invert + hue-rotate pair flips their lightness while keeping the red.
+   (Figma 1264:9007 renders these three ghosted — treated as an oversight.) */
+html[data-theme="light"] .home-client-row:first-child img:nth-child(3),
+html[data-theme="light"] .home-client-row:first-child img:nth-child(6),
+html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* ==========================================================================
+   Photo-backed surfaces get an explicit dark background-colour.
+   The artwork always covers them, so nothing changes visually — but the
+   fallback colour is correct if an image fails, and a contrast checker can
+   now resolve the real backdrop behind the white overlay copy instead of
+   inheriting the (light) page surface underneath.
+   ========================================================================== */
+.home-sustain { background-color: #0a0a0a; }
+.home-svc-card { background-color: #0a0a0a; }
+.page-home .blog-card { background-color: #0a0a0a; }
+
+/* ==========================================================================
+   MOBILE — 375 layout (Figma 669:7625)
+   Appended last so it also wins over the late desktop overrides further up
+   (e.g. the Legacy block, which re-declares padding after the media queries).
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* ---- Hero: the mobile frame keeps both CTAs on one row ---------------- */
+  .home-hero-ctas {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    width: auto;
+    gap: 12px;
+  }
+
+  .home-hero-ctas .btn-primary,
+  .home-hero-ctas .home-btn-glass,
+  .home-hero .home-btn-primary,
+  .home-hero .home-btn-glass {
+    width: auto;
+    min-height: 48px;
+  }
+
+  /* trimmed just enough that both buttons still share one row at 375 */
+  .home-hero .home-btn-primary {
+    padding: 14px 14px;
+    font-size: 16px;
+  }
+
+  .home-hero .home-btn-glass {
+    padding: 15px 14px;
+    font-size: 15px;
+  }
+
+  /* ---- Section headings: nothing may outrun the 375 viewport ------------ */
+  .home-section-title,
+  .home-section-title-left,
+  .home-section-title-center {
+    font-size: clamp(26px, 7vw, 34px) !important;
+    max-width: 100%;
+  }
+
+  .home-section-title-center {
+    text-align: center;
+  }
+
+  /* ---- About Us stat cards ---------------------------------------------
+     The reveal is a hard-coded vertical shift (panel top 262px, travel
+     -355px), so the card HEIGHT and the panel's own box must stay exactly as
+     they are on desktop. Only the width is allowed to change here. ------- */
+  .home-stats-block {
+    padding: 0 16px 24px;
+  }
+
+  .home-stat-card {
+    /* width tracks the rail's own content box, so it never outruns whatever
+       gutters the shared responsive rules apply to .home-about */
+    flex: 0 0 auto;
+    width: min(300px, 100%);
+    min-width: 0;
+    height: 448px;
+    min-height: 448px;
+    padding: 32px 22px;
+  }
+
+  .home-stat-panel {
+    padding: 32px 22px;
+  }
+
+  /* 20px shorter than desktop so "Know More" clears the card's clipped edge
+     once the panel has travelled its fixed -355px */
+  .home-stat-img {
+    width: 100%;
+    height: 236px;
+  }
+
+  .home-stat-glow {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .home-stat-num,
+  .home-stat-num-sm,
+  .home-stat-num-md {
+    font-size: 40px;
+  }
+
+  .home-stat-desc {
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  /* The tag has to stay on ONE line: the panel below it is positioned with
+     fixed pixel offsets, so a second line pushes "Know More" past the card's
+     clipped bottom edge once the panel slides up. */
+  .home-stat-tag {
+    font-size: 11px;
+    line-height: 18px;
+    letter-spacing: 0.9px;
+  }
+
+  /* ---- Services --------------------------------------------------------- */
+  .home-services-head .home-section-title,
+  .home-services-head {
+    text-align: center;
+  }
+
+  .home-services-head {
+    align-items: center;
+  }
+
+  /* ---- Projects --------------------------------------------------------- */
+  .home-projects-head {
+    align-items: center;
+    text-align: center;
+  }
+
+  .home-projects-titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .home-project-filters {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .home-filter {
+    white-space: nowrap;
+    font-size: 15px;
+    padding: 11px 16px;
+    min-height: 44px;
+  }
+
+  /* the badge collides with the title at this width — stack them */
+  .home-projects .card-text {
+    height: auto;
+    padding: 24px 20px;
+    gap: 16px;
+  }
+
+  .home-projects .card-text.simple {
+    padding: 24px 20px;
+  }
+
+  .home-projects .card-text-head {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .home-projects .card-text-title {
+    font-size: 20px;
+    line-height: 1.35;
+  }
+
+  .home-projects .badge-area {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .home-projects .card-desc {
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+
+  .home-projects .card-text.simple .card-desc {
+    margin-bottom: 20px;
+  }
+
+  .home-projects .card-title {
+    font-size: 18px;
+  }
+
+  .home-projects .card-loc {
+    font-size: 15px;
+  }
+
+  .home-projects .card-glass {
+    padding: 14px 18px;
+    min-height: 84px;
+  }
+
+  /* ---- Clients ---------------------------------------------------------- */
+  .home-clients-copy {
+    margin-bottom: 40px;
+  }
+
+  .home-clients-copy .home-section-title {
+    font-size: clamp(24px, 6.4vw, 30px) !important;
+    line-height: 1.28;
+    max-width: 100%;
+  }
+
+  .home-client-logos {
+    gap: 28px;
+  }
+
+  .home-client-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 12px;
+  }
+
+  .home-client-row img,
+  .home-client-row:first-child img,
+  .home-client-row + .home-client-row img {
+    max-height: 38px !important;
+  }
+
+  /* ---- Legacy ----------------------------------------------------------- */
+  .home-legacy {
+    padding: 56px 20px !important;
+  }
+
+  /* .home-legacy-inner is a 2-col GRID, so flex-direction did nothing here */
+  .home-legacy-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .home-legacy-photo > img {
+    height: 320px;
+  }
+
+  .home-legacy-quote {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    padding: 18px;
+    border-radius: 18px;
+    gap: 10px;
+  }
+
+  .home-legacy-quote > p {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .home-legacy-attr {
+    padding-left: 0;
+    font-size: 14px;
+  }
+
+  .home-legacy-title {
+    font-size: clamp(26px, 7vw, 32px);
+    line-height: 1.22;
+  }
+
+  .home-legacy-body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .home-legacy-brand {
+    height: 68px;
+    padding: 0 8px;
+    flex: 1 1 28%;
+  }
+
+  .home-legacy-brand img {
+    max-height: 34px;
+  }
+
+  .home-legacy-brand img[height="35"] {
+    max-height: 26px;
+  }
+
+  /* ---- Team ------------------------------------------------------------
+     responsive.css forces .home-team-grid to a column at this width, which
+     turns the roster rail into a 3000px stack. Put it back on one row. ---- */
+  .home-team .home-team-grid {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 16px !important;
+    margin-bottom: 32px;
+    scroll-snap-type: x proximity;
+  }
+
+  .home-team .home-member {
+    flex: 0 0 min(258px, 72vw);
+    width: min(258px, 72vw);
+    scroll-snap-align: start;
+  }
+
+  .home-member-photo,
+  .home-member-meta {
+    width: 100%;
+  }
+
+  .home-team-cta {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .home-team-cta > p {
+    white-space: nowrap;
+  }
+
+  /* ---- Tap targets ------------------------------------------------------
+     Both of these are 36-42px tall; the extra padding grows the hit box
+     downward without moving the label. */
+  .home-stat-link {
+    padding-bottom: 12px;
+  }
+
+  .page-home .blog-know {
+    min-height: 44px;
+    box-sizing: content-box;
+  }
+
+  /* ---- Featured blogs --------------------------------------------------- */
+  .page-home .blogs-title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .page-home .blogs-subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ---- FAQ -------------------------------------------------------------- */
+  .home-faq-head .home-section-title {
+    text-align: center;
+  }
+
+  .home-faq-item summary {
+    min-height: 56px;
+  }
+
+  /* NOTE: the partners band is deliberately left alone here — components.css
+     turns it into a horizontally scrollable 1200x200 rail below 900px, which
+     is the only way that single 1920-wide sheet stays legible. */
+}
+
+@media (max-width: 390px) {
+  .home-stat-card {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .home-stat-panel {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .home-hero-ctas .btn-primary,
+  .home-hero-ctas .home-btn-glass {
+    font-size: 15px;
+  }
+
+  .home-client-row {
+    gap: 20px 10px;
   }
 }

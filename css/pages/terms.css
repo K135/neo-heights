@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   gap: 120px;
-  padding: 122px 205px 162px;
+  padding: 122px 205px 122px;
   width: 100%;
   background: linear-gradient(180deg, #000 0%, #212121 100%);
   overflow: hidden;
@@ -66,7 +66,7 @@
   font-weight: 500;
   font-size: 26px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .terms-updated {
@@ -79,7 +79,7 @@
   width: 100%;
   height: 1px;
   object-fit: cover;
-  margin: 0;
+  margin: 0 0 -14px;
 }
 
 .terms-block {
@@ -119,10 +119,13 @@
   padding-left: 36px;
 }
 
-.partners {
+/* Scoped away from .partners--band: components.css turns that variant into a
+   swipeable 1200x200 strip below 900px, and an unscoped `overflow:hidden`
+   here would clobber its overflow-x:auto. */
+.partners:not(.partners--band) {
   position: relative;
   width: 100%;
-  height: 320px;
+  height: auto;
   overflow: hidden;
   background: #fff;
 }
@@ -131,92 +134,102 @@
   margin-top: 0;
 }
 
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
+/* ============ LIGHT MODE ============
+   Terms/Privacy are pure text documents, so every surface flips.
+   The only element that has to be re-drawn rather than re-coloured is the
+   divider, which ships as a hard-coded white <line> SVG. */
+
+html[data-theme="light"] .terms-hero {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 34%);
 }
 
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
+html[data-theme="light"] .terms-glow {
+  background: rgba(246, 129, 33, 0.35);
+  filter: blur(240px);
 }
 
-.p-970 {
-  left: 0;
-  top: 0;
-  width: 668px;
-  height: 320px;
+html[data-theme="light"] .terms-eyebrow {
+  color: var(--text-grey);
 }
 
-.p-974 {
-  left: 669px;
-  top: 28px;
-  width: 282px;
-  height: 279px;
-  z-index: 1;
+html[data-theme="light"] .terms-title,
+html[data-theme="light"] .terms-block h2 {
+  color: var(--text);
 }
 
-.p-101 {
-  left: 656px;
-  top: 0;
-  width: 1264px;
-  height: 320px;
-  z-index: 0;
+html[data-theme="light"] .terms-intro,
+html[data-theme="light"] .terms-body {
+  color: var(--text-secondary);
 }
 
-.p-973 {
-  left: 983px;
-  top: 34px;
-  width: 254px;
-  height: 252px;
-  z-index: 1;
+html[data-theme="light"] .terms-intro .terms-updated {
+  color: var(--accent-text);
 }
 
-.p-972 {
-  left: 1275px;
-  top: 33px;
-  width: 256px;
-  height: 253px;
-  z-index: 1;
+html[data-theme="light"] .terms-body strong,
+html[data-theme="light"] .terms-intro strong {
+  color: var(--text);
 }
 
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* divider.svg is stroke="white" — invert it so the same asset reads as a
+   hairline rule on a light ground. */
+html[data-theme="light"] .terms-divider {
+  filter: invert(1);
+  opacity: 0.22;
 }
 
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 1440px) {
+  .terms-hero {
+    padding: 112px 8vw 104px;
+    gap: 88px;
+  }
 }
 
-.p-url {
-  margin-top: 10px;
-  background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
+@media (max-width: 1100px) {
+  .terms-hero {
+    padding: 104px 40px 88px;
+    gap: 56px;
+  }
+  .terms-title { font-size: 48px; }
+  .terms-block h2 { font-size: 28px; }
+  .terms-intro,
+  .terms-body { font-size: 20px; }
+  .terms-body-sm { font-size: 19px; }
+  .terms-content { gap: 34px; }
 }
-
 
 @media (max-width: 768px) {
-  .terms-hero { padding: 100px 20px 64px !important; }
+  .terms-hero {
+    padding: 88px 20px 56px !important;
+    gap: 36px;
+  }
+  .terms-glow {
+    width: 300px;
+    height: 150px;
+    top: -130px;
+    filter: blur(130px);
+  }
+  .terms-content,
+  .terms-hero-inner { width: 100%; max-width: 100%; padding: 0; }
+  .terms-hero-inner { gap: 12px; }
+  .terms-eyebrow { font-size: 12px; letter-spacing: 2px; line-height: 1.4; }
   .terms-title { font-size: clamp(28px, 8vw, 40px) !important; }
-  .terms-content, .terms-hero-inner { width: 100%; max-width: 100%; padding: 0; }
-  .terms-block h2 { font-size: 22px; }
+  .terms-content { gap: 26px; }
+  .terms-block { gap: 12px; }
+  .terms-block h2 { font-size: 20px; line-height: 1.3; }
+  .terms-intro,
+  .terms-body,
+  .terms-body-sm { font-size: 16px; line-height: 1.65; }
+  .terms-body p + p,
+  .terms-body p + ul,
+  .terms-body ul + p { margin-top: 1.15em; }
+  .terms-body ul { padding-left: 22px; }
+  .terms-divider { margin-bottom: -4px; }
   .nf { padding: 100px 20px !important; }
+}
+
+@media (max-width: 390px) {
+  .terms-hero { padding-left: 16px !important; padding-right: 16px !important; }
 }

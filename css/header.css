@@ -1,7 +1,7 @@
 /* ——— Header ——— */
 
 :root {
-  --header-height: 96px;
+  --header-height: 154px;
 }
 
 .skip-link {
@@ -28,7 +28,7 @@
   align-items: center;
   justify-content: space-between;
   height: var(--header-height);
-  padding: 18px 80px;
+  padding: 0 80px;
   background: rgba(29, 29, 29, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -76,8 +76,8 @@ body:not(.page-home) .page {
 }
 
 .header .logo {
-  width: 110px;
-  height: 72px;
+  width: 126px;
+  height: 101px;
 }
 
 .nav {
@@ -141,8 +141,8 @@ body:not(.page-home) .page {
 }
 
 html[data-theme="light"] .header {
-  background: rgba(255, 255, 255, 0.92);
-  border-bottom-color: rgba(0, 0, 0, 0.08);
+  background: rgba(246, 243, 239, 0.92);
+  border-bottom-color: var(--border);
 }
 
 html[data-theme="light"] .nav-item {
@@ -151,21 +151,43 @@ html[data-theme="light"] .nav-item {
 
 html[data-theme="light"] .nav-item[aria-current="page"],
 html[data-theme="light"] .nav-item:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 html[data-theme="light"] .theme-switch {
-  background: #f5f5f5;
-  border-color: #e8e8e8;
+  background: var(--bg-sunken);
+  border-color: var(--border-strong);
+}
+
+/* moon.svg / sun.svg ship as solid white artwork: on a light track the inactive
+   one disappears entirely, so it is inked here and only the pill-backed active
+   icon stays white. */
+html[data-theme="light"] .theme-toggle {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .theme-toggle img {
+  filter: brightness(0);
+  opacity: 0.55;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+html[data-theme="light"] .theme-toggle:hover img {
+  opacity: 0.9;
+}
+
+html[data-theme="light"] .theme-toggle.active img {
+  filter: none;
+  opacity: 1;
 }
 
 html[data-theme="light"] .nav-toggle {
-  border-color: rgba(0, 0, 0, 0.12);
-  background: #f5f5f5;
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
 }
 
 html[data-theme="light"] .nav-toggle span {
-  background: #111;
+  background: var(--text);
 }
 
 .header-actions {
@@ -254,27 +276,48 @@ body.nav-open .nav-toggle span:nth-child(3) {
   z-index: 998;
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(1px);
+  transition: opacity 0.25s ease;
+}
+
+/* Hover-opened panels dim the page but must not swallow pointer events —
+   otherwise the cursor never "leaves" the header and the panel can't close. */
+body.mega-hover .mega-backdrop {
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .mega-panel {
   position: fixed;
-  top: 100px;
+  top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
   width: min(1200px, 94vw);
   color: #fff;
-  background: #0f0f0f;
-  border: 1px solid #333;
+  background: #141414;
+  border: 1px solid #2a2a2a;
   border-radius: 16px;
   padding: 30px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
   animation: mega-slide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.header.is-scrolled ~ .mega-panel,
-.header.is-scrolled .mega-panel {
-  top: 80px;
+/* Invisible bridge over the gap between the trigger and the panel so the
+   pointer never lands on "nothing" on its way down. Only as tall as the real
+   gap — a taller bridge sits on top of the nav row and blocks the other items. */
+.mega-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mega-panel {
+    animation: none;
+  }
 }
 
 @keyframes mega-slide {
@@ -290,9 +333,9 @@ body.nav-open .nav-toggle span:nth-child(3) {
 
 .mega-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
-  margin-bottom: 24px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 100px;
+  margin-bottom: 21px;
 }
 
 .mega-grid-services {
@@ -300,59 +343,107 @@ body.nav-open .nav-toggle span:nth-child(3) {
 }
 
 .mega-label {
-  color: #888;
-  margin-bottom: 16px;
-  font-size: 0.9rem;
+  color: #b3b3b3;
+  margin-bottom: 26px;
+  font-family: "Fustat", sans-serif;
+  font-size: 15px;
+  line-height: 20px;
   font-weight: 400;
   text-transform: none;
+}
+
+/* Explore column has no filter row — pad the label so both columns' content
+   starts on the designed baselines. */
+.mega-col-explore .mega-label {
+  margin-bottom: 38px;
+}
+
+.mega-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 23px;
+}
+
+.mega-filter {
+  height: 31px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: #3d3d3d;
+  color: #fff;
+  font-family: "Fustat", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.mega-filter:hover {
+  background: #4a4a4a;
+}
+
+.mega-filter.is-active {
+  background: transparent;
+  border-color: var(--accent);
+  color: #fff;
 }
 
 .mega-projects-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 11px 46px;
 }
 
 .mega-services-list {
   grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
 .mega-project-item {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 16px 20px;
-  background: rgba(82, 80, 80, 0.56);
-  border: 1px solid #2a2a2a;
+  padding: 20px 16px;
+  background: #3a3a3a;
+  border: 1px solid transparent;
   border-radius: 8px;
   transition: background 0.2s, border-color 0.2s;
 }
 
+.mega-project-item[hidden] {
+  display: none;
+}
+
 .mega-project-item:hover,
 .mega-project-item:focus-visible {
-  background: #222;
+  background: #474747;
   border-color: rgba(246, 129, 33, 0.45);
   outline: none;
 }
 
 .mega-project-title {
   color: #fff;
-  font-size: 0.95rem;
+  font-family: "Fustat", sans-serif;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 20px;
 }
 
 .mega-project-loc {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Fustat", sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .mega-explore-card {
   position: relative;
   display: block;
-  min-height: 220px;
+  min-height: 306px;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -360,7 +451,7 @@ body.nav-open .nav-toggle span:nth-child(3) {
 .mega-explore-card img {
   width: 100%;
   height: 100%;
-  min-height: 220px;
+  min-height: 306px;
   object-fit: cover;
 }
 
@@ -369,22 +460,25 @@ body.nav-open .nav-toggle span:nth-child(3) {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 16px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 16px 16px 14px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .mega-explore-title {
+  font-family: "Fustat", sans-serif;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .mega-explore-loc {
-  color: rgba(246, 129, 33, 0.85);
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Fustat", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -394,15 +488,16 @@ body.nav-open .nav-toggle span:nth-child(3) {
   justify-content: space-between;
   gap: 16px;
   padding-top: 20px;
-  border-top: 1px solid #2a2a2a;
+  border-top: 1px solid #333;
 }
 
 .mega-bottom-copy {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   color: rgba(255, 255, 255, 0.55);
-  font-size: 0.95rem;
+  font-family: "Fustat", sans-serif;
+  font-size: 15px;
 }
 
 .mega-bottom-copy strong {
@@ -520,4 +615,40 @@ body.nav-open .nav-toggle span:nth-child(3) {
   .nav-mega-fallback {
     display: inline-flex;
   }
+}
+
+
+/* ---- Accessible tap targets (were 39x27 and 40px tall) ---- */
+@media (max-width: 1100px) {
+  .theme-toggle,
+  .theme-switch button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .nav-item {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav-toggle {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+
+html[data-theme="light"] .header { background: rgba(246, 243, 239, 0.94); }
+html[data-theme="light"] .page-home .header.is-scrolled { background: rgba(246, 243, 239, 0.94); }
+
+
+/* mobile drawer tap targets */
+@media (max-width: 1100px) {
+  .nav.is-open .nav-item,
+  .nav-drawer .nav-item {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .theme-switch,
+  .theme-switch > * { min-height: 44px; }
 }

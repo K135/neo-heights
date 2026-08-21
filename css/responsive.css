@@ -53,9 +53,10 @@
     gap: 20px;
   }
 
+  /* .home-stats and .home-team-grid are horizontal rails with arrow controls —
+     forcing them to a column broke the stat-card reveal and stacked the team
+     roster into a 3127px strip. They stay rails at every width. */
   .blog-cards,
-  .home-stats,
-  .home-team-grid,
   .project-grid .row,
   .project-grid .row-split,
   .project-grid .row-3,
@@ -119,13 +120,7 @@
     padding: 8px 12px;
   }
 
-  .partners-collage {
-    transform: scale(0.42);
-    transform-origin: left top;
-    width: 1920px;
-  }
-
-  .partners {
+  .partners:not(.partners--band) {
     overflow: hidden;
     height: 220px;
   }

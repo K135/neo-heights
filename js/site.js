@@ -86,17 +86,53 @@
         card.dataset.category = cats.join(" ");
       }
     });
+    const grid = document.querySelector(".project-grid");
+    const rows = grid ? [...grid.children].filter((el) => !el.classList.contains("card")) : [];
+
+    const apply = (f) => {
+      let shown = 0;
+      cards.forEach((card) => {
+        const show = f === "all" || (card.dataset.category || "").split(/\s+/).includes(f);
+        card.style.display = show ? "" : "none";
+        if (show) shown += 1;
+      });
+      // the home grid is a bespoke masonry: hide rows that emptied out,
+      // and flatten to an even 3-up while a filter is active
+      rows.forEach((row) => {
+        const any = [...row.querySelectorAll(".card")].some((c) => c.style.display !== "none");
+        row.style.display = any ? "" : "none";
+      });
+      if (grid) grid.classList.toggle("is-filtered", f !== "all");
+
+      let empty = grid && grid.querySelector(".home-projects-empty");
+      if (grid && !shown) {
+        if (!empty) {
+          empty = document.createElement("p");
+          empty.className = "home-projects-empty";
+          empty.textContent = "No projects in this category yet.";
+          grid.appendChild(empty);
+        }
+        empty.hidden = false;
+      } else if (empty) {
+        empty.hidden = true;
+      }
+    };
+
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        const f = btn.dataset.filter;
-        cards.forEach((card) => {
-          const show = f === "all" || (card.dataset.category || "").split(/\s+/).includes(f);
-          card.style.display = show ? "" : "none";
+        buttons.forEach((b) => {
+          b.classList.remove("active");
+          if (b.hasAttribute("aria-pressed")) b.setAttribute("aria-pressed", "false");
         });
+        btn.classList.add("active");
+        if (btn.hasAttribute("aria-pressed")) btn.setAttribute("aria-pressed", "true");
+        apply(btn.dataset.filter);
       });
     });
+
+    // honour whichever chip is marked active in the markup on load
+    const initial = buttons.find((b) => b.classList.contains("active"));
+    if (initial && initial.dataset.filter !== "all") apply(initial.dataset.filter);
   }
 
   function verticalsClose() {
@@ -163,6 +199,15 @@
     });
   }
 
+  // Paints the edge fade only on the side that still has hidden cards, so a
+  // rail that fits its content shows no fade at all.
+  function syncRailFade(rail) {
+    const max = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    rail.classList.add("rail-fade");
+    rail.classList.toggle("can-scroll-left", max > 4 && rail.scrollLeft > 2);
+    rail.classList.toggle("can-scroll-right", max > 4 && rail.scrollLeft < max - 2);
+  }
+
   function homeStatsCarousel() {
     const block = document.querySelector(".home-stats-block");
     const track = block && block.querySelector(".home-stats");
@@ -194,6 +239,7 @@
       const left = track.scrollLeft;
       prev.disabled = !can || left <= 2;
       next.disabled = !can || left >= maxScroll() - 2;
+      syncRailFade(track);
     }
 
     function go(dir) {
@@ -278,6 +324,117 @@
     });
   }
 
+
+  function servicesCarousel() {
+    const rail = document.querySelector("[data-svc-rail]");
+    const prev = document.querySelector("[data-svc-prev]");
+    const next = document.querySelector("[data-svc-next]");
+    if (!rail || !prev || !next) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const step = () => {
+      const card = rail.querySelector(".home-svc-card");
+      const cs = getComputedStyle(rail);
+      const gap = parseFloat(cs.columnGap || cs.gap) || 16;
+      return card ? Math.round(card.getBoundingClientRect().width + gap) : 336;
+    };
+
+    const maxScroll = () => Math.max(0, rail.scrollWidth - rail.clientWidth);
+
+    const sync = () => {
+      const left = rail.scrollLeft;
+      const max = maxScroll();
+      prev.disabled = left <= 2;
+      next.disabled = left >= max - 2;
+      const nav = prev.parentElement;
+      if (nav) nav.classList.toggle("is-scrollable", max > 2);
+      syncRailFade(rail);
+    };
+
+    const go = (dir) => {
+      rail.scrollBy({ left: dir * step(), behavior: reduce ? "auto" : "smooth" });
+    };
+
+    prev.addEventListener("click", () => go(-1));
+    next.addEventListener("click", () => go(1));
+    rail.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    if (window.ResizeObserver) new ResizeObserver(sync).observe(rail);
+    sync();
+  }
+
+
+  function teamCarousel() {
+    const rail = document.querySelector("[data-team-rail]");
+    const nav = document.querySelector(".home-team-nav");
+    const prev = document.querySelector("[data-team-prev]");
+    const next = document.querySelector("[data-team-next]");
+    if (!rail || !nav || !prev || !next) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const step = () => {
+      const card = rail.querySelector(".home-member");
+      const cs = getComputedStyle(rail);
+      const gap = parseFloat(cs.columnGap || cs.gap) || 16;
+      return card ? Math.round(card.getBoundingClientRect().width + gap) : 314;
+    };
+
+    const maxScroll = () => Math.max(0, rail.scrollWidth - rail.clientWidth);
+
+    const sync = () => {
+      const max = maxScroll();
+      const can = max > 4;
+      nav.classList.toggle("is-scrollable", can);
+      prev.disabled = !can || rail.scrollLeft <= 2;
+      next.disabled = !can || rail.scrollLeft >= max - 2;
+      syncRailFade(rail);
+    };
+
+    const go = (dir) => {
+      if (maxScroll() <= 4) return;
+      rail.scrollBy({ left: dir * step(), behavior: reduce ? "auto" : "smooth" });
+    };
+
+    prev.addEventListener("click", () => go(-1));
+    next.addEventListener("click", () => go(1));
+    rail.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    if (window.ResizeObserver) new ResizeObserver(sync).observe(rail);
+    sync();
+  }
+
+
+  function statCardTouch() {
+    const cards = [...document.querySelectorAll(".home-stat-card")];
+    if (!cards.length) return;
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+    const setLinkFocusable = (card, open) => {
+      const link = card.querySelector(".home-stat-link");
+      if (link) link.setAttribute("tabindex", open ? "0" : "-1");
+    };
+
+    cards.forEach((card) => {
+      // keyboard: opening on focus mirrors the hover reveal
+      card.addEventListener("focus", () => setLinkFocusable(card, true));
+      card.addEventListener("blur", () => {
+        if (!card.classList.contains("is-open")) setLinkFocusable(card, false);
+      });
+
+      card.addEventListener("click", (e) => {
+        if (fine.matches) return;                       // pointer devices use :hover
+        if (e.target.closest("a")) return;              // let a real link through
+        const open = card.classList.toggle("is-open");
+        cards.forEach((c) => {
+          if (c !== card) { c.classList.remove("is-open"); setLinkFocusable(c, false); }
+        });
+        setLinkFocusable(card, open);
+      });
+    });
+  }
+
   function homeHeroAudio() {
     const video = document.getElementById("home-hero-video");
     const btn = document.getElementById("home-hero-volume");
@@ -332,6 +489,142 @@
     syncUi();
   }
 
+
+  function sustainabilityCarousel() {
+    const root = document.querySelector("[data-sus-carousel]");
+    if (!root) return;
+
+    const stage = root.querySelector(".sus-slide");
+    const progress = root.querySelector(".sus-progress");
+    const list = root.querySelector(".sus-initiatives-list");
+    const slides = [...root.querySelectorAll("[data-sus-slide]")];
+    const tabs = [...root.querySelectorAll("[data-sus-tab]")];
+    const bars = [...root.querySelectorAll("[data-sus-bar]")];
+    const pauseBtn = root.querySelector("[data-sus-pause]");
+    const prev = root.querySelector("[data-sus-prev]");
+    const next = root.querySelector("[data-sus-next]");
+    const live = root.querySelector(".sus-slide-live");
+    if (!stage || !progress || slides.length < 2) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const DURATION = 6000;
+    stage.style.setProperty("--sus-duration", DURATION + "ms");
+
+    // Slides ship marked up as hidden so the stack does not pile up without JS.
+    slides.forEach((s) => (s.hidden = false));
+
+    let index = 0;
+    let paused = reduce;
+    let onScreen = true;
+    let tabVisible = !document.hidden;
+
+    const syncPlayState = () => {
+      stage.classList.toggle("is-paused", paused || !onScreen || !tabVisible);
+    };
+
+    const go = (i, focusTab) => {
+      const n = slides.length;
+      index = ((i % n) + n) % n;
+
+      slides.forEach((s, k) => {
+        const on = k === index;
+        s.classList.toggle("is-active", on);
+        s.setAttribute("aria-hidden", on ? "false" : "true");
+      });
+
+      tabs.forEach((t, k) => {
+        const on = k === index;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+      });
+
+      bars.forEach((b, k) => {
+        b.classList.remove("is-done", "is-running");
+        if (k < index) b.classList.add("is-done");
+      });
+
+      const bar = bars[index];
+      if (bar) {
+        if (reduce) {
+          bar.classList.add("is-done");
+        } else {
+          void bar.offsetWidth; // restart the fill animation
+          bar.classList.add("is-running");
+        }
+      }
+
+      if (live) {
+        const title = slides[index].querySelector(".sus-slide-title");
+        live.textContent =
+          "Slide " + (index + 1) + " of " + n + (title ? ": " + title.textContent : "");
+      }
+
+      if (focusTab && tabs[index]) tabs[index].focus();
+    };
+
+    progress.addEventListener("animationend", (e) => {
+      if (e.animationName !== "sus-fill") return;
+      if (paused || !onScreen || !tabVisible) return;
+      go(index + 1);
+    });
+
+    if (prev) prev.addEventListener("click", () => go(index - 1));
+    if (next) next.addEventListener("click", () => go(index + 1));
+
+    tabs.forEach((tab, k) => {
+      tab.addEventListener("click", () => go(k));
+    });
+
+    if (list) {
+      list.addEventListener("keydown", (e) => {
+        const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+        if (step) {
+          e.preventDefault();
+          go(index + step, true);
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          go(0, true);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          go(slides.length - 1, true);
+        }
+      });
+    }
+
+    if (pauseBtn) {
+      const syncPauseBtn = () => {
+        pauseBtn.setAttribute("aria-pressed", paused ? "true" : "false");
+        pauseBtn.setAttribute("aria-label", paused ? "Play slideshow" : "Pause slideshow");
+      };
+      pauseBtn.addEventListener("click", () => {
+        paused = !paused;
+        syncPauseBtn();
+        syncPlayState();
+      });
+      syncPauseBtn();
+    }
+
+    // Do not burn the timer while the section is off screen or the tab is hidden.
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(
+        (entries) => {
+          onScreen = entries[0].isIntersecting;
+          syncPlayState();
+        },
+        { threshold: 0.2 }
+      ).observe(stage);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      tabVisible = !document.hidden;
+      syncPlayState();
+    });
+
+    syncPlayState();
+    go(0);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     enhanceForms();
     projectFilters();
@@ -341,6 +634,10 @@
     scrollReveals();
     passthroughVerticalScroll(".home-stats");
     homeStatsCarousel();
+    servicesCarousel();
+    teamCarousel();
+    statCardTouch();
     homeHeroAudio();
+    sustainabilityCarousel();
   });
 })();

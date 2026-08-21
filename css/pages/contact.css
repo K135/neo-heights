@@ -22,7 +22,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 80px;
+  margin-bottom: 65px;
 }
 
 .ct-eyebrow {
@@ -72,7 +72,6 @@
   width: 845px;
   max-width: 100%;
   min-height: 725px;
-  margin-left: 46px;
   background: rgba(19, 19, 19, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
@@ -102,7 +101,7 @@
   font-size: 16px;
   line-height: 24px;
   color: rgba(255, 255, 255, 0.6);
-  max-width: 385px;
+  max-width: 420px;
 }
 
 .ct-form-sub a {
@@ -127,7 +126,8 @@
 .ct-field textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* 0.1 was barely separable from the 0.06 fill on #131313 */
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 10px;
   padding: 12px 16px;
   font-family: "Fustat", sans-serif;
@@ -141,9 +141,11 @@
 }
 
 .ct-field textarea {
+  height: 180px;
   min-height: 180px;
   resize: vertical;
   line-height: 24px;
+  display: block;
 }
 
 .ct-field input::placeholder,
@@ -151,9 +153,33 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+.ct-field input:hover,
+.ct-field textarea:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.ct-field input:focus-visible,
+.ct-field textarea:focus-visible,
+.ct-field input:focus,
+.ct-field textarea:focus {
+  border-color: #f68121;
+  box-shadow: 0 0 0 3px rgba(246, 129, 33, 0.28);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.ct-field input:user-invalid,
+.ct-field textarea:user-invalid {
+  border-color: #e2574c;
+}
+
+.ct-form .btn-primary:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
 .ct-form .btn-primary {
   align-self: flex-start;
-  margin-top: 8px;
+  margin-top: 29px;
 }
 
 .ct-side {
@@ -205,10 +231,16 @@
   flex-shrink: 0;
 }
 
+.ct-side-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 .ct-side-label {
   font-family: "Fustat", sans-serif;
   font-size: 22px;
-  line-height: 36px;
+  line-height: 26px;
   color: #fff;
 }
 
@@ -222,10 +254,9 @@
 .ct-building {
   position: absolute;
   right: -60px;
-  bottom: 20px;
-  width: 775px;
+  bottom: 22px;
+  width: 776px;
   height: auto;
-  max-width: 50%;
   pointer-events: none;
   opacity: 0.95;
 }
@@ -247,6 +278,10 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* contact-panel.png is a light textured plate carrying #121212 copy in BOTH
+     themes; ground it so the type never lands on the dark page background
+     while the panel decodes. */
+  background: #fafafa;
 }
 
 .ct-office-bg {
@@ -265,7 +300,7 @@
   gap: 201px;
   align-items: center;
   width: 1659px;
-  max-width: calc(100% - 120px);
+  max-width: calc(100% - 262px);
   padding: 62px 0;
 }
 
@@ -291,14 +326,14 @@
   font-weight: 500;
   font-size: 24px;
   color: #121212;
-  line-height: normal;
+  line-height: 1.42;
 }
 
 .ct-office-row img {
   flex-shrink: 0;
   width: 24px;
   height: auto;
-  margin-top: 2px;
+  margin-top: 5px;
 }
 
 .ct-office-row p {
@@ -365,11 +400,15 @@
   letter-spacing: -0.16px;
   color: #b9b9b9;
   max-width: 477px;
-  margin-bottom: 24px;
+  margin-bottom: 35px;
 }
 
-.partners {
+/* Scoped away from .partners--band: components.css turns that variant into a
+   swipeable 1200x200 strip below 900px, and an unscoped `overflow:hidden`
+   here would clobber its overflow-x:auto. */
+.partners:not(.partners--band) {
   width: 100%;
+  height: auto;
   background: #fff;
   overflow: hidden;
 }
@@ -381,6 +420,245 @@
   object-fit: cover;
 }
 
+
+/* ============ LIGHT MODE ============
+   The hero is a flat #131313 slab (no photography), so it flips to the light
+   page ground. The office panels below already ship as a light photo panel
+   with #121212 copy and stay identical in both themes. */
+
+html[data-theme="light"] .ct-hero {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 42%);
+}
+
+html[data-theme="light"] .ct-eyebrow {
+  color: var(--text-grey);
+}
+
+html[data-theme="light"] .ct-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ct-form-glow {
+  opacity: 0.6;
+}
+
+html[data-theme="light"] .ct-form {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  box-shadow: 0 18px 48px rgba(18, 18, 18, 0.08);
+}
+
+html[data-theme="light"] .ct-form-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ct-form-sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ct-form-sub a {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ct-field input,
+html[data-theme="light"] .ct-field textarea {
+  background: #ffffff;
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+html[data-theme="light"] .ct-field input::placeholder,
+html[data-theme="light"] .ct-field textarea::placeholder {
+  color: var(--text-grey);
+}
+
+html[data-theme="light"] .ct-field input:hover,
+html[data-theme="light"] .ct-field textarea:hover {
+  border-color: #9c9c9c;
+}
+
+html[data-theme="light"] .ct-field input:focus-visible,
+html[data-theme="light"] .ct-field textarea:focus-visible,
+html[data-theme="light"] .ct-field input:focus,
+html[data-theme="light"] .ct-field textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(246, 129, 33, 0.3);
+  background: #ffffff;
+}
+
+html[data-theme="light"] .ct-form .btn-primary:focus-visible {
+  outline-color: var(--text);
+}
+
+html[data-theme="light"] .ct-side-label {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ct-side-value {
+  color: var(--text-secondary);
+}
+
+/* Ring is a #B7B7B7 stroke and the glyphs are fill="white" — inverting the
+   whole icon keeps the ring/glyph relationship and makes both legible. */
+html[data-theme="light"] .ct-side-icon img,
+html[data-theme="light"] .ct-side-wa {
+  filter: invert(1);
+}
+
+/* building.svg is a #444 line drawing: near-invisible on #131313, far too
+   heavy on white. */
+html[data-theme="light"] .ct-building {
+  opacity: 0.14;
+}
+
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 1600px) {
+  .ct-hero-inner {
+    max-width: calc(100% - 160px);
+  }
+}
+
+/* The side column is absolutely positioned at left:909.84px inside an
+   overflow:hidden hero, so it is clipped as soon as the hero narrows.
+   Below 1300px it drops out of the absolute layer and stacks. */
+@media (max-width: 1300px) {
+  .ct-hero {
+    min-height: 0;
+    padding-bottom: 96px;
+  }
+
+  .ct-hero-inner {
+    max-width: calc(100% - 96px);
+    padding-bottom: 0;
+  }
+
+  .ct-hero-body {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .ct-form-wrap,
+  .ct-form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ct-form {
+    min-height: 0;
+  }
+
+  .ct-fields {
+    max-width: 100%;
+  }
+
+  .ct-side {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 32px 40px;
+  }
+
+  .ct-side-item {
+    flex: 1 1 300px;
+    min-width: 0;
+  }
+
+  .ct-side-text {
+    min-width: 0;
+  }
+
+  .ct-side-value {
+    overflow-wrap: anywhere;
+  }
+
+  .ct-building {
+    position: static;
+    right: auto;
+    bottom: auto;
+    display: block;
+    width: 100%;
+    max-width: 620px;
+    margin: 40px auto 0;
+  }
+}
+
+/* Office rows: .ct-office-info is a hard 788px and the map a hard 670px with
+   a 201px gap — 1659px of fixed width inside an overflow:hidden article. */
+@media (max-width: 1500px) {
+  .ct-office-inner {
+    gap: 56px;
+    max-width: calc(100% - 96px);
+  }
+
+  .ct-office-info {
+    width: auto;
+    flex: 1 1 380px;
+    min-width: 0;
+  }
+
+  .ct-office-map {
+    width: 42%;
+    min-width: 280px;
+    height: auto;
+    aspect-ratio: 670 / 330;
+  }
+
+  .ct-office-row p {
+    max-width: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  /* .cta is a hard 1060px here; shared responsive.css only relaxes it at 768 */
+  .cta {
+    width: calc(100% - 48px);
+    max-width: 1060px;
+    height: auto;
+    padding: 56px 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .ct-office {
+    min-height: 0;
+  }
+
+  .ct-office-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 48px 0;
+  }
+
+  /* flex-basis:380px from the >=1024 rule turns into a 380px HEIGHT once the
+     row stacks into a column */
+  .ct-office-info {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .ct-office-map {
+    width: 100%;
+    min-width: 0;
+    max-height: 320px;
+  }
+
+  .ct-office-name {
+    font-size: 26px;
+  }
+
+  .ct-office-row {
+    font-size: 18px;
+  }
+}
 
 @media (max-width: 768px) {
   .ct-hero {
@@ -437,13 +715,45 @@
     padding: 24px 20px;
   }
 
+  .ct-form-glow {
+    width: 100%;
+    max-width: 100%;
+    height: 320px;
+    filter: blur(70px);
+  }
+
+  .ct-fields {
+    max-width: 100%;
+  }
+
+  .ct-field input {
+    height: 56px;
+    font-size: 16px;
+  }
+
+  .ct-field textarea {
+    height: 140px;
+    min-height: 140px;
+    font-size: 16px;
+  }
+
   .ct-side {
     position: static !important;
     left: auto !important;
     top: auto !important;
     width: 100% !important;
     max-width: 100% !important;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 20px;
     order: 2;
+  }
+
+  /* the >=768 rule gives items flex-basis:300px, which becomes a 300px HEIGHT
+     once the column stacks */
+  .ct-side-item {
+    flex: 0 0 auto;
+    gap: 16px;
   }
 
   .ct-side-label {
@@ -481,9 +791,70 @@
     display: flex !important;
   }
 
+  .ct-office-inner {
+    max-width: 100%;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 32px 20px;
+  }
+
+  /* the desktop rule pins this to a hard 788px, which clips inside the
+     overflow:hidden .ct-office at 375px */
+  .ct-office-info {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 18px;
+  }
+
+  .ct-office-name {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .ct-office-row {
+    font-size: 15px;
+    gap: 12px;
+  }
+
+  .ct-office-row img {
+    width: 18px;
+    margin-top: 3px;
+  }
+
+  .ct-office-row p {
+    max-width: none;
+    overflow-wrap: anywhere;
+  }
+
   .ct-office-map {
     width: 100% !important;
     height: auto !important;
     max-width: 100% !important;
+    min-width: 0;
+  }
+
+  .cta-title {
+    font-size: clamp(26px, 7vw, 34px);
+    line-height: 1.2;
+    max-width: 100%;
+  }
+
+  .cta-sub {
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .cta-wrap {
+    gap: 64px;
+    padding-top: 64px;
+  }
+}
+
+@media (max-width: 390px) {
+  .ct-hero {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }

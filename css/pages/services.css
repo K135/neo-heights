@@ -9,12 +9,11 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  min-height: 0;
-  /* Header is fixed + .page padding-top: remaining viewport only */
-  height: calc(100vh - var(--header-height, 96px) - 1px);
-  height: calc(100svh - var(--header-height, 96px) - 1px);
-  height: calc(100dvh - var(--header-height, 96px) - 1px);
-  padding: 48px 120px;
+  /* Figma 1548:5279 — hero band is 1920x629 with 122px/120px padding,
+     not a full-viewport hero (that left a ~350px dead zone below the copy). */
+  height: auto;
+  min-height: 629px;
+  padding: 122px 120px;
   background: linear-gradient(180deg, #000 0%, #212121 100%);
   overflow: hidden;
   width: 100%;
@@ -116,6 +115,12 @@
   border-bottom: 1.333px solid #c9c9c9;
 }
 
+/* Figma draws no outer edge line at x=0 / x=1920 — only the row rules and the
+   single centre divider. Drop the right border on the 2nd card of a full row. */
+.svc-row > .svc-card + .svc-card {
+  border-right: 0;
+}
+
 .svc-card-inner {
   position: relative;
   width: 100%;
@@ -124,7 +129,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  /* Figma 1548:6399 — the cell is transparent over the #1d1d1d grid.
+     It was #fff, which painted a full-bleed white slab in the dark page. */
+  background: transparent;
 }
 
 .svc-card-media {
@@ -140,6 +147,29 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.svc-card:hover .svc-card-media img,
+.svc-card:focus-visible .svc-card-media img {
+  transform: scale(1.1);
+}
+
+.svc-card:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-card-media img {
+    transition: none;
+  }
+
+  .svc-card:hover .svc-card-media img,
+  .svc-card:focus-visible .svc-card-media img {
+    transform: none;
+  }
 }
 
 .svc-card-label {
@@ -678,105 +708,58 @@
   background: #fff;
 }
 
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
+/* The Figma canvas is 1920 wide and the grid is two fixed 960px cards. Below
+   1920 that pair overflowed its row and the second card was clipped off the
+   right edge (visible on every 1280/1440/1536 laptop), so the pair goes fluid
+   while keeping the 960:882 card and 790:711 media proportions. */
+@media (max-width: 1919px) {
+  .svc-card,
+  .svc-card--half {
+    width: 50%;
+    height: auto;
+  }
+
+  .svc-card-inner {
+    padding: clamp(24px, 4.45vw, 85.333px);
+  }
+
+  .svc-card-media {
+    height: auto;
+    aspect-ratio: 790 / 711;
+  }
+
+  .svc-card-label {
+    height: auto;
+    min-height: 46%;
+  }
 }
 
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
+/* Hero is no longer viewport-locked, so it scales on width rather than height. */
+@media (max-width: 1600px) {
+  .svc-hero-right {
+    width: 46%;
+  }
 }
 
-.p-970 {
-  left: 0;
-  top: 0;
-  width: 668px;
-  height: 320px;
-}
-
-.p-974 {
-  left: 669px;
-  top: 28px;
-  width: 282px;
-  height: 279px;
-  z-index: 2;
-}
-
-.p-101 {
-  left: 656px;
-  top: 0;
-  width: 1264px;
-  height: 320px;
-  z-index: 0;
-}
-
-.p-973 {
-  left: 983px;
-  top: 34px;
-  width: 254px;
-  height: 252px;
-  z-index: 1;
-}
-
-.p-972 {
-  left: 1275px;
-  top: 33px;
-  width: 256px;
-  height: 253px;
-  z-index: 1;
-}
-
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
-}
-
-.p-url {
-  margin-top: 10px;
-  background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
-}
-
-
-@media (max-height: 820px) {
+@media (max-width: 1280px) {
   .svc-hero {
-    padding-top: 32px;
-    padding-bottom: 32px;
+    min-height: 0;
+    padding: 88px 64px;
   }
 
   .svc-hero-title {
-    font-size: 48px;
+    font-size: 52px;
+  }
+
+  .svc-hero-right {
+    width: 46%;
   }
 }
 
 @media (max-width: 768px) {
   .svc-hero, .services-hero {
     height: auto;
-    min-height: calc(100vh - var(--header-height, 72px) - 1px);
-    min-height: calc(100svh - var(--header-height, 72px) - 1px);
-    min-height: calc(100dvh - var(--header-height, 72px) - 1px);
+    min-height: 0;
     padding: 40px 20px 48px !important;
     align-items: stretch;
     overflow: visible;
@@ -830,11 +813,29 @@
     width: 100% !important;
     max-width: 100% !important;
     height: auto;
-    min-height: 280px;
+    min-height: 0;
+    /* uniform box once the grid stacks — the desktop rule drops the right
+       border on the 2nd card of a row, which reads as broken in a column */
+    border: 1.333px solid rgba(201, 201, 201, 0.45);
+  }
+
+  .svc-row > .svc-card + .svc-card {
+    border-right: 1.333px solid rgba(201, 201, 201, 0.45);
   }
 
   .svc-card-inner {
-    padding: 32px 24px !important;
+    padding: 16px !important;
+  }
+
+  .svc-card-media {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .svc-card-label {
+    height: auto;
+    min-height: 45%;
+    padding: 24px 16px;
   }
 
   .enquire {
@@ -877,8 +878,214 @@
     height: 400px;
   }
 
-  .faq-section,
-  .svc-faq {
-    padding: 48px 20px 80px;
+  /* The FAQ band kept its desktop 215px side padding at every width, so at
+     375px the content box collapsed to 0 and every answer wrapped one letter
+     per line. */
+  .faq {
+    padding: 48px 20px 64px !important;
   }
+
+  .faq-inner {
+    gap: 40px;
+  }
+
+  .faq-head {
+    gap: 12px;
+  }
+
+  .faq-title {
+    font-size: clamp(26px, 7vw, 34px);
+  }
+
+  .faq-list {
+    gap: 16px;
+    width: 100%;
+  }
+
+  .faq-item summary {
+    padding: 16px;
+    font-size: 16px;
+    line-height: 22px;
+    min-height: 56px;
+  }
+
+  .faq-item[open] {
+    min-height: 0;
+  }
+
+  .faq-body {
+    padding: 0 16px 20px;
+  }
+
+  /* Tap targets */
+  .blog-know {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  /* 56px line-height under a 26–36px clamp left three loose bands of text. */
+  .cta-title {
+    line-height: 1.2;
+  }
+}
+
+/* The 215px FAQ gutter also overwhelms tablet widths. */
+@media (max-width: 1100px) {
+  .faq {
+    padding: 96px 40px;
+  }
+
+  .enquire {
+    padding: 120px 40px 140px;
+  }
+}
+
+/* ============================================================
+   LIGHT MODE — Services listing
+   Palette mirrored from Figma light landing 1264:9007:
+     dark gradients (#000→#212121 / #0d0d0d→#1d1d1d)  →  #ffffff→#f5f5f5
+     #fff text                                        →  var(--text)   #121212
+     rgba(255,255,255,.6) copy                        →  var(--text-secondary) #333333
+     rgba(255,255,255,X) hairlines/fields             →  rgba(18,18,18,X)
+     #909090 eyebrows and #f68121 accent are IDENTICAL in both themes.
+   Photo-backed surfaces (service card labels, blog cards) stay dark — the
+   gradient scrim is what makes the caption legible over the photograph.
+   ============================================================ */
+
+/* —— Hero —— */
+html[data-theme="light"] .svc-hero {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 100%);
+}
+
+/* The orange bloom reads as a smear at full strength on white. */
+html[data-theme="light"] .svc-hero-glow {
+  background: rgba(224, 105, 0, 0.28);
+}
+
+html[data-theme="light"] .svc-hero-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .svc-hero-copy {
+  color: var(--text-secondary);
+}
+
+/* —— Service grid —— */
+html[data-theme="light"] .svc-grid {
+  background: var(--bg-body);
+}
+
+/* #c9c9c9 rules read as light-on-dark; on white they need the darker hairline. */
+html[data-theme="light"] .svc-card {
+  border-color: var(--border-strong);
+}
+
+/* —— Featured blogs —— */
+html[data-theme="light"] .blogs {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .blogs-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .blogs-subtitle {
+  color: var(--text-secondary);
+}
+
+/* —— Enquire —— */
+html[data-theme="light"] .enquire {
+  background: var(--bg-body);
+}
+
+html[data-theme="light"] .enquire-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .enquire-sub {
+  color: var(--text-secondary);
+}
+
+/* #444 skyline silhouette: a watermark on black, a slab on white. */
+html[data-theme="light"] .enquire-glow-img {
+  opacity: 0.1;
+}
+
+html[data-theme="light"] .enquire-form {
+  background: var(--bg-body);
+  border-color: rgba(18, 18, 18, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .enquire-form-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .enquire-form-sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .enquire-form-sub a {
+  color: var(--text);
+}
+
+html[data-theme="light"] .enquire-fields input,
+html[data-theme="light"] .enquire-fields textarea {
+  background: var(--bg-elevated);
+  border-color: rgba(18, 18, 18, 0.2);
+  color: var(--text);
+}
+
+html[data-theme="light"] .enquire-fields input::placeholder,
+html[data-theme="light"] .enquire-fields textarea::placeholder {
+  color: rgba(18, 18, 18, 0.4);
+}
+
+/* —— FAQ —— */
+html[data-theme="light"] .faq {
+  background: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-sunken) 100%);
+}
+
+html[data-theme="light"] .faq-title {
+  color: var(--text);
+}
+
+/* Figma draws the light accordion as a plain #fff card. That vanishes where
+   the section gradient reaches #fff, so the hairline is added here. */
+html[data-theme="light"] .faq-item {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+}
+
+html[data-theme="light"] .faq-item summary {
+  color: var(--text);
+}
+
+/* faq-plus.svg / faq-minus.svg are white-stroked; invert to the ink colour. */
+html[data-theme="light"] .faq-item summary img {
+  filter: invert(1);
+}
+
+html[data-theme="light"] .faq-body {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .faq-more {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .faq-more a {
+  color: var(--text);
+}
+
+/* —— CTA + partners ——
+   .cta / .cta-title / .cta-sub / .cta-wrap / .partners--band already have
+   light rules in components.css; those out-specify the flat rules above. */
+
+/* Eyebrows are hardcoded #909090 (identical in both themes by design); in
+   light they follow --text-grey so they stay in step with the token file. */
+html[data-theme="light"] .svc-hero-eyebrow,
+html[data-theme="light"] .enquire-eyebrow,
+html[data-theme="light"] .faq-eyebrow {
+  color: var(--text-grey);
 }

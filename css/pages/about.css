@@ -59,7 +59,7 @@
   font-size: 64px;
   line-height: 1.2;
   color: #fff;
-  width: 799px;
+  width: 700px;
   max-width: 100%;
   margin-top: 24px;
 }
@@ -106,94 +106,105 @@
 .ab-story {
   position: relative;
   width: 100%;
-  min-height: 1500px;
-  background: #111;
-  overflow: hidden;
+  background: #1d1d1d;
 }
 
 .ab-story-banner {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  display: block;
   width: 100%;
-  height: 100%;
+  height: 619px;
   object-fit: cover;
-  opacity: 0.55;
-  filter: grayscale(1);
+  object-position: center top;
 }
 
 .ab-story-overlay {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 673px 180px 1fr;
-  gap: 40px;
-  min-height: 1500px;
-  padding: 620px 120px 120px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(29, 29, 29, 0.92) 45%, #1d1d1d 100%);
+  grid-template-columns: 673px 1fr;
+  align-items: start;
+  min-height: 887px;
+  background: #1d1d1d;
 }
 
-.ab-story-left {
-  border-right: 1px solid #4f4f4f;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 90px;
+/* Left rail: right-aligned stats over an orange bloom, divider on the edge */
+
+.ab-story-stats {
+  position: relative;
+  overflow: hidden;
+  min-height: 887px;
+  padding: 168px 89px 72px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  text-align: right;
 }
 
-.ab-story-label {
-  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+.ab-story-stats::before {
+  content: "";
+  position: absolute;
+  left: 390px;
+  top: 120px;
+  width: 480px;
+  height: 640px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(224, 104, 0, 0.42), rgba(224, 104, 0, 0.1) 60%, rgba(224, 104, 0, 0) 100%);
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.ab-stat {
+  position: relative;
+  z-index: 1;
+}
+
+.ab-stat + .ab-stat {
+  margin-top: 83px;
+}
+
+.ab-stat-num {
+  font-family: var(--font-nav);
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 24px;
+  color: #f68121;
+}
+
+.ab-stat-label {
+  font-family: var(--font-nav);
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
   color: #fff;
-  text-align: right;
-}
-
-.ab-story-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  padding-top: 20px;
-}
-
-.ab-stat-num {
-  font-family: "Fustat", sans-serif;
-  font-weight: 700;
-  font-size: 28px;
-  color: #f68121;
-  line-height: 1.2;
-}
-
-.ab-stat-label {
-  font-family: "Fustat", sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 8px;
-  max-width: 220px;
+  margin-top: 15px;
+  max-width: none;
 }
 
 .ab-story-copy {
-  padding-top: 24px;
-  max-width: 909px;
+  padding: 192px 104px 72px 125px;
 }
 
 .ab-story-title {
-  font-family: "Fustat", sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-family: var(--font-nav);
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: none;
   color: #fff;
-  margin-bottom: 40px;
+  margin: 0 0 67px;
 }
 
 .ab-story-copy > p {
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
-  font-size: 18px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 909px;
+}
+
+.ab-story-copy > p + p {
+  margin-top: 30px;
 }
 
 /* Logos */
@@ -227,6 +238,7 @@
   width: 100%;
   padding: 0 40px;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .ab-logos-track::-webkit-scrollbar {
@@ -478,18 +490,17 @@
   font-family: "Fustat", sans-serif;
   font-weight: 600;
   font-size: 32px;
+  line-height: 38px;
   color: #121212;
   margin-top: 24px;
+  max-width: 480px;
 }
 
-/* Process — animated journey */
+/* Process — animated roadmap */
 .ab-process {
   position: relative;
-  background:
-    radial-gradient(ellipse 60% 40% at 70% 20%, rgba(246, 129, 33, 0.12), transparent 60%),
-    radial-gradient(ellipse 50% 35% at 15% 80%, rgba(0, 154, 143, 0.08), transparent 55%),
-    #141414;
-  padding: 140px 0 160px;
+  background: #1a1a1a;
+  padding: 140px 0 120px;
   width: 100%;
   overflow: hidden;
 }
@@ -507,20 +518,22 @@
 .ab-process-title {
   font-family: "Fustat", sans-serif;
   font-weight: 500;
-  font-size: clamp(36px, 4.2vw, 64px);
-  line-height: 1.05;
-  letter-spacing: -1.5px;
+  font-size: clamp(32px, 3.4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -1.4px;
   color: #fff;
-  max-width: 1100px;
-  margin-bottom: 72px;
+  max-width: 1060px;
+  margin-bottom: 0;
 }
 
+/* Coordinate box mirrors the SVG viewBox (976 x 790) so the step copy
+   lands inside the loops at every width. */
 .ab-process-stage {
   position: relative;
   width: 100%;
-  max-width: 1192px;
-  margin: 0 auto;
-  min-height: 920px;
+  max-width: 1440px;
+  aspect-ratio: 976 / 790;
+  margin: 32px auto 0;
 }
 
 .ab-process-svg {
@@ -532,69 +545,33 @@
   overflow: visible;
 }
 
-.ab-process-track {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-
 .ab-process-draw {
   fill: none;
   stroke: #f68121;
-  stroke-width: 3;
+  stroke-width: 1.2;
   stroke-linecap: round;
+  stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: stroke-dashoffset 2.6s cubic-bezier(0.33, 0, 0.15, 1);
 }
 
 .ab-process-stage.is-on .ab-process-draw {
   stroke-dashoffset: 0;
 }
 
-.ab-process-node {
-  fill: #1a1a1a;
-  stroke: rgba(255, 255, 255, 0.25);
-  stroke-width: 2;
-  opacity: 0;
-  transform-origin: center;
-  transform-box: fill-box;
-  transform: scale(0.4);
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s ease, fill 0.4s ease;
-}
-
-.ab-process-stage.is-on .ab-process-node {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.ab-process-stage.is-on .ab-process-node.n1 { transition-delay: 0.15s; fill: #f68121; stroke: #f68121; }
-.ab-process-stage.is-on .ab-process-node.n2 { transition-delay: 0.45s; }
-.ab-process-stage.is-on .ab-process-node.n3 { transition-delay: 0.75s; fill: #f68121; stroke: #f68121; }
-.ab-process-stage.is-on .ab-process-node.n4 { transition-delay: 1.05s; }
-.ab-process-stage.is-on .ab-process-node.n5 { transition-delay: 1.35s; fill: #f68121; stroke: #f68121; }
-
 .ab-step {
   position: absolute;
-  width: min(400px, 42%);
+  width: 19%;
+  max-width: 275px;
   display: flex;
-  gap: 18px;
-  align-items: flex-start;
-  padding: 22px 24px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  flex-direction: column;
+  gap: 10px;
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(18px);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s ease,
-    background 0.3s ease;
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ab-process-stage.is-on .ab-step {
@@ -602,67 +579,42 @@
   transform: translateY(0);
 }
 
-.ab-process-stage.is-on .ab-step-1 { transition-delay: 0.35s; }
-.ab-process-stage.is-on .ab-step-2 { transition-delay: 0.7s; }
-.ab-process-stage.is-on .ab-step-3 { transition-delay: 1.05s; }
-
-.ab-step:hover {
-  border-color: rgba(246, 129, 33, 0.45);
-  background: rgba(246, 129, 33, 0.06);
-}
-
-.ab-step-num {
-  flex-shrink: 0;
-  font-family: "Fustat", sans-serif;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 1;
-  letter-spacing: -1px;
-  color: #f68121;
-  background: linear-gradient(180deg, #ff9a3c, #f68121);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.ab-step-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-}
+.ab-process-stage.is-on .ab-step-1 { transition-delay: 0.55s; }
+.ab-process-stage.is-on .ab-step-2 { transition-delay: 1.25s; }
+.ab-process-stage.is-on .ab-step-3 { transition-delay: 1.95s; }
 
 .ab-step h3 {
   font-family: "Fustat", sans-serif;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 1.25;
-  letter-spacing: -0.5px;
+  font-weight: 500;
+  font-size: clamp(15px, 1.45vw, 20px);
+  line-height: 1.3;
+  letter-spacing: -0.3px;
   color: #fff;
   margin: 0;
 }
 
 .ab-step p {
   font-family: "Figtree", "Fustat", sans-serif;
-  font-size: 15px;
-  line-height: 1.55;
-  color: rgba(214, 217, 226, 0.85);
+  font-weight: 500;
+  font-size: clamp(10.5px, 0.87vw, 12.5px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
   margin: 0;
 }
 
 .ab-step-1 {
-  right: 0;
-  top: 8%;
+  left: 55.1%;
+  top: 14.2%;
 }
 
 .ab-step-2 {
-  left: 0;
-  top: 42%;
+  left: 26.9%;
+  top: 43.2%;
 }
 
 .ab-step-3 {
-  right: 4%;
-  top: 68%;
+  left: 48.6%;
+  top: 69.6%;
 }
 
 @media (max-width: 1100px) {
@@ -674,11 +626,19 @@
     max-width: calc(100% - 48px);
   }
 
+  .ab-process-title {
+    margin-bottom: 44px;
+  }
+
+
   .ab-process-stage {
-    min-height: 0;
+    aspect-ratio: auto;
+    width: 1416px;
+    max-width: calc(100% - 48px);
+    margin-top: 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 28px;
   }
 
   .ab-process-svg {
@@ -688,11 +648,22 @@
   .ab-step {
     position: relative;
     width: 100%;
+    max-width: none;
     right: auto !important;
     left: auto !important;
     top: auto !important;
+    padding-left: 20px;
+    border-left: 1px solid rgba(246, 129, 33, 0.5);
     opacity: 1;
     transform: none;
+  }
+
+  .ab-step h3 {
+    font-size: 20px;
+  }
+
+  .ab-step p {
+    font-size: 14px;
   }
 
   .ab-process-stage.is-on .ab-step {
@@ -712,6 +683,19 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-process-draw {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .ab-step {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -739,6 +723,7 @@
   display: flex;
   gap: 100px;
   width: 100%;
+  max-width: 1520px;
 }
 
 .ab-hsc-point {
@@ -902,7 +887,7 @@
   line-height: 1.2;
   letter-spacing: -1px;
   color: #121212;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .ab-legacy-content > p {
@@ -1018,22 +1003,20 @@
 
 .ab-team-grid {
   display: flex;
-  gap: 35px;
+  justify-content: center;
+  gap: 36px;
   width: 100%;
-  max-width: 1533px;
+  max-width: 1534px;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
   overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.ab-team-grid::before,
-.ab-team-grid::after {
-  content: "";
-  flex: 1 1 0;
-  min-width: 0;
-  pointer-events: none;
+.ab-team-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .ab-member {
@@ -1062,6 +1045,19 @@
   object-fit: cover;
   object-position: center 10%;
   display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ab-member:hover .ab-member-photo img {
+  transform: scale(1.1);
+}
+
+.ab-member-meta img {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ab-member:hover .ab-member-meta img {
+  transform: translate(3px, -3px);
 }
 
 .ab-member-meta {
@@ -1137,6 +1133,7 @@
   font-size: 48px;
   line-height: 1.2;
   color: #fff;
+  text-transform: capitalize;
   margin: 229px 0 18px;
 }
 
@@ -1196,6 +1193,10 @@
   resize: vertical;
 }
 
+.ab-form .btn-primary {
+  align-self: flex-start;
+}
+
 .ab-field input::placeholder,
 .ab-field textarea::placeholder {
   color: rgba(255, 255, 255, 0.6);
@@ -1207,13 +1208,14 @@
   display: flex;
   gap: 42px;
   align-items: center;
-  padding: 120px 141px;
+  padding: 120px clamp(48px, 6vw, 141px);
   background: #1d1d1d;
   width: 100%;
 }
 
 .ab-journey-left {
-  width: 629px;
+  flex: 0 1 629px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 70px;
@@ -1237,9 +1239,9 @@
 .ab-journey-brand {
   font-family: "Fustat", sans-serif;
   font-weight: 800;
-  font-size: 120px;
-  line-height: 106px;
-  background: linear-gradient(138deg, #ff3337 0%, #f8ca53 23%, #009a8f 39%, rgba(255, 255, 255, 0) 73%);
+  font-size: clamp(56px, 7vw, 120px);
+  line-height: 0.88;
+  background: linear-gradient(138deg, #ff3337 0%, #f8ca53 23%, #009a8f 41%, #4f7a75 60%, #7c8384 78%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1253,7 +1255,7 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
-  width: 531px;
+  max-width: 531px;
 }
 
 .ab-journey-point {
@@ -1266,7 +1268,7 @@
   width: 66px;
   height: 66px;
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.03);
+  background: linear-gradient(150deg, rgba(246, 129, 33, 0.26), rgba(246, 129, 33, 0.03) 70%);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.41);
   display: flex;
   align-items: center;
@@ -1283,10 +1285,11 @@
   color: transparent;
 }
 
-.ab-journey-cap {
-  width: 66px;
-  height: 66px;
-  flex-shrink: 0;
+/* Image tile shares the 66x66 footprint of the numeric tile above it. */
+.ab-journey-icon-img img {
+  width: auto;
+  height: 40px;
+  object-fit: contain;
 }
 
 .ab-journey-point h3 {
@@ -1302,37 +1305,51 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
+.ab-journey .btn-primary {
+  align-self: flex-start;
+}
+
 .ab-journey-media {
   position: relative;
-  width: 968px;
-  height: 668px;
-  border-radius: 19px;
-  background: #121212;
+  flex: 1 1 968px;
+  min-width: 0;
+  max-width: 968px;
+  aspect-ratio: 968 / 668;
+  border-radius: 12px;
+  background: #000;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
-.ab-journey-media img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.35;
-}
-
-.ab-journey-media p {
+.ab-journey-title {
   position: relative;
   z-index: 1;
-  font-family: "Fustat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-nav);
   font-weight: 700;
-  font-size: 36px;
-  letter-spacing: 4px;
   color: #fff;
   text-align: center;
+  text-shadow:
+    0 0 26px rgba(255, 255, 255, 0.75),
+    0 0 62px rgba(255, 255, 255, 0.45);
+}
+
+.ab-journey-title span:first-child {
+  font-size: clamp(26px, 3.6vw, 53px);
+  line-height: 1.1;
+  letter-spacing: 10px;
+  text-indent: 10px;
+}
+
+.ab-journey-title span:last-child {
+  font-size: clamp(52px, 7.2vw, 106px);
+  line-height: 1.05;
+  letter-spacing: 7px;
+  text-indent: 7px;
 }
 
 /* FAQ */
@@ -1390,6 +1407,17 @@
   display: none;
 }
 
+.ab-faq-item summary img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ab-faq-item[open] summary img {
+  transform: rotate(45deg);
+}
+
 .ab-faq-answer {
   padding: 0 24px 24px;
   font-family: "Fustat", sans-serif;
@@ -1399,7 +1427,7 @@
 }
 
 .ab-faq-answer p + p {
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .ab-faq-more {
@@ -1473,62 +1501,29 @@
 .partners {
   position: relative;
   width: 100%;
-  height: 320px;
+  height: 319px;
   overflow: hidden;
   background: #fff;
 }
 
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
-}
-
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
-}
-
-.p-970 { left: 0; top: 0; width: 668px; height: 320px; }
-.p-974 { left: 669px; top: 28px; width: 282px; height: 279px; }
-.p-101 { left: 656px; top: 0; width: 1264px; height: 320px; z-index: 0; }
-.p-973 { left: 983px; top: 34px; width: 254px; height: 252px; z-index: 1; }
-.p-972 { left: 1275px; top: 33px; width: 256px; height: 253px; z-index: 1; }
-
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
-}
-
-.p-url {
-  margin-top: 10px;
-  background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
-}
-
 @media (max-width: 1100px) {
+  .ab-story-overlay {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .ab-story-stats {
+    min-height: 0;
+    padding: 56px 24px 56px 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .ab-story-copy {
+    padding: 56px 24px;
+  }
+
   .ab-hero,
-  .ab-story,
   .ab-logos,
   .ab-methods,
   .ab-certs,
@@ -1583,7 +1578,7 @@
   }
 
   .ab-story-banner {
-    min-height: 280px;
+    height: 280px;
     width: 100%;
   }
 
@@ -1597,21 +1592,47 @@
     box-sizing: border-box;
   }
 
-  .ab-story-left {
-    border-right: none;
-    justify-content: flex-start;
-    padding-right: 0;
-  }
-
-  .ab-story-label {
-    text-align: left;
-  }
-
   .ab-story-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     width: 100%;
+    min-height: 0;
+    padding: 0;
+    border-right: none;
+    text-align: left;
+    overflow: visible;
+  }
+
+  .ab-story-stats::before {
+    display: none;
+  }
+
+  .ab-stat + .ab-stat {
+    margin-top: 0;
+  }
+
+  .ab-stat-num {
+    font-size: 26px;
+  }
+
+  .ab-stat-label {
+    font-size: 15px;
+    line-height: 1.35;
+    margin-top: 6px;
+  }
+
+  .ab-story-copy {
+    padding: 0;
+  }
+
+  .ab-story-copy > p {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .ab-story-copy > p + p {
+    margin-top: 16px;
   }
 
   .ab-stat,
@@ -1770,6 +1791,28 @@
     line-height: 1;
   }
 
+  .ab-journey-media {
+    height: auto;
+    aspect-ratio: 968 / 668;
+  }
+
+  .ab-journey-title span:first-child {
+    font-size: clamp(18px, 5.6vw, 53px);
+    letter-spacing: 4px;
+    text-indent: 4px;
+  }
+
+  .ab-journey-title span:last-child {
+    font-size: clamp(32px, 11vw, 106px);
+    letter-spacing: 3px;
+    text-indent: 3px;
+  }
+
+  .ab-journey .btn-primary {
+    align-self: stretch;
+    justify-content: center;
+  }
+
   .ab-connect,
   .ab-faq {
     padding: 48px 20px 80px;
@@ -1801,3 +1844,694 @@
     font-size: clamp(28px, 7vw, 40px);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   LIGHT MODE — html[data-theme="light"]
+   Palette from Figma light landing 1264:9007. Accent #f68121 never themed.
+
+   Sections deliberately kept DARK (photographic / brand panels):
+     .ab-story        — stats + copy panel sits directly under the story
+                        photograph; the light landing keeps the band under
+                        its hero photo dark in exactly the same way.
+     .ab-journey-media — the black "THE JOURNEY OF ARUL GROUP" panel is black
+                        in the Figma light frame too.
+     .ab-legacy       — already a light section in both themes.
+     .ab-certs        — already a light (white → #f5f5f5) section in both themes.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* — Hero — */
+html[data-theme="light"] .ab-hero {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 100%);
+}
+
+html[data-theme="light"] .ab-hero-glow {
+  background: rgba(224, 105, 0, 0.4);
+}
+
+html[data-theme="light"] .ab-hero-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-hero-copy {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-trusted-note {
+  color: var(--text-grey);
+}
+
+html[data-theme="light"] .ab-trusted-note strong {
+  color: var(--text);
+}
+
+/* — Logos band — deliberately stays DARK.
+   The Figma light landing (1264:9007) keeps this exact band — same
+   "Trusted by Industry Leaders" heading, same client logos — on a near-black
+   ground. Several supplied logo files (Wabtec, Faiveley, HFL) are white-on-
+   transparent and disappear entirely on a light ground, so this is both the
+   designed and the legible choice. */
+
+/* — Methods — */
+html[data-theme="light"] .ab-methods {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .ab-methods-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-methods-sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-method-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+html[data-theme="light"] .ab-method-card:hover {
+  background: var(--bg-sunken);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.1);
+}
+
+/* the method glyphs are white-stroked SVGs */
+html[data-theme="light"] .ab-method-icon img {
+  filter: invert(1);
+}
+
+html[data-theme="light"] .ab-method-body h3 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-method-body p {
+  color: var(--text-secondary);
+}
+
+/* — Process — */
+html[data-theme="light"] .ab-process {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .ab-process-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-step h3 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-step p {
+  color: var(--text-secondary);
+}
+
+/* — Quality & HSC — */
+html[data-theme="light"] .ab-hsc {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .ab-hsc-title,
+html[data-theme="light"] .ab-hsc-label,
+html[data-theme="light"] .ab-hsc-copy {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-hsc-num {
+  /* ghosted step numeral — 0.2 alpha was 1.55:1, below even the 3:1 large-text floor */
+  color: rgba(18, 18, 18, 0.46);
+}
+
+html[data-theme="light"] .ab-hsc-badges img {
+  border: 1px solid var(--border);
+}
+
+/* — Team — */
+html[data-theme="light"] .ab-team {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .ab-team-head h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-team-copy {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-team-badge p {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-avatars img {
+  border-color: #fff;
+}
+
+html[data-theme="light"] .ab-member-photo {
+  background: var(--bg-card);
+}
+
+html[data-theme="light"] .ab-member-meta {
+  background: var(--bg-card);
+}
+
+html[data-theme="light"] .ab-member-meta p { color: var(--accent-text); }
+
+html[data-theme="light"] .ab-member-meta h3 {
+  color: var(--text);
+}
+
+/* white arrow glyph on the member card */
+html[data-theme="light"] .ab-member-meta img {
+  filter: invert(1);
+}
+
+html[data-theme="light"] .ab-team-cta > span {
+  color: var(--text);
+}
+
+/* — Connect form — */
+html[data-theme="light"] .ab-connect {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .ab-connect-copy h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-connect-copy > p:last-child {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-form {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="light"] .ab-form-head h3 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-form-head p {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-field input,
+html[data-theme="light"] .ab-field textarea {
+  background: var(--bg-page);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-field input::placeholder,
+html[data-theme="light"] .ab-field textarea::placeholder {
+  color: var(--text-grey);
+}
+
+/* — Journey — */
+html[data-theme="light"] .ab-journey {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .ab-since span {
+  color: var(--text-grey);
+}
+
+html[data-theme="light"] .ab-journey-icon {
+  background: linear-gradient(150deg, var(--bg-elevated), #fdf0e2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .ab-journey-point h3 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-journey-point p {
+  color: var(--text-secondary);
+}
+
+/* — FAQ — */
+html[data-theme="light"] .ab-faq {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .ab-faq-head h2 {
+  color: var(--text);
+}
+
+html[data-theme="light"] .ab-faq-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="light"] .ab-faq-item summary {
+  color: var(--text);
+}
+
+/* white +/× toggle glyphs */
+html[data-theme="light"] .ab-faq-item summary img {
+  filter: invert(1);
+}
+
+html[data-theme="light"] .ab-faq-answer,
+html[data-theme="light"] .ab-faq-more {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-faq-more a {
+  color: var(--text);
+}
+
+/* — CTA band (page-local copy of the shared block) — */
+html[data-theme="light"] .cta-wrap {
+  background: var(--bg-page);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE (<= 768px / 375px reference)
+   Figma has no dedicated About mobile frame — the only ~390w frames in the
+   file (719:27416 "390w dark", 719:27138) are landing-page adaptations, so
+   the rules below follow those conventions: single column, 16-20px gutters,
+   rails keep hidden scrollbars, nothing wider than the viewport.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* — Story: line-height was locked to 24px, which collided at mobile sizes — */
+  .ab-story-title {
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .ab-stat-num {
+    line-height: 1.2;
+  }
+
+  /* — Methods: the desktop centering trick (fixed 1416/1430px widths plus a
+       negative margin) pushed the heading 520px off-screen and squeezed the
+       cards to ~100px. — */
+  .ab-methods-title,
+  .ab-methods-sub,
+  .ab-method-cards {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    box-sizing: border-box;
+  }
+
+  .ab-methods-title {
+    line-height: 1.15;
+    align-self: stretch;
+  }
+
+  .ab-methods-sub {
+    margin: 20px 0 40px;
+    font-size: 16px;
+  }
+
+  .ab-method-cards {
+    gap: 20px;
+  }
+
+  .ab-method-card {
+    min-height: 0;
+    padding: 24px;
+    gap: 32px;
+  }
+
+  .ab-method-body h3,
+  .ab-method-body p {
+    max-width: 100%;
+  }
+
+  .ab-method-body h3 {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  /* — Certifications — */
+  .ab-certs-inner {
+    gap: 48px;
+  }
+
+  .ab-certs-grid {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ab-cert-main,
+  .ab-certs-side {
+    width: 100%;
+    height: auto;
+  }
+
+  .ab-certs-title,
+  .ab-iso-heading {
+    font-size: clamp(26px, 7vw, 36px);
+  }
+
+  .ab-certs-copy {
+    font-size: 16px;
+  }
+
+  .ab-iso {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ab-iso-row {
+    gap: 40px;
+  }
+
+  .ab-iso figcaption {
+    font-size: 20px;
+    line-height: 1.3;
+    max-width: 100%;
+  }
+
+  /* — Quality & HSC: 40px/32px display copy and 200px badges overflowed — */
+  .ab-hsc {
+    gap: 40px;
+  }
+
+  .ab-hsc-num {
+    font-size: 40px;
+    line-height: 1.2;
+  }
+
+  .ab-hsc-label {
+    font-size: 20px;
+    line-height: 1.4;
+    margin-top: 8px;
+  }
+
+  .ab-hsc-main {
+    gap: 32px;
+  }
+
+  .ab-hsc-copy {
+    font-size: 20px;
+    line-height: 1.5;
+    max-width: 100%;
+  }
+
+  .ab-hsc-badges {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .ab-hsc-badges img {
+    width: 128px;
+    height: 128px;
+  }
+
+  /* — Legacy: the photo is absolutely positioned inside a fixed 883x762 wrap,
+       so on mobile the wrap collapsed to zero height and the picture never
+       rendered; the quote card and brand chips ran off both edges. — */
+  .ab-legacy-photo-wrap {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .ab-legacy-photo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ab-legacy-quote {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    max-width: none;
+    transform: none;
+    padding: 18px;
+    border-radius: 18px;
+    gap: 10px;
+  }
+
+  .ab-legacy-quote p {
+    font-size: 15px;
+    padding-left: 30px;
+  }
+
+  .ab-legacy-quote img {
+    left: 18px;
+    top: 22px;
+    width: 18px;
+    height: auto;
+  }
+
+  .ab-legacy-quote span {
+    font-size: 13px;
+    padding-left: 30px;
+  }
+
+  .ab-legacy-content {
+    width: 100%;
+    max-width: 100%;
+    gap: 24px;
+    box-sizing: border-box;
+  }
+
+  .ab-legacy-content h2 {
+    font-size: clamp(26px, 7vw, 36px);
+  }
+
+  .ab-legacy-content > p {
+    font-size: 16px;
+  }
+
+  .ab-brand-row {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .ab-brand-chip {
+    width: calc(50% - 6px);
+    min-width: 0;
+    height: 72px;
+    padding: 12px;
+  }
+
+  .ab-brand-chip img {
+    max-width: 100%;
+    max-height: 36px;
+  }
+
+  /* — Team: the wrapped grid needs no scroll track — */
+  .ab-team {
+    gap: 32px;
+  }
+
+  .ab-team-head h2 {
+    font-size: clamp(28px, 7.5vw, 40px);
+  }
+
+  .ab-team-copy {
+    font-size: 16px;
+  }
+
+  .ab-team-grid {
+    overflow-x: visible;
+  }
+
+  .ab-member,
+  .ab-member-photo {
+    width: min(300px, calc(100vw - 32px));
+  }
+
+  .ab-team-cta {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* — Journey: in a column flex container `flex: 1 1 968px` was read as a
+       968px flex-basis on the HEIGHT, so the black panel grew ~4x too tall. — */
+  .ab-journey-media {
+    flex: none;
+    width: 100%;
+  }
+
+  .ab-journey-left {
+    gap: 40px;
+  }
+
+  /* — FAQ — */
+  .ab-faq-head {
+    margin-bottom: 40px;
+  }
+
+  .ab-faq-head h2 {
+    font-size: clamp(26px, 7vw, 36px);
+  }
+
+  .ab-faq-list {
+    gap: 16px;
+  }
+
+  .ab-faq-item summary {
+    padding: 18px 20px;
+    gap: 16px;
+  }
+
+  .ab-faq-answer {
+    padding: 0 20px 20px;
+  }
+
+  /* negative margin keeps the sentence on one baseline while giving the
+     inline link a 44px touch box */
+  .ab-faq-more a {
+    display: inline-block;
+    padding: 12px 4px;
+    margin: -12px -4px;
+  }
+
+  /* — CTA — */
+  .cta-wrap {
+    gap: 64px;
+    padding-top: 64px;
+  }
+
+  .cta {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
+
+  .cta-title {
+    font-size: clamp(26px, 7vw, 36px);
+    line-height: 1.2;
+  }
+
+  /* The partner band is a single 1920x320 artwork. Scaled to fit 375 it
+     collapses to a 47px strip and every address/URL in it becomes unreadable,
+     so on mobile it becomes a hidden-scrollbar rail at a legible height
+     instead. YOUR CHOICE — Figma has no mobile treatment for this band. */
+  .partners--band {
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .partners--band::-webkit-scrollbar {
+    display: none;
+  }
+
+  .partners--band .partners-band {
+    width: auto;
+    height: 200px;
+    max-width: none;
+    display: block;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABLET (769–1100px)
+   Scoped away from the mobile block above so the two never fight over the
+   cascade. Same root cause as mobile: desktop-only fixed pixel widths.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  /* heading was pushed ~200px off the left edge by the desktop centering
+     margin `calc((100% - 1416px) / 2)` */
+  .ab-methods-title,
+  .ab-methods-sub,
+  .ab-method-cards {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    box-sizing: border-box;
+  }
+
+  .ab-methods-title {
+    font-size: clamp(34px, 4.8vw, 56px);
+    line-height: 1.15;
+  }
+
+  .ab-methods-sub {
+    margin: 24px 0 56px;
+  }
+
+  .ab-method-cards {
+    gap: 20px;
+  }
+
+  .ab-method-card {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 420px;
+    padding: 24px;
+  }
+
+  .ab-method-body h3,
+  .ab-method-body p {
+    max-width: 100%;
+  }
+
+  /* legacy ran ~300px past the right edge as a two-column row */
+  .ab-legacy-inner {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .ab-legacy-photo-wrap {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 883 / 762;
+  }
+
+  .ab-legacy-photo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ab-legacy-quote {
+    left: 24px;
+    right: 24px;
+    width: auto;
+    max-width: none;
+    transform: none;
+  }
+
+  .ab-legacy-content {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* the page-local .cta copy is a fixed 1060px card */
+  .cta {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 56px 40px;
+    box-sizing: border-box;
+  }
+
+  /* `justify-content: center` on an overflowing scroll rail makes the leading
+     card unreachable (scrollLeft cannot go negative); `safe` falls back to
+     flex-start only once the row overflows. */
+  .ab-team-grid {
+    justify-content: safe center;
+  }
+}
+

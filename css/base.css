@@ -11,6 +11,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis drives the scroll position itself; native smooth would fight it. */
+html.lenis,
+html.lenis body {
+  height: auto;
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 body {
   background: var(--bg-body);
   color: var(--text);
@@ -64,7 +79,7 @@ ul {
 .page {
   position: relative;
   width: 100%;
-  max-width: var(--max-page);
+  /* was max-width:1920px -> black bars either side on wider screens */
   margin: 0 auto;
   background: var(--bg-page);
   overflow-x: hidden;

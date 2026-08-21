@@ -25,6 +25,23 @@
   pointer-events: none;
 }
 
+/* The hero fill in Figma (1542:21609 → "rrrrrrrrrrrrrr") is STRETCH with an
+   imageTransform of [[0.61165,0,0.38718],[0,0.42793,0.42450]] over the
+   1600x1200 source — a 1.96x crop framed on the retention pond. The build was
+   showing the whole frame, so the pond read as a small detail. Expressed in
+   mirrored coordinates because the element carries a horizontal flip.
+   Desktop only; narrower viewports keep the safe `cover` behaviour. */
+@media (min-width: 1101px) {
+  .sus-hero-bg {
+    inset: auto;
+    left: -0.2%;
+    top: -99.16%;
+    width: 163.52%;
+    max-width: none;
+    height: 233.59%;
+  }
+}
+
 .sus-hero-overlay {
   position: absolute;
   inset: 0;
@@ -63,24 +80,27 @@
 
 /* Intro / stats */
 
+/* Figma 1542:21609 → band 1920x596, content box x=65..1866 (330 tall),
+   i.e. 133px vertical padding and a 65px left gutter — not the 100px the
+   build was using, which pushed the stat cluster 45px off. */
 .sus-intro {
   background: #2c442f;
   width: 100%;
   min-height: 596px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 160px 16px;
+  justify-content: flex-start;
+  padding: 133px 54px 133px 65px;
 }
 
 .sus-intro-inner {
   width: 100%;
-  max-width: 1800px;
+  max-width: 1801px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 48px;
-  padding: 0 40px;
+  padding: 0;
 }
 
 .sus-intro-copy {
@@ -172,7 +192,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 48px;
+  margin-bottom: 68px;
   max-width: 1798px;
 }
 
@@ -213,16 +233,75 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform .6s cubic-bezier(.22, 1, .36, 1);
 }
 
+/* Each card photo is a CROP in Figma, not a centred cover fill — the three
+   "image 929" rects carry imageTransforms, and the card frame clips them.
+   Solving each matrix for the window the card actually shows gives:
+     schaeffler  1600x900   → source 176.8,8.2   1317.6x879.7  (scale 0.8258)
+     tata-rwh    2048x1536  → source 803.0,384.6 1152.6x769.7  (scale 0.9439)
+     lm-wind     2356x1764  → source  87.8,442.0 1326.1x885.1  (scale 0.8205)
+   Every window is exactly the card's 1088x726 aspect, so the photo is placed as
+   an oversized `fill` box instead of a centred `cover` — without this the Tata
+   card loses the retention pond the "Rainwater Harvesting" title refers to.
+   transform-origin is the card's centre inside that oversized box so the hover
+   zoom still reads as centred. */
+.sus-proj-card img.cover {
+  object-fit: fill;
+  inset: auto;
+  max-width: none;
+}
+
+.sus-proj-card:nth-child(1) img.cover {
+  left: -13.43%;
+  top: -0.93%;
+  width: 121.49%;
+  height: 102.37%;
+  transform-origin: 52.21% 49.76%;
+}
+
+.sus-proj-card:nth-child(2) img.cover {
+  left: -69.69%;
+  top: -50.01%;
+  width: 177.74%;
+  height: 199.7%;
+  transform-origin: 67.34% 50.08%;
+}
+
+.sus-proj-card:nth-child(3) img.cover {
+  left: -6.62%;
+  top: -49.96%;
+  width: 177.74%;
+  height: 199.37%;
+  transform-origin: 31.86% 50.14%;
+}
+
+.sus-proj-card:hover img.cover {
+  transform: scale(1.1);
+}
+
+/* In Figma this circle-arrow layer sits outside the card frame and is clipped
+   away, so the design render shows no arrow at rest. The build was painting the
+   raw black-stroked asset straight onto the photo. Kept as a hover affordance,
+   recoloured white to read on imagery. */
 .sus-proj-arrow {
   position: absolute;
   top: 52px;
   right: 52px;
   width: 48px;
   height: 48px;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
+  opacity: 0;
+  transform: translateY(-6px);
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, .45));
+  transition: opacity .35s ease, transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+
+.sus-proj-card:hover .sus-proj-arrow {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .sus-proj-glass {
@@ -275,7 +354,7 @@
 .sus-initiatives {
   display: flex;
   justify-content: center;
-  padding: 80px 165px 120px;
+  padding: 106px 165px 200px;
   width: 100%;
   background: #1d1d1d;
 }
@@ -283,7 +362,7 @@
 .sus-initiatives-inner {
   display: flex;
   gap: 63.958px;
-  align-items: flex-start;
+  align-items: stretch;
   width: 100%;
   max-width: 1204.55px;
 }
@@ -293,9 +372,13 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 779.258px;
-  gap: 48px;
+  gap: 56px;
+}
+
+.sus-initiatives-head {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .sus-initiatives-title {
@@ -317,13 +400,136 @@
   opacity: 0.93;
 }
 
+/* Initiative list — doubles as the carousel tab controls. */
+.sus-initiatives-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sus-init {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  width: 100%;
+  min-height: 92px;
+  padding: 22px 8px 22px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #fff;
+  opacity: .55;
+  transition: opacity .25s ease;
+}
+
+.sus-init:hover {
+  opacity: .85;
+}
+
+.sus-init.is-active {
+  opacity: 1;
+  cursor: default;
+}
+
+.sus-init:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sus-init-num {
+  font-family: "Fustat", sans-serif;
+  font-weight: 400;
+  font-size: 14.604px;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  color: #f68121;
+  flex-shrink: 0;
+  min-width: 26px;
+}
+
+.sus-init-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sus-init-name {
+  font-family: "Fustat", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.4264px;
+  color: #fff;
+}
+
+.sus-init-client {
+  font-family: "Fustat", sans-serif;
+  font-weight: 400;
+  font-size: 14.604px;
+  line-height: 14.924px;
+  letter-spacing: -0.1492px;
+  color: #ccc;
+}
+
+/* Hairline between rows, plus an accent that grows in on the active row. */
+.sus-init-rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.sus-init-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #f68121;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s ease;
+}
+
+.sus-init.is-active .sus-init-rule::after {
+  transform: scaleX(1);
+}
+
 .sus-slide {
   position: relative;
   flex: 1;
   min-width: 0;
-  height: 777.094px;
+  min-height: 777.094px;
   border-radius: 31.979px;
   overflow: hidden;
+  background: #111;
+}
+
+.sus-slides {
+  position: absolute;
+  inset: 0;
+}
+
+.sus-slide-item {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s ease;
+}
+
+.sus-slide-item.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sus-slide-item[hidden] {
+  display: none;
 }
 
 .sus-slide img.reel {
@@ -371,35 +577,64 @@
 
 .sus-progress span i {
   display: block;
+  width: 100%;
   height: 100%;
   background: #fff;
   border-radius: 2.132px;
+  transform: scaleX(0);
+  transform-origin: left;
 }
 
-.sus-progress span:nth-child(1) i {
-  width: 100%;
+.sus-progress span.is-done i {
+  transform: scaleX(1);
 }
 
-.sus-progress span:nth-child(2) i {
-  width: 80.39%;
+.sus-progress span.is-running i {
+  animation: sus-fill var(--sus-duration, 6s) linear forwards;
 }
 
-.sus-progress span:nth-child(3) i,
-.sus-progress span:nth-child(4) i {
-  width: 0;
+.sus-slide.is-paused .sus-progress span.is-running i {
+  animation-play-state: paused;
+}
+
+@keyframes sus-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 .sus-pause {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8.528px;
+  width: 34.111px;
+  height: 34.111px;
+  padding: 0;
+  border: 0;
   border-radius: 17.056px;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(2.132px);
   -webkit-backdrop-filter: blur(2.132px);
   flex-shrink: 0;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color .2s ease;
+}
+
+/* Not defined in Figma — matches the arrow-button hover used site-wide. */
+.sus-pause:hover {
+  background: rgba(246, 129, 33, 0.85);
+}
+
+.sus-pause:focus-visible,
+.sus-nav:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 3px;
+}
+
+.sus-pause-icon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .sus-pause-bar {
@@ -407,6 +642,18 @@
   height: 12px;
   background: #fff;
   border-radius: 1px;
+}
+
+.sus-play-icon {
+  display: none;
+}
+
+.sus-pause[aria-pressed="true"] .sus-pause-icon {
+  display: none;
+}
+
+.sus-pause[aria-pressed="true"] .sus-play-icon {
+  display: block;
 }
 
 .sus-nav {
@@ -423,6 +670,16 @@
   align-items: center;
   justify-content: center;
   z-index: 3;
+  border: 0;
+  padding: 0;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+
+/* Not defined in Figma — matches the arrow-button hover used site-wide. */
+.sus-nav:hover {
+  background: rgba(246, 129, 33, 0.85);
 }
 
 .sus-nav--prev {
@@ -433,9 +690,10 @@
   right: 17.05px;
 }
 
-.sus-nav img {
-  width: 23px;
-  height: 23px;
+.sus-nav svg {
+  display: block;
+  width: 8px;
+  height: 14px;
 }
 
 .sus-slide-caption {
@@ -476,6 +734,32 @@
   line-height: 20.786px;
   letter-spacing: -0.1599px;
   color: #fff;
+}
+
+/* Screen-reader-only announcement of the current slide. */
+.sus-slide-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sus-slide-item,
+  .sus-init,
+  .sus-init-rule::after {
+    transition: none;
+  }
+
+  .sus-progress span.is-running i {
+    animation: none;
+    transform: scaleX(1);
+  }
 }
 
 /* Featured Blogs */
@@ -925,6 +1209,7 @@
   align-items: center;
   gap: 120px;
   width: 100%;
+  padding-top: 110px;
   background: #1d1d1d;
 }
 
@@ -972,7 +1257,10 @@
   margin-bottom: 24px;
 }
 
-.partners {
+/* Scoped away from .partners--band: components.css turns that variant into a
+   swipeable 1200x200 strip below 900px, and an unscoped `overflow:hidden`
+   here would clobber its overflow-x:auto. */
+.partners:not(.partners--band) {
   position: relative;
   width: 100%;
   height: 320px;
@@ -980,87 +1268,25 @@
   background: #fff;
 }
 
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
-}
+/* Figma only specifies 1920. The intro row needs 804 + 48 + 731 = 1583px of
+   content box; below ~1700px viewport the paragraph column was being squeezed
+   to ~375px while the stat cluster held its width. Stack instead. — my call,
+   nothing in Figma covers this range. */
+@media (min-width: 769px) and (max-width: 1700px) {
+  .sus-intro {
+    padding: 96px 48px;
+  }
 
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
-}
+  .sus-intro-inner {
+    flex-wrap: wrap;
+    gap: 56px;
+  }
 
-.p-970 {
-  left: 0;
-  top: 0;
-  width: 668px;
-  height: 320px;
+  .sus-intro-copy {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
-
-.p-974 {
-  left: 669px;
-  top: 28px;
-  width: 282px;
-  height: 279px;
-  z-index: 2;
-}
-
-.p-101 {
-  left: 656px;
-  top: 0;
-  width: 1264px;
-  height: 320px;
-  z-index: 0;
-}
-
-.p-973 {
-  left: 983px;
-  top: 34px;
-  width: 254px;
-  height: 252px;
-  z-index: 1;
-}
-
-.p-972 {
-  left: 1275px;
-  top: 33px;
-  width: 256px;
-  height: 253px;
-  z-index: 1;
-}
-
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
-}
-
-.p-url {
-  margin-top: 10px;
-  background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
-}
-
 
 @media (max-width: 768px) {
   .sus-hero,
@@ -1167,5 +1393,379 @@
 
   .blog-card {
     height: 400px;
+  }
+}
+
+/* Initiatives — responsive */
+
+@media (max-width: 1280px) {
+  .sus-initiatives {
+    padding: 88px 48px 120px;
+  }
+
+  .sus-initiatives-inner {
+    flex-direction: column;
+    gap: 48px;
+    max-width: 900px;
+  }
+
+  .sus-initiatives-copy {
+    width: 100%;
+    gap: 40px;
+  }
+
+  .sus-initiatives-title {
+    font-size: clamp(34px, 4.4vw, 55.111px);
+    line-height: 1.2;
+  }
+
+  .sus-initiatives-sub {
+    font-size: 19px;
+  }
+
+  .sus-slide {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .sus-initiatives {
+    padding: 56px 20px 72px !important;
+  }
+
+  .sus-initiatives-inner {
+    gap: 36px;
+  }
+
+  .sus-initiatives-head {
+    gap: 18px;
+  }
+
+  .sus-initiatives-title {
+    font-size: clamp(28px, 8vw, 40px) !important;
+  }
+
+  .sus-initiatives-sub {
+    font-size: 16px !important;
+  }
+
+  .sus-init {
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 16px 0;
+    gap: 14px;
+  }
+
+  .sus-init-name {
+    font-size: 18px;
+  }
+
+  .sus-init-client {
+    font-size: 13px;
+  }
+
+  .sus-slide {
+    aspect-ratio: 3 / 4;
+    border-radius: 20px;
+  }
+
+  .sus-slide-caption {
+    padding: 18px;
+    max-width: 100%;
+  }
+
+  .sus-slide-title {
+    font-size: 24px;
+    line-height: 1.1;
+    letter-spacing: -0.6px;
+  }
+
+  .sus-slide-desc {
+    font-size: 14px;
+    line-height: 19px;
+  }
+}
+
+
+/* ============================================================
+   LIGHT MODE
+   Sections deliberately kept dark in both themes:
+     .sus-hero          — full-bleed photograph + 35% scrim, white type on it
+     .sus-intro         — #2c442f brand band (Figma 1548:5240 keeps it green;
+                          the light landing frame keeps its equivalent band
+                          dark too)
+     .sus-proj-card     — photo tile; .sus-proj-glass is a frosted panel over
+                          the photograph
+     .sus-slide         — carousel reel is photography, caption sits on it
+     .blog-card         — photo tile with a black gradient overlay
+   Everything else flips to the light ground.
+   ============================================================ */
+
+/* Give the photo-backed surfaces an explicit dark ground so the white type
+   on them never sits on a light fallback while the image decodes. */
+.sus-hero { background: #1a1a1a; }
+.blog-card { background: #1d1d1d; }
+
+/* Related projects */
+html[data-theme="light"] .sus-related { background: var(--bg-page); }
+html[data-theme="light"] .sus-related-title { color: var(--text); }
+
+/* Initiatives */
+html[data-theme="light"] .sus-initiatives { background: var(--bg-page); }
+html[data-theme="light"] .sus-initiatives-title { color: var(--text); }
+html[data-theme="light"] .sus-initiatives-sub { color: var(--text-secondary); }
+html[data-theme="light"] .sus-init { color: var(--text); }
+html[data-theme="light"] .sus-init-name { color: var(--text); }
+html[data-theme="light"] .sus-init-client { color: var(--text-grey); }
+html[data-theme="light"] .sus-init-rule { background: var(--border); }
+
+/* Featured blogs — ground flips, the photo tiles do not */
+html[data-theme="light"] .blogs { background: var(--bg-elevated); }
+html[data-theme="light"] .blogs-title { color: var(--text); }
+html[data-theme="light"] .blogs-subtitle { color: var(--text-secondary); }
+
+/* Enquire */
+html[data-theme="light"] .enquire { background: var(--bg-page); }
+html[data-theme="light"] .enquire-eyebrow { color: var(--text-grey); }
+html[data-theme="light"] .enquire-title { color: var(--text); }
+html[data-theme="light"] .enquire-sub { color: var(--text-secondary); }
+html[data-theme="light"] .enquire-glow { opacity: 0.65; }
+/* enquire-glow.svg is a #444 skyline line drawing — far too heavy on white */
+html[data-theme="light"] .enquire-glow-img { opacity: 0.16; }
+
+html[data-theme="light"] .enquire-form {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  box-shadow: 0 18px 48px rgba(18, 18, 18, 0.08);
+}
+html[data-theme="light"] .enquire-form-title { color: var(--text); }
+html[data-theme="light"] .enquire-form-sub { color: var(--text-secondary); }
+html[data-theme="light"] .enquire-form-sub a { color: var(--text); }
+
+html[data-theme="light"] .enquire-fields input,
+html[data-theme="light"] .enquire-fields textarea {
+  background: #ffffff;
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+html[data-theme="light"] .enquire-fields input::placeholder,
+html[data-theme="light"] .enquire-fields textarea::placeholder {
+  color: var(--text-grey);
+}
+
+/* FAQ */
+html[data-theme="light"] .faq {
+  background: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-sunken) 100%);
+}
+html[data-theme="light"] .faq-eyebrow { color: var(--text-grey); }
+html[data-theme="light"] .faq-title { color: var(--text); }
+html[data-theme="light"] .faq-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
+html[data-theme="light"] .faq-item summary { color: var(--text); }
+/* faq-plus / faq-minus ship as stroke="white" */
+html[data-theme="light"] .faq-item summary img { filter: invert(1); }
+html[data-theme="light"] .faq-body { color: var(--text-secondary); }
+html[data-theme="light"] .faq-more { color: var(--text-secondary); }
+html[data-theme="light"] .faq-more a { color: var(--text); }
+
+
+/* ============================================================
+   FORM FIELDS — visible border + focus ring in BOTH themes
+   ============================================================ */
+
+.enquire-fields input:hover,
+.enquire-fields textarea:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.enquire-fields input:focus,
+.enquire-fields textarea:focus,
+.enquire-fields input:focus-visible,
+.enquire-fields textarea:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(246, 129, 33, 0.28);
+}
+
+.enquire-fields input:user-invalid,
+.enquire-fields textarea:user-invalid {
+  border-color: #e2574c;
+}
+
+html[data-theme="light"] .enquire-fields input:hover,
+html[data-theme="light"] .enquire-fields textarea:hover {
+  border-color: #9c9c9c;
+}
+
+html[data-theme="light"] .enquire-fields input:focus,
+html[data-theme="light"] .enquire-fields textarea:focus,
+html[data-theme="light"] .enquire-fields input:focus-visible,
+html[data-theme="light"] .enquire-fields textarea:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(246, 129, 33, 0.3);
+  background: #ffffff;
+}
+
+
+/* ============================================================
+   RESPONSIVE — related-projects rail + carousel controls
+   ============================================================ */
+
+@media (max-width: 1400px) {
+  .sus-related { padding: 72px 48px 64px; }
+  .sus-related-head { margin-bottom: 44px; }
+  .sus-related-title { font-size: clamp(30px, 3.4vw, 46.3px); line-height: 1.15; letter-spacing: -1.2px; }
+  .sus-proj-card { width: min(1087.582px, 82vw); height: auto; aspect-ratio: 1088 / 726; }
+}
+
+@media (max-width: 768px) {
+  .sus-related { padding: 48px 16px 56px; }
+  .sus-related-head { margin-bottom: 24px; gap: 16px; }
+  .sus-related-title { font-size: clamp(24px, 7vw, 32px) !important; letter-spacing: -0.6px; }
+
+  .sus-related-track {
+    gap: 16px;
+    /* keep the hidden scrollbar but let the rail be swiped and snap */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .sus-proj-card {
+    width: 86vw;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+    scroll-snap-align: start;
+  }
+
+  .sus-proj-glass { min-height: 0; padding: 12px 16px; }
+
+  .sus-proj-glass-inner { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+  .sus-proj-name { font-size: 17px; line-height: 1.2; }
+
+  .sus-proj-loc { font-size: 15px; line-height: 1.2; letter-spacing: 0.8px; white-space: normal; }
+
+  .sus-proj-arrow { top: 16px; right: 16px; width: 32px; height: 32px; }
+
+  /* carousel controls stay comfortably tappable */
+  .sus-nav {
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+  }
+
+  .sus-nav--prev { left: 10px; }
+  .sus-nav--next { right: 10px; }
+
+  .sus-pause {
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+  }
+
+  .faq { padding: 56px 16px 72px; }
+  .faq-inner { gap: 40px; }
+  .faq-title { font-size: clamp(24px, 7vw, 32px); }
+  .faq-eyebrow { font-size: 12px; letter-spacing: 2px; }
+  .faq-item summary { font-size: 16px; padding: 16px; gap: 12px; }
+  .faq-body { padding: 0 16px 16px; }
+  .faq-item[open] { min-height: 0; }
+
+  .enquire-fields input,
+  .enquire-fields textarea { max-width: 100%; }
+}
+
+@media (max-width: 390px) {
+  .sus-related { padding-left: 16px; padding-right: 16px; }
+  .sus-proj-card { width: 88vw; }
+}
+
+
+/* ============================================================
+   ENQUIRE — intermediate widths
+   .enquire-left is a hard 803px with flex-shrink:0 and .enquire has 430px of
+   horizontal padding, so the 576px form column was being crushed to 356px at
+   1700, 96px at 1440 and 68px from 1280 down — every width between the 1920
+   design and the 768 mobile block. Let the row breathe, then stack it.
+   ============================================================ */
+
+@media (max-width: 1919px) {
+  .enquire {
+    padding: 140px 6vw 160px;
+  }
+
+  .enquire-row {
+    gap: 64px;
+    align-items: flex-start;
+  }
+
+  .enquire-left {
+    width: auto;
+    flex: 1 1 460px;
+    min-width: 0;
+    gap: 120px;
+  }
+
+  .enquire-sub {
+    width: 100%;
+  }
+
+  .enquire-form-wrap {
+    flex: 0 1 576px;
+    min-width: 400px;
+  }
+
+  .enquire-form {
+    width: 100%;
+    height: auto;
+    min-height: 584px;
+  }
+
+  .enquire-title {
+    font-size: clamp(36px, 3.6vw, 64px);
+  }
+}
+
+@media (max-width: 1300px) {
+  .enquire {
+    padding: 96px 40px 120px;
+  }
+
+  .enquire-row {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .enquire-left {
+    width: 100%;
+    flex: 0 0 auto;
+    gap: 36px;
+  }
+
+  .enquire-form-wrap {
+    width: 100%;
+    flex: 0 0 auto;
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  .enquire-form {
+    max-width: 640px;
+    min-height: 0;
+  }
+
+  .enquire-fields input,
+  .enquire-fields textarea {
+    max-width: 100%;
+  }
+
+  .enquire-glow-img {
+    width: 58%;
+    bottom: -4%;
   }
 }

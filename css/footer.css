@@ -156,9 +156,6 @@
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  margin-top: -40px;
-  margin-left: calc(60% + 26px);
-  padding-bottom: 40px;
   font-family: "Fustat", sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -192,7 +189,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #737373;
+  color: #8f8a84;
   white-space: nowrap;
 }
 
@@ -288,7 +285,71 @@
     overflow-x: auto;
   }
 
-  .partners-collage {
-    width: 1920px;
+}
+
+/* Figma 2363:16356 -> 2363:16370 — Contact list itemSpacing is 16px */
+.footer-contact { display: flex; flex-direction: column; gap: 16px; }
+.footer-address div { max-width: 229px; }
+
+
+/* ============ LIGHT MODE — footer ============ */
+/* The footer stays dark in light mode: it anchors the bottom of the page and
+   keeps the site from ending in a second sheet of white. Every colour in the
+   block above is already a literal tuned for a dark ground, so light mode only
+   needs the surface — no text overrides, which is why there are none here. */
+html[data-theme="light"] .footer {
+  background: var(--bg-footer);
+  border-top: 1px solid var(--border);
+}
+
+/* ---- Mobile: bottom bar was 692px wide inside a 375px viewport and got clipped ---- */
+@media (max-width: 768px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .footer-bottom p { margin: 0; }
+  .footer-bottom a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 6px;
+  }
+  .footer-bottom p { line-height: 1.4; white-space: normal; }
+  .footer-bottom a { white-space: normal; }
+}
+
+
+/* ---- Touch targets: footer link lists were 20px tall ---- */
+@media (max-width: 900px) {
+  .footer-links a,
+  .footer-col a,
+  .footer-contact-row a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .footer-links li,
+  .footer-col li { margin: 0; }
+}
+
+
+/* Social pills are 46x35 per Figma — pad the anchor so the touch box clears 44px
+   without changing the visual pill size. */
+@media (max-width: 900px) {
+  .footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;          /* base rule pins it to 35px, absorbing the padding */
+    min-height: 44px;
+    padding: 5px 0;
+    margin: -5px 0;
   }
 }
+
+/* The footer ground is the warm ink #191817 in BOTH themes, so its accent text
+   keeps the bright accent — the darkened --accent-text is for light grounds only. */

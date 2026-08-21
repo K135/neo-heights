@@ -12,9 +12,13 @@ html {
   scroll-behavior: smooth;
 }
 
+html.lenis {
+  scroll-behavior: auto;
+}
+
 body {
-  background: #0a0a0a;
-  color: #fff;
+  background: var(--bg-body);
+  color: var(--text);
   font-family: "Fustat", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,7 +46,7 @@ button {
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  background: #1d1d1d;
+  background: var(--bg-page);
   overflow-x: clip;
 }
 
@@ -108,71 +112,6 @@ button {
 
 /* Header styles live in css/header.css — do not redefine here */
 .projects-page-spacer { display: none; }
-
-.logo {
-  width: 133px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50px 50px 0 0;
-  flex-shrink: 0;
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: #fff;
-  font-size: 20px;
-  line-height: 24px;
-  white-space: nowrap;
-  padding: 8px 16px;
-}
-
-.nav-item img {
-  width: 12px;
-  height: 12px;
-  transform: rotate(-90deg);
-  margin-left: 2px;
-}
-
-.theme-switch {
-  display: flex;
-  align-items: center;
-  gap: 5.336px;
-  width: 116.667px;
-  height: 50px;
-  padding: 5.336px;
-  background: #222;
-  border: 1px solid rgba(41, 41, 41, 0.75);
-  border-radius: 53.362px;
-  flex-shrink: 0;
-}
-
-.theme-toggle {
-  flex: 1;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 42.689px;
-  padding: 5.336px 10.67px;
-}
-
-.theme-toggle.active {
-  background: #000;
-}
-
-.theme-toggle img {
-  width: 20.37px;
-  height: 20.37px;
-}
 
 /* ——— Hero ——— */
 
@@ -545,25 +484,30 @@ body:has(.header.is-scrolled) .filters-bar {
 
 /* Grid-style rows with consistent 24px gaps */
 
+/* Figma 1611:14529 — text/image split is 546 / 1114 on a 1680 track, 20px gutter.
+   NOTE: flex-basis:0 cannot be used on the text cards — with box-sizing:border-box
+   the used basis is floored at their horizontal padding, which stole ~49px from the
+   image card in every split row. Explicit calc() bases keep the ratio exact. */
 .row-split {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   align-items: stretch;
 }
 
 .row-split .w-32 {
-  flex: 1 1 0;
+  flex: 0 0 calc((100% - 20px) * 0.3289);
   width: auto;
   min-width: 0;
 }
 
 .row-split .w-66 {
-  flex: 2 1 0;
+  flex: 0 0 calc((100% - 20px) * 0.6711);
   width: auto;
   min-width: 0;
 }
 
+/* Figma: three equal 544px columns with a 24px gutter. */
 .row-3 {
   display: flex;
   gap: 24px;
@@ -571,33 +515,30 @@ body:has(.header.is-scrolled) .filters-bar {
   align-items: stretch;
 }
 
-.row-3 .w-33 {
-  flex: 1 1 0;
-  width: auto;
-  min-width: 0;
-}
-
+.row-3 > .card,
+.row-3 .w-33,
 .row-3 .w-33b {
-  flex: 1 1 0;
+  flex: 0 0 calc((100% - 48px) / 3);
   width: auto;
   min-width: 0;
 }
 
+/* Figma: 1092 / 568 on a 1680 track, 20px gutter. */
 .row-wide-narrow {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   align-items: stretch;
 }
 
 .row-wide-narrow .w-65 {
-  flex: 1.9 1 0;
+  flex: 0 0 calc((100% - 20px) * 0.6578);
   width: auto;
   min-width: 0;
 }
 
 .row-wide-narrow .w-34 {
-  flex: 1 1 0;
+  flex: 0 0 calc((100% - 20px) * 0.3422);
   width: auto;
   min-width: 0;
 }
@@ -617,6 +558,53 @@ body:has(.header.is-scrolled) .filters-bar {
   flex: 1;
   width: auto;
   min-width: 0;
+}
+
+/* ——— Filtered state ———
+   js/site.js toggles .is-filtered on the grid and hides individual cards; without
+   this rule the bespoke masonry rows kept their fixed column bases and left holes.
+   While a filter is active the whole grid collapses to an even 3-up. */
+.project-grid.is-filtered {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.project-grid.is-filtered > .row,
+.project-grid.is-filtered > .row-tight,
+.project-grid.is-filtered > .row-split,
+.project-grid.is-filtered > .row-3,
+.project-grid.is-filtered > .row-wide-narrow,
+.project-grid.is-filtered > .row-fixed {
+  display: contents;
+}
+
+.project-grid.is-filtered .card {
+  flex: none;
+  width: auto;
+  min-width: 0;
+  height: 420px;
+}
+
+.project-grid.is-filtered .card-desc {
+  max-width: none;
+}
+
+/* The prose companion cards are layout partners for a specific photo card, not
+   projects in their own right — in the flattened filtered grid they read as
+   duplicates of the card next to them, so drop them while a filter is active. */
+.project-grid.is-filtered .card-text {
+  display: none;
+}
+
+.home-projects-empty {
+  grid-column: 1 / -1;
+  padding: 80px 0;
+  text-align: center;
+  font-family: "Fustat", sans-serif;
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* ——— Featured Blogs ——— */
@@ -813,96 +801,6 @@ body:has(.header.is-scrolled) .filters-bar {
   margin-bottom: 24px;
 }
 
-/* ——— Partners ——— */
-
-.partners {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  overflow: hidden;
-  background: #fff;
-}
-
-.partners-collage {
-  position: relative;
-  width: 1920px;
-  height: 320px;
-  margin: 0 auto;
-}
-
-.partners-collage img {
-  position: absolute;
-  object-fit: cover;
-}
-
-.p-970 {
-  left: 0;
-  top: 0;
-  width: 668px;
-  height: 320px;
-}
-
-.p-974 {
-  left: 669px;
-  top: 28px;
-  width: 282px;
-  height: 279px;
-}
-
-.p-101 {
-  left: 656px;
-  top: 0;
-  width: 1264px;
-  height: 320px;
-  z-index: 0;
-}
-
-.p-973 {
-  left: 983px;
-  top: 34px;
-  width: 254px;
-  height: 252px;
-  z-index: 1;
-}
-
-.p-972 {
-  left: 1275px;
-  top: 33px;
-  width: 256px;
-  height: 253px;
-  z-index: 1;
-}
-
-.p-3-wrap {
-  position: absolute;
-  left: 1574px;
-  top: 148px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.p-3 {
-  width: 300px;
-  height: 75px;
-  object-fit: cover;
-  border: 1.48px solid #fff;
-}
-
-.p-url {
-  margin-top: 10px;
-  background: #fff;
-  width: 222px;
-  text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-size: 19px;
-  letter-spacing: -0.19px;
-  color: #6b6b6b;
-  line-height: 1.4;
-  padding: 2px 0;
-}
-
 /* ——— Footer ——— */
 
 .footer {
@@ -1097,7 +995,7 @@ body:has(.header.is-scrolled) .filters-bar {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #737373;
+  color: #8f8a84;
   white-space: nowrap;
 }
 
@@ -1114,19 +1012,6 @@ body:has(.header.is-scrolled) .filters-bar {
 }
 
 @media (max-width: 1440px) {
-  .header {
-    padding: 18px 40px;
-  }
-
-  .nav {
-    gap: 8px;
-  }
-
-  .nav-item {
-    font-size: 16px;
-    padding: 8px 10px;
-  }
-
   .hero,
   .projects,
   .blogs {
@@ -1159,6 +1044,10 @@ body:has(.header.is-scrolled) .filters-bar {
   .row,
   .row-fixed {
     flex-wrap: wrap;
+  }
+
+  .project-grid.is-filtered {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .row-split .w-32,
@@ -1197,16 +1086,7 @@ body:has(.header.is-scrolled) .filters-bar {
     margin-left: 0;
   }
 
-  .partners {
-    height: auto;
-    overflow-x: auto;
-  }
-
-  .partners-collage {
-    width: 1920px;
-  }
 }
-
 
 .card-hit {
   position: absolute;
@@ -1240,6 +1120,10 @@ body:has(.header.is-scrolled) .filters-bar {
     font-size: clamp(28px, 8vw, 40px) !important;
     line-height: 1.15;
   }
+  /* Decorative blur — .hero clips it, but keep it inside the viewport box. */
+  .hero-glow {
+    width: min(623px, 100%);
+  }
   .hero-copy p {
     font-size: 14px;
     line-height: 1.55;
@@ -1248,6 +1132,7 @@ body:has(.header.is-scrolled) .filters-bar {
     padding: 40px 16px 64px;
     width: 100%;
     box-sizing: border-box;
+    gap: 32px;
   }
   .filters-bar {
     margin-left: -16px;
@@ -1264,10 +1149,13 @@ body:has(.header.is-scrolled) .filters-bar {
     width: 100%;
     padding: 0 16px;
   }
+  /* 44px minimum tap target on touch. */
   .filter {
     white-space: nowrap;
-    font-size: 12px;
-    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 13px 14px;
+    min-height: 44px;
   }
   .project-grid .row,
   .project-grid .row-split,
@@ -1279,10 +1167,70 @@ body:has(.header.is-scrolled) .filters-bar {
     gap: 16px;
     width: 100%;
   }
+  /* The stacked rows are column flex containers, so flex-basis:100% was sizing
+     these on the *block* axis and stretching every card to a share of the row
+     height. Width is set explicitly instead and the flex sizing is switched off. */
   .card, .w-half, .w-32, .w-66, .w-33, .w-33b, .w-65, .w-34, .w-620, .w-1032 {
     width: 100% !important;
     max-width: 100% !important;
-    flex: 1 1 100% !important;
+    flex: 0 0 auto !important;
+  }
+  .card {
+    height: 240px;
+  }
+  /* Prose companion cards are text — let them size to their content. */
+  .card-text {
+    height: auto;
+    padding: 24px 20px;
+    gap: 20px;
+  }
+  .card-text.simple {
+    padding: 24px 20px;
+  }
+  .card-text.simple .card-desc {
+    margin-bottom: 24px;
+  }
+  .card-text-title {
+    font-size: 20px;
+    line-height: 1.35;
+  }
+  /* A nowrap badge next to a flexible title collides at 375 — stack them. */
+  .card-text-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .card-desc {
+    font-size: 16px;
+    max-width: 100%;
+  }
+  .card-glass {
+    min-height: 0;
+    padding: 14px 16px;
+  }
+  .card-title {
+    font-size: 18px;
+  }
+  .card-loc {
+    font-size: 15px;
+    letter-spacing: 0.6px;
+  }
+  .badge-csr span {
+    font-size: 16px;
+    padding: 4px;
+  }
+  .card-arrow {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+  }
+  .project-grid.is-filtered {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .project-grid.is-filtered .card {
+    height: 240px;
   }
   .card-img {
     min-height: 240px;
@@ -1298,18 +1246,144 @@ body:has(.header.is-scrolled) .filters-bar {
     height: 400px;
     min-height: 400px;
   }
+  .blog-know {
+    padding-top: 20px;
+    min-height: 44px;
+  }
   .cta {
     width: calc(100% - 32px);
     margin: 0 16px;
     height: auto;
     padding: 48px 24px;
   }
-  .partners {
-    overflow: hidden;
-    height: 200px;
-  }
-  .partners-collage {
-    transform: scale(0.42);
-    transform-origin: left top;
-  }
 }
+
+/* ==========================================================================
+   Light theme — Projects listing
+   Reference: Figma light landing 1264:9007 (frames fl-04 / fl-05).
+   Rule of thumb from that frame: text bands flip to the light ground, while
+   anything sitting on photography (card glass plates) keeps its dark scrim and
+   white type, and the standalone prose "companion" cards stay dark on purpose.
+   The accent #f68121 is never themed.
+   ========================================================================== */
+
+/* --- Hero band ----------------------------------------------------------- */
+html[data-theme="light"] .hero {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 100%);
+}
+
+html[data-theme="light"] .hero-glow {
+  background: rgba(246, 129, 33, 0.28);
+  opacity: 0.6;
+}
+
+html[data-theme="light"] .hero-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .hero-copy {
+  color: var(--text-secondary);
+}
+
+/* --- Filter chips --------------------------------------------------------
+   The dark chips are white-on-white in the light theme, so they need a dark
+   translucent plate instead. Figma 1264:9007 (fl-04) marks the active chip with
+   a #f68121 hairline in the light frame — the dark frame has no such border, so
+   the border is added under the light theme only. */
+html[data-theme="light"] .filters-bar {
+  background: var(--bg-page);
+  border-bottom-color: var(--border);
+}
+
+html[data-theme="light"] .filter {
+  /* Opaque plates rather than washes, so contrast tooling can resolve the
+     ground each label actually sits on. */
+  background: var(--bg-sunken);
+  color: var(--text);
+  border: 1px solid transparent;
+}
+
+html[data-theme="light"] .filter:hover {
+  background: var(--border-strong);
+}
+
+html[data-theme="light"] .filter.active {
+  background: var(--bg-elevated);
+  border-color: #f68121;
+}
+
+/* --- Photo cards ---------------------------------------------------------
+   components.css flips .card-glass to a light plate with dark type. Over the
+   bright site photography that plate all but disappears and it contradicts the
+   light Figma frame, where the glass stays a dark scrim with white type. */
+html[data-theme="light"] .card-glass {
+  background: rgba(63, 63, 63, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="light"] .card-glass .card-glass-inner {
+  background: transparent;
+  border-color: transparent;
+}
+
+html[data-theme="light"] .card-glass .card-title,
+html[data-theme="light"] .card-glass .card-loc {
+  color: #fff;
+}
+
+html[data-theme="light"] .card-glass .card-loc.invisible {
+  color: transparent;
+}
+
+html[data-theme="light"] .card-img {
+  background: var(--bg-elevated);
+}
+
+/* --- Prose companion cards ----------------------------------------------
+   Figma 1264:9007 keeps these dark in the light theme; components.css was
+   recolouring only the type, leaving #121212 text on the #232323 card
+   (contrast 1.19 — invisible). Restore the whole dark card. */
+html[data-theme="light"] .card-text {
+  background: #232323;
+}
+
+html[data-theme="light"] .card-text .card-text-title {
+  color: #fff;
+}
+
+html[data-theme="light"] .card-text .card-desc {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+html[data-theme="light"] .card-text.simple .card-desc {
+  color: #fff;
+}
+
+html[data-theme="light"] .badge-area {
+  background: #494949;
+  color: #fff;
+}
+
+html[data-theme="light"] .badge-area.ghost {
+  background: transparent;
+  color: transparent;
+}
+
+html[data-theme="light"] .home-projects-empty {
+  color: var(--text-secondary);
+}
+
+/* --- Featured blogs band -------------------------------------------------
+   fl-10: the band sits on the sunken light grey, the photo cards are unchanged. */
+html[data-theme="light"] .blogs {
+  background: var(--bg-elevated);
+}
+
+html[data-theme="light"] .blogs-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .blogs-subtitle {
+  color: var(--text-secondary);
+}
+

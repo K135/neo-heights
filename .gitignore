@@ -1,4 +1,5 @@
 .DS_Store
+Thumbs.db
 *.log
 node_modules/
 .vscode/
@@ -7,3 +8,21 @@ qa-*.png
 current-*.png
 figma-*.png
 _qa-archive/
+
+# local MCP config (contains API token)
+.mcp.json
+.figma/
+
+# Local dev tooling only. The site is static (netlify.toml publishes "." with no
+# build step) and Lenis is vendored at js/vendor/, so nothing here is needed to
+# serve the site — committing package.json would make Netlify run an install.
+package.json
+package-lock.json
+
+# Scratch scripts and screenshot output used while checking layouts locally.
+_*.mjs
+_shots/
+_qa-shots/
+
+# Unused brand asset — not referenced by any page.
+assets/shared/brand-vajra-panels.png

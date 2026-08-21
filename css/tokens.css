@@ -6,6 +6,7 @@
   --bg-black: #010101;
   --bg-elevated: #121212;
   --accent: #f68121;
+  --accent-text: #f68121;
   --accent-dark: #e17100;
   --text: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.6);
@@ -26,15 +27,37 @@
 }
 
 html[data-theme="light"] {
-  --bg-page: #f5f5f5;
-  --bg-body: #ffffff;
-  --bg-footer: #f0f0f0;
-  --bg-black: #ffffff;
+  /* A warm paper ground rather than pure white: white is reserved for cards so
+     surfaces read as stacked layers instead of one flat sheet. Dark bands stay
+     dark in both themes to keep the page's vertical rhythm. */
+  --bg-page: #f6f3ef;
+  --bg-body: #f6f3ef;
   --bg-elevated: #ffffff;
-  --text: #111111;
-  --text-muted: rgba(0, 0, 0, 0.6);
-  --text-grey: #71717a;
-  --text-secondary: #525252;
-  --text-footer: #333333;
-  --border: #e5e5e5;
+  --bg-card: #ffffff;
+  --bg-sunken: #eae3da;
+  --bg-ink: #191817;
+  --bg-black: #191817;
+  --bg-footer: #191817;
+  --text: #1a1917;
+  --text-muted: rgba(26, 25, 23, 0.45);
+  --text-grey: #6c655c;
+  --text-secondary: #4c4741;
+  --text-footer: rgba(255, 255, 255, 0.72);
+  --border: #e4ddd3;
+  --border-strong: #cdc4b7;
+  --scrim: rgba(0, 0, 0, 0.05);
+  /* accent text only — buttons/fills keep #f68121 */
+  --accent-text: #b25000;
+  /* card lift, shared by every light-mode panel */
+  --card-shadow: 0 1px 2px rgba(30, 26, 20, 0.05), 0 10px 28px rgba(30, 26, 20, 0.06);
+}
+
+/* dark-mode counterparts for the tokens added above */
+:root {
+  --bg-card: #262626;
+  --bg-sunken: #0d0d0d;
+  --bg-ink: #010101;
+  --border-strong: #383737;
+  --scrim: rgba(255, 255, 255, 0.06);
+  --card-shadow: none;
 }

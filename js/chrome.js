@@ -3,6 +3,24 @@
   const a = (p) => depth + p;
   const img = (f) => a("assets/shared/" + f);
 
+  // Figma 2363:16360 / 16374 — break the address on the designed lines
+  // (was <br> after EVERY comma, which put one word per line)
+  const ADDRESS_BREAKS = [
+    "Achuth Square,",
+    "24th Main Rd,",
+    "HSR Layout,",
+    "Plot No. CP5A,",
+    "SIPCOT II",
+    "Opp to",
+  ];
+  function formatAddress(text) {
+    let out = text;
+    ADDRESS_BREAKS.forEach((frag) => {
+      out = out.split(frag + " ").join(frag + "<br />");
+    });
+    return out;
+  }
+
   const CONTACT = {
     phones: ["+91 9940217718", "+91 87546 05666", "+91 88700 33414"],
     emails: ["ceo@neoheights.com", "monalisa@neoheights.com", "marketing@neoheights.com"],
@@ -19,13 +37,20 @@
     },
   };
 
+  // Mega panel roster — row-major so the 2-up grid reads exactly as designed.
   const MEGA_PROJECTS = [
-    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html" },
-    { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html" },
-    { title: "Toyato Design Build canteen", loc: "BIDADI, KA", href: "projects/toyota.html" },
-    { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html" },
-    { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html" },
-    { title: "TATA Electronic", loc: "HOSUR", href: "projects/tata-rwh.html" },
+    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "ongoing" },
+    { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "ongoing" },
+    { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "ongoing" },
+    { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html", status: "ongoing" },
+    { title: "Toyato Design Build canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
+    { title: "TATA Electronic", loc: "HOSUR", href: "projects/tata-rwh.html", status: "ongoing" },
+    { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", status: "completed" },
+    { title: "Foxconn - Cinda", loc: "CHENNAI", href: "projects/foxconn.html", status: "completed" },
+    { title: "Advik Hi Tech Pvt. Ltd.", loc: "NARSAPURA, KA", href: "projects/advik-peb.html", status: "completed" },
+    { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", status: "completed" },
+    { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", status: "completed" },
+    { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", status: "completed" },
   ];
 
   const MEGA_SERVICES = [
@@ -52,7 +77,7 @@
   function megaProjectsPanel() {
     const cards = MEGA_PROJECTS.map(
       (p) => `
-      <a class="mega-project-item" href="${a(p.href)}">
+      <a class="mega-project-item" href="${a(p.href)}" data-status="${p.status}"${p.status === "ongoing" ? "" : " hidden"}>
         <span class="mega-project-title">${p.title}</span>
         <span class="mega-project-loc">${p.loc}</span>
       </a>`
@@ -62,6 +87,10 @@
   <div class="mega-grid">
     <div class="mega-col">
       <p class="mega-label">Projects</p>
+      <div class="mega-filters" data-mega-filters role="group" aria-label="Filter projects">
+        <button type="button" class="mega-filter is-active" data-mega-filter="ongoing" aria-pressed="true">On-going</button>
+        <button type="button" class="mega-filter" data-mega-filter="completed" aria-pressed="false">Completed</button>
+      </div>
       <div class="mega-projects-list">${cards}</div>
     </div>
     <div class="mega-col mega-col-explore">
@@ -77,7 +106,12 @@
   </div>
   <div class="mega-bottom">
     <div class="mega-bottom-copy">
-      <span class="mega-cta-icon" aria-hidden="true">→</span>
+      <span class="mega-cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false">
+          <rect x="3.5" y="8" width="4.5" height="9" rx="1.2" fill="#fff" />
+          <rect x="11.5" y="3" width="4.5" height="14" rx="1.2" fill="#fff" />
+        </svg>
+      </span>
       <p>Ready to kick off a project? <strong>Let's get in touch!</strong></p>
     </div>
     <a class="btn-primary mega-cta" href="${a("contact.html")}">
@@ -105,7 +139,12 @@
   </div>
   <div class="mega-bottom">
     <div class="mega-bottom-copy">
-      <span class="mega-cta-icon" aria-hidden="true">→</span>
+      <span class="mega-cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false">
+          <rect x="3.5" y="8" width="4.5" height="9" rx="1.2" fill="#fff" />
+          <rect x="11.5" y="3" width="4.5" height="14" rx="1.2" fill="#fff" />
+        </svg>
+      </span>
       <p>Need a delivery partner? <strong>Talk to our team.</strong></p>
     </div>
     <a class="btn-primary mega-cta" href="${a("contact.html")}">
@@ -231,20 +270,20 @@ ${skipLink()}
           </div>
           <div class="footer-contact-row footer-address">
             <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
-            <div><strong>Corporate Office :</strong><br />${CONTACT.corporate.replace(/, /g, ",<br />")}</div>
+            <div><strong>Corporate Office :</strong><br />${formatAddress(CONTACT.corporate)}</div>
+          </div>
+          <div class="footer-contact-row footer-address footer-headoffice">
+            <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
+            <div><strong>Head office :</strong><br />${formatAddress(CONTACT.headOffice)}</div>
           </div>
         </div>
       </div>
       <div class="footer-social">
-        <a href="${CONTACT.social.linkedin}" target="_blank" rel="noopener noreferrer"><img src="${img("social-1.svg")}" alt="LinkedIn" width="46" height="35" /></a>
-        <a href="${CONTACT.social.facebook}" target="_blank" rel="noopener noreferrer"><img src="${img("social-2.svg")}" alt="Facebook" width="46" height="35" /></a>
-        <a href="${CONTACT.social.instagram}" target="_blank" rel="noopener noreferrer"><img src="${img("social-3.svg")}" alt="Instagram" width="46" height="35" /></a>
+        <a href="${CONTACT.social.facebook}" target="_blank" rel="noopener noreferrer"><img src="${img("social-1.svg")}" alt="Facebook" width="46" height="35" /></a>
+        <a href="${CONTACT.social.twitter || CONTACT.social.x || "#"}" target="_blank" rel="noopener noreferrer"><img src="${img("social-2.svg")}" alt="X" width="46" height="35" /></a>
+        <a href="${CONTACT.social.linkedin}" target="_blank" rel="noopener noreferrer"><img src="${img("social-3.svg")}" alt="LinkedIn" width="46" height="35" /></a>
         <a href="${CONTACT.social.youtube}" target="_blank" rel="noopener noreferrer"><img src="${img("social-4.svg")}" alt="YouTube" width="46" height="35" /></a>
       </div>
-    </div>
-    <div class="footer-headoffice">
-      <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
-      <div><strong>Head office :</strong><br />${CONTACT.headOffice.replace(/, /g, ",<br />")}</div>
     </div>
   </div>
   <div class="footer-bottom">
@@ -275,9 +314,10 @@ ${skipLink()}
         });
         if (backdrop) backdrop.hidden = true;
         document.body.classList.remove("mega-open");
+        document.body.classList.remove("mega-hover");
       };
 
-      const openMega = (id) => {
+      const openMega = (id, viaHover) => {
         closeMega();
         const panel = panels[id];
         const trigger = triggers.find((t) => t.dataset.mega === id);
@@ -286,15 +326,101 @@ ${skipLink()}
         trigger.setAttribute("aria-expanded", "true");
         if (backdrop) backdrop.hidden = false;
         document.body.classList.add("mega-open");
+        // A hover-opened panel leaves the page clickable underneath; a click-opened
+        // one keeps the backdrop live so clicking away still dismisses it.
+        document.body.classList.toggle("mega-hover", !!viaHover);
+      };
+
+      // ——— Hover intent ———
+      // Fine pointers open the mega panels on hover. The grace timer keeps the panel
+      // alive while the cursor crosses the gap from trigger to panel; touch/coarse
+      // pointers and the mobile drawer stay click-only.
+      const hoverCapable = window.matchMedia("(hover: hover) and (pointer: fine)");
+      const canHover = () => hoverCapable.matches && window.innerWidth > 1100;
+      let hoverTimer = null;
+      const cancelClose = () => {
+        if (hoverTimer) {
+          clearTimeout(hoverTimer);
+          hoverTimer = null;
+        }
+      };
+      const scheduleClose = () => {
+        cancelClose();
+        hoverTimer = setTimeout(() => {
+          hoverTimer = null;
+          if (document.body.classList.contains("mega-hover")) closeMega();
+        }, 220);
       };
 
       triggers.forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.preventDefault();
+          cancelClose();
           const id = btn.dataset.mega;
           const open = btn.getAttribute("aria-expanded") === "true";
-          if (open) closeMega();
-          else openMega(id);
+          if (open && document.body.classList.contains("mega-hover")) {
+            // Hover only previewed it; the click pins it so it survives the pointer leaving.
+            document.body.classList.remove("mega-hover");
+          } else if (open) {
+            closeMega();
+          } else {
+            openMega(id);
+          }
+        });
+        btn.addEventListener("mouseenter", () => {
+          if (!canHover()) return;
+          cancelClose();
+          if (btn.getAttribute("aria-expanded") !== "true") openMega(btn.dataset.mega, true);
+        });
+        btn.addEventListener("mouseleave", () => {
+          if (!canHover()) return;
+          scheduleClose();
+        });
+        // Keyboard parity: tabbing onto the trigger reveals the same panel.
+        btn.addEventListener("focus", () => {
+          if (canHover() && btn.getAttribute("aria-expanded") !== "true") openMega(btn.dataset.mega, true);
+        });
+      });
+
+      Object.values(panels).forEach((panel) => {
+        if (!panel) return;
+        panel.addEventListener("mouseenter", cancelClose);
+        panel.addEventListener("mouseleave", () => {
+          if (!canHover()) return;
+          scheduleClose();
+        });
+      });
+
+      // Sliding off onto a plain nav link dismisses a hover-opened panel.
+      header.querySelectorAll(".nav-item:not(.nav-mega-trigger)").forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+          if (canHover() && document.body.classList.contains("mega-hover")) scheduleClose();
+        });
+      });
+
+      // Focus leaving the header closes a hover/focus-opened panel.
+      document.addEventListener("focusin", (e) => {
+        if (!document.body.classList.contains("mega-hover")) return;
+        if (!header.contains(e.target)) closeMega();
+      });
+
+      // Mega panel status tabs (On-going / Completed)
+      header.querySelectorAll("[data-mega-filters]").forEach((wrap) => {
+        const btns = [...wrap.querySelectorAll("[data-mega-filter]")];
+        const list = wrap.parentElement.querySelector(".mega-projects-list");
+        if (!list) return;
+        btns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const filter = btn.dataset.megaFilter;
+            btns.forEach((b) => {
+              const on = b === btn;
+              b.classList.toggle("is-active", on);
+              b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+            list.querySelectorAll("[data-status]").forEach((item) => {
+              item.hidden = item.dataset.status !== filter;
+            });
+          });
         });
       });
 
