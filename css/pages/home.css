@@ -42,6 +42,16 @@
   -webkit-backdrop-filter: none;
   border-bottom: 1px solid transparent;
   box-shadow: none;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+@media (max-width: 1100px) {
+  .page-home .header {
+    background: rgba(10, 10, 10, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .page-home .header.is-scrolled {
@@ -189,7 +199,7 @@
   width: 100%;
   font-family: Futura, "Trebuchet MS", "Fustat", Arial, sans-serif;
   font-weight: 500;
-  font-size: 76px;
+  font-size: 64px;
   line-height: 1;
   letter-spacing: -3px;
   color: #fff;
@@ -1145,7 +1155,7 @@
 }
 
 .home-filter.active {
-  background: rgba(255,255,255,0.19);
+  background: #f68121;
   font-weight: 600;
 }
 
@@ -2605,16 +2615,6 @@
     padding: 100px 16px 56px;
   }
 
-  .page-home .header {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .page-home .header .logo {
-    width: 72px;
-    height: 54px;
-  }
-
   .theme-switch {
     width: 84px;
     height: 36px;
@@ -2956,8 +2956,9 @@ html[data-theme="light"] .home-filter {
 }
 
 html[data-theme="light"] .home-filter.active {
-  background: var(--bg-elevated);
-  box-shadow: inset 0 0 0 1px var(--accent);
+  background: #f68121;
+  color: #fff;
+  box-shadow: none;
 }
 
 /* Figma keeps the project cards dark in light mode. components.css flips
@@ -3481,3 +3482,35 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
 /* Figma places AVTEC's untrimmed file at 118x28, which renders the actual mark
    ~69x7px — illegible. Trimmed and sized as a wordmark, in line with Volvo. */
 .home-trusted-track img[src*="trust-avtec"]     { height: 20px; }
+
+/* Home desktop logo is 126×101 with a 40px top radius. That rule is not
+   in a media query, so it was winning on every phone/tablet: the mark sat
+   101px tall in a 72px bar (and at 390px the radius was still 40px, so
+   the wordmark was cropped into a pill). Scale the same crop to the bar. */
+@media (max-width: 1100px) {
+  .page-home .header,
+  .page-home .header.is-scrolled {
+    left: 0;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    height: var(--header-height);
+    padding: 8px 16px;
+    overflow: hidden;
+  }
+
+  .page-home .header-logo {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  .page-home .header .logo,
+  .page-home .header.is-scrolled .logo {
+    width: 70px;
+    height: 56px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 22px 22px 0 0;
+  }
+}

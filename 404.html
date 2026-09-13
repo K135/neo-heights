@@ -7,7 +7,7 @@
   <meta name="description" content="The page you requested could not be found." />
   <meta name="robots" content="noindex" />
   <link rel="icon" href="assets/shared/favicon.ico" sizes="any" />
-  <link rel="stylesheet" href="css/main.css?v=9" />
+  <link rel="stylesheet" href="css/main.css?v=12" />
   <style>
     .nf {
       min-height: 60vh;
@@ -17,12 +17,18 @@
       justify-content: center;
       gap: 20px;
       padding: 120px 80px;
-      background: #111;
-      color: #fff;
+      background: var(--bg-page);
+      color: var(--text);
     }
     .nf h1 { font-size: clamp(40px, 6vw, 72px); }
-    .nf p { color: rgba(255,255,255,0.65); max-width: 520px; font-size: 18px; line-height: 1.6; }
-    .nf .home-eyebrow { color: rgba(255,255,255,0.72); }
+    .nf p { color: var(--text-secondary); max-width: 520px; font-size: 18px; line-height: 1.6; }
+    .nf .home-eyebrow { color: var(--text-muted); }
+    .nf-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nf-ghost {
+      background: transparent !important;
+      border: 1px solid var(--border-strong);
+      color: var(--text) !important;
+    }
     @media (max-width: 768px) { .nf { padding: 100px 24px; } }
   </style>
 </head>
@@ -33,17 +39,17 @@
       <p class="home-eyebrow" style="letter-spacing:3px;text-transform:uppercase">404</p>
       <h1>Page not found</h1>
       <p>The page you’re looking for doesn’t exist or may have moved. Head back home or contact our team.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="nf-actions">
         <a class="btn-primary" href="index.html"><span class="btn-label">Back to Home</span></a>
-        <a class="btn-primary" href="contact.html" style="background:transparent;border:1px solid #687781"><span class="btn-label">Contact</span></a>
+        <a class="btn-primary nf-ghost" href="contact.html"><span class="btn-label">Contact</span></a>
       </div>
     </section>
     <div data-nh-footer></div>
   </div>
   <script src="js/vendor/lenis.min.js?v=1"></script>
   <script src="js/smooth-scroll.js?v=1"></script>
-  <script src="js/chrome.js?v=3"></script>
-  <script src="js/site.js?v=8"></script>
+  <script src="js/chrome.js?v=8"></script>
+  <script src="js/site.js?v=12"></script>
   <script>NH.mount("404.html");</script>
 </body>
 </html>

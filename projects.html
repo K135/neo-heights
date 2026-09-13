@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600&family=Fustat:wght@400;500;600;700&family=Hubballi&family=Inter:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=9" />
-  <link rel="stylesheet" href="css/pages/projects.css?v=5" />
+  <link rel="stylesheet" href="css/main.css?v=12" />
+  <link rel="stylesheet" href="css/pages/projects.css?v=7" />
 </head>
 <body data-root="">
   <div class="page">
@@ -35,320 +35,428 @@
       </div>
     </section>
 
-    <!-- Filters + Project Grid -->
-    <section class="projects">
+    <!-- Status + project tiles -->
+    <section class="projects" id="projects-list">
       <div class="filters-bar">
-        <div class="filters" data-project-filters>
-          <button class="filter active" type="button" data-filter="all">All</button>
-          <button class="filter" type="button" data-filter="ongoing">On-going</button>
-          <button class="filter" type="button" data-filter="completed">Completed</button>
-          <button class="filter" type="button" data-filter="civil-peb">Civil, PEB, Interior &amp; MEP Works</button>
-          <button class="filter" type="button" data-filter="epc">EPC Contracts</button>
-          <button class="filter" type="button" data-filter="civil">Civil Engineering</button>
-          <button class="filter" type="button" data-filter="peb">EPC Pre-Engineered Building</button>
-          <button class="filter" type="button" data-filter="mep">MEP</button>
+        <div class="proj-switch" data-project-filters role="group" aria-label="Project status">
+          <button class="filter" type="button" data-filter="ongoing" aria-pressed="false">On-going</button>
+          <button class="filter active" type="button" data-filter="completed" aria-pressed="true">Completed</button>
         </div>
       </div>
-
-      <div class="project-grid">
-        <!-- Row 1: Volvo + Advik -->
-        <div class="row">
-          <article class="card card-img w-half" data-category="completed civil peb mep civil-peb">
-            <a class="card-hit" href="projects/volvo.html" aria-label="Volvo Trucks"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-volvo.png" alt="Volvo Trucks" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">Volvo Trucks</h3>
-                <span class="card-loc">Hoskote</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img blue-bg w-half" data-category="completed peb civil civil-peb">
-            <a class="card-hit" href="projects/advik-peb.html" aria-label="Advik"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-advik.png" alt="Advik Hi Tech Pvt. Ltd." decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">Advik Hi Tech Pvt. Ltd.,</h3>
-                <span class="card-loc">Narsapura, Ka</span>
-              </div>
-            </div>
-          </article>
+      <div class="proj-list" data-project-list>
+      <article class="proj-tile" data-category="ongoing">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-toyota.png" alt="Toyota Kirloskar Motor — Design Build Canteen" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
-
-        <!-- Row 2: Schaeffler text + image -->
-        <div class="row-split">
-          <article class="card card-text w-32" data-category="completed epc civil peb mep civil-peb">
-            <div class="card-text-head">
-              <h3 class="card-text-title">Schaeffler India Limited, Shoolagiri</h3>
-              <span class="badge-area">Area - 14,500 sq. m</span>
-            </div>
-            <p class="card-desc">Building a fully operational manufacturing facility involves a comprehensive scope that includes civil engineering, mechanical, electrical, and plumbing (MEP) systems. This project will encompass all necessary components to ensure a successful setup.</p>
-            <a class="link-accent" href="projects/schaeffler.html">
-              <span class="link-label">View More</span>
-              <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
-            </a>
-          </article>
-          <article class="card card-img w-66" data-category="completed epc civil peb mep civil-peb">
-            <a class="card-hit" href="projects/schaeffler.html" aria-label="Schaeffler"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-schaeffler.png" alt="SCHAEFFLER INDIA LIMITED" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">SCHAEFFLER INDIA LIMITED</h3>
-                <span class="card-loc">Shoolagiri</span>
-              </div>
-            </div>
-          </article>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">On-going</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Toyota Kirloskar Motor — Design Build Canteen</dd></div>
+            <div><dt>Built up area</dt><dd>4,526 sqm</dd></div>
+            <div><dt>Built config</dt><dd>G+1</dd></div>
+            <div><dt>Location</dt><dd>Bidadi, Bangalore</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/toyota.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
         </div>
-
-        <!-- Row 3: Tata + PEB Volvo + Learn More -->
-        <div class="row-3">
-          <article class="card card-img w-33" data-category="completed epc civil civil-peb">
-            <a class="card-hit" href="projects/tata-rwh.html" aria-label="Tata electronics"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-tata.png" alt="Tata electronics" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title upper">Tata electronics</h3>
-                <span class="card-loc">HOSUR</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img w-33" data-category="completed peb civil-peb">
-            <img loading="lazy" class="cover" src="assets/shared/proj-peb-volvo.png" alt="PEB Works VOLVO" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title upper">PEB Works VOLVO</h3>
-                <span class="card-loc">NARSAPURA</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-text simple w-33b" data-category="completed epc civil civil-peb">
-            <p class="card-desc">Executed as a turnkey EPC project, this facility integrates civil, structural, PEB, and MEP works to deliver a seamless, efficient, and future-ready industrial space tailored to client requirements.</p>
-            <a class="link-accent" href="projects/tata-rwh.html">
-              <span class="link-label">Learn More</span>
-              <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
-            </a>
-          </article>
+      </article>
+      <article class="proj-tile" data-category="ongoing">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-ge.png" alt="Wipro GE Healthcare — CT4 Construction" width="800" height="560" decoding="async" />
+        <img class="proj-tile-slide" src="assets/shared/proj-ge2.png" alt="Wipro GE Healthcare — CT4 Construction" width="800" height="560" decoding="async" loading="lazy" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
-
-        <!-- Row 4: GE + PCA -->
-        <div class="row-wide-narrow">
-          <article class="card card-img w-65" data-category="ongoing mep civil civil-peb">
-            <a class="card-hit" href="projects/ge-healthcare.html" aria-label="GE"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-ge.png" alt="GE Healthcare Wipro GE Healthcare" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">GE Healthcare / Wipro GE Healthcare</h3>
-                <span class="card-loc">Bengaluru Karnataka</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img blue-bg w-34" data-category="completed civil mep civil-peb">
-            <a class="card-hit" href="projects/pca.html" aria-label="PCA"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-pca.png" alt="PCA" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">PCA</h3>
-                <span class="card-loc">bengaluru</span>
-              </div>
-            </div>
-          </article>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">On-going</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Wipro GE Healthcare — CT4 Construction</dd></div>
+            <div><dt>Built up area</dt><dd>3,000 sqm</dd></div>
+            <div><dt>Built config</dt><dd>G+1</dd></div>
+            <div><dt>Location</dt><dd>Bengaluru, Karnataka</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/ge-healthcare.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
         </div>
-
-        <!-- Row 5: Toyota text + image -->
-        <div class="row-split">
-          <article class="card card-text w-32" data-category="ongoing civil peb mep civil-peb">
-            <div class="card-text-head">
-              <h3 class="card-text-title">Toyota</h3>
-              <span class="badge-area ghost">Area - 14,500 sq. m</span>
-            </div>
-            <p class="card-desc">Large-scale manufacturing campus construction for Toyota's Bengaluru facility. The project involves integrated civil structural works, PEB production sheds, and full MEP systems integration across a sprawling industrial campus.</p>
-            <a class="link-accent" href="projects/toyota.html">
-              <span class="link-label">View More</span>
-              <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
-            </a>
-          </article>
-          <article class="card card-img w-66" data-category="ongoing civil peb mep civil-peb">
-            <a class="card-hit" href="projects/toyota.html" aria-label="Toyota"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-toyota.png" alt="Toyota" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">Toyota</h3>
-                <span class="card-loc">bengaluru</span>
-              </div>
-            </div>
-          </article>
+      </article>
+      <article class="proj-tile" data-category="ongoing">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/explore-sakata.png" alt="Shimizu / Sakata India" width="800" height="560" decoding="async" />
+        <img class="proj-tile-slide" src="assets/pages/home/image78.png" alt="Shimizu / Sakata India" width="800" height="560" decoding="async" loading="lazy" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
-
-        <!-- Row 6: Vajra x2 + Learn More -->
-        <div class="row-3">
-          <article class="card card-img w-33" data-category="completed civil civil-peb">
-            <a class="card-hit" href="projects/vajra.html" aria-label="Vajra"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-vajra1.png" alt="Vajra towers" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title upper">Vajra towers</h3>
-                <span class="card-loc">HOSUR</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img w-33" data-category="completed civil civil-peb">
-            <img loading="lazy" class="cover" src="assets/shared/proj-vajra2.png" alt="Vajra towers" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title upper">Vajra towers</h3>
-                <span class="card-loc">Hosur</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-text simple w-33b" data-category="completed civil civil-peb">
-            <p class="card-desc">Neo Heights / Arul Group corporate head office building at SIPCOT II, Hosur. Multi-storey commercial building with a modern glass facade and night-illuminated exterior, fully operational.</p>
-            <a class="link-accent" href="projects/vajra.html">
-              <span class="link-label">Learn More</span>
-              <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
-            </a>
-          </article>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">On-going</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Shimizu / Sakata India</dd></div>
+            <div><dt>Built up area</dt><dd>Warehouse &amp; allied works</dd></div>
+            <div><dt>Built config</dt><dd>PEB + civil package</dd></div>
+            <div><dt>Location</dt><dd>Hosur / Doddaballapura</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, PEB, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/shimzu.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
         </div>
-
-        <!-- Row 7: GE2 + Foxconn -->
-        <div class="row-wide-narrow">
-          <article class="card card-img w-65" data-category="ongoing mep civil civil-peb">
-            <img loading="lazy" class="cover" src="assets/shared/proj-ge2.png" alt="GE Healthcare Wipro GE Healthcare" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">GE Healthcare / Wipro GE Healthcare</h3>
-                <span class="card-loc">Bengaluru Karnataka</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img blue-bg w-34" data-category="completed epc civil peb mep civil-peb">
-            <a class="card-hit" href="projects/foxconn.html" aria-label="Foxconn"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-foxconn.png" alt="Foxconn-Cinda" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">Foxconn-Cinda</h3>
-                <span class="card-loc">Chennai</span>
-              </div>
-            </div>
-          </article>
+      </article>
+      <article class="proj-tile" data-category="ongoing">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-wendt.png" alt="Faiveley Transport — CS Building" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
-
-        <!-- Row 8: LM Wind text + image -->
-        <div class="row-split">
-          <article class="card card-text w-32" data-category="completed epc civil peb civil-peb">
-            <div class="card-text-head">
-              <h3 class="card-text-title">LM Wind Power</h3>
-              <span class="badge-area ghost">Area - 14,500 sq. m</span>
-            </div>
-            <p class="card-desc">Wind blade manufacturing facility for LM Wind Power at Dobbaspet. Features a large-span, high-clearance PEB structure with integrated overhead bridge crane rails and full MEP systems.</p>
-            <a class="link-accent" href="projects/lm-wind.html">
-              <span class="link-label">View More</span>
-              <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
-            </a>
-          </article>
-          <article class="card card-img w-66" data-category="completed epc civil peb civil-peb">
-            <a class="card-hit" href="projects/lm-wind.html" aria-label="LM Wind"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-lmwind.png" alt="LM Wind Power (GE Renewable Energy)" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">LM Wind Power (GE Renewable Energy)</h3>
-                <span class="card-loc">Dobbaspet</span>
-              </div>
-            </div>
-          </article>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">On-going</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Faiveley Transport — CS Building</dd></div>
+            <div><dt>Built up area</dt><dd>CS building package</dd></div>
+            <div><dt>Built config</dt><dd>Industrial hall</dd></div>
+            <div><dt>Location</dt><dd>Hosur</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/faiveley.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
         </div>
-
-        <!-- Row 9: RWH x2 -->
-        <div class="row">
-          <article class="card card-img w-half" data-category="completed civil civil-peb">
-            <a class="card-hit" href="projects/tata-rwh.html" aria-label="Tata RWH"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-rwh1.png" alt="Tata Electronics. Rainwater Harvesting (RWH)" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">Tata Electronics. Rainwater Harvesting (RWH)</h3>
-                <span class="card-loc">DOBBASPET, KARNATAKA</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img blue-bg w-half" data-category="completed civil civil-peb">
-            <img loading="lazy" class="cover" src="assets/shared/proj-rwh2.png" alt="Tata Electronics. Rainwater Harvesting (RWH)" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">Tata Electronics. Rainwater Harvesting (RWH)</h3>
-                <span class="card-loc">DOBBASPET, KARNATAKA</span>
-              </div>
-            </div>
-          </article>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-schaeffler.png" alt="Schaeffler India Limited — Hall 01" width="800" height="560" decoding="async" />
+        <img class="proj-tile-slide" src="assets/pages/projects/schaeffler/gallery-1.png" alt="Schaeffler India Limited — Hall 01" width="800" height="560" decoding="async" loading="lazy" />
+        <img class="proj-tile-slide" src="assets/pages/projects/schaeffler/gallery-2.png" alt="Schaeffler India Limited — Hall 01" width="800" height="560" decoding="async" loading="lazy" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
-
-        <!-- Row 10: Wendt + Magnum -->
-        <div class="row-fixed">
-          <article class="card card-img w-620" data-category="completed epc civil mep civil-peb">
-            <a class="card-hit" href="projects/faiveley.html" aria-label="CS Building — Wendt / Faiveley"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-wendt.png" alt="CS Building — Wendt India" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">CS Building — Wendt India</h3>
-                <span class="card-loc">Hosur</span>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img w-1032" data-category="completed civil">
-            <img loading="lazy" class="cover" src="assets/shared/proj-magnum.png" alt="RCC Residential Building — Magnum" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">RCC Residential Building — Magnum</h3>
-                <span class="card-loc invisible">Chennai &amp;Bangalore</span>
-              </div>
-            </div>
-          </article>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Schaeffler India Limited — Hall 01</dd></div>
+            <div><dt>Built up area</dt><dd>14,500 sqm · 1,600 MT</dd></div>
+            <div><dt>Built config</dt><dd>G+1, 12 m</dd></div>
+            <div><dt>Location</dt><dd>Shoolagiri, Hosur</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, PEB, Interior, PHE, Electrical, HVAC, FPS</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/schaeffler.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
         </div>
-
-        <!-- Row 11: School CSR + Aster -->
-        <div class="row">
-          <article class="card card-img w-half" data-category="completed civil">
-            <img loading="lazy" class="cover" src="assets/shared/proj-school.png" alt="School Building CSR Project — for Schaeffler" decoding="async" />
-            <div class="badge-csr"><span>CSR Project</span></div>
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">School Building CSR Project — for Schaeffler</h3>
-              </div>
-            </div>
-          </article>
-          <article class="card card-img w-half" data-category="completed civil">
-            <img loading="lazy" class="cover" src="assets/shared/proj-aster.png" alt="RCC Residential Building — Aster" decoding="async" />
-            <div class="card-glass">
-              <div class="card-glass-inner">
-                <h3 class="card-title">RCC Residential Building — Aster</h3>
-              </div>
-            </div>
-          </article>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-advik.png" alt="Advik Hi-Tech Pvt. Ltd." width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
-
-        <!-- Linked remaining portfolio -->
-        <div class="row">
-          <article class="card card-img w-half" data-category="completed civil peb mep civil-peb">
-            <a class="card-hit" href="projects/shimzu.html" aria-label="Shimzu Sakata"></a>
-            <img loading="lazy" class="cover" src="assets/pages/home/image78.png" alt="Shimzu - Sakata" decoding="async" />
-            <div class="card-glass"><div class="card-glass-inner"><h3 class="card-title">SHIMZU - SAKATA</h3><span class="card-loc">Hosur / Doddaballapura</span></div></div>
-          </article>
-          <article class="card card-img blue-bg w-half" data-category="completed peb civil mep civil-peb">
-            <a class="card-hit" href="projects/apex.html" aria-label="Apex"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-pca.png" alt="Apex" decoding="async" />
-            <div class="card-glass"><div class="card-glass-inner"><h3 class="card-title">Apex</h3><span class="card-loc">India</span></div></div>
-          </article>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Advik Hi-Tech Pvt. Ltd.</dd></div>
+            <div><dt>Built up area</dt><dd>4,500 sqm + 7,260 sqm flooring</dd></div>
+            <div><dt>Built config</dt><dd>G+2, 8 m</dd></div>
+            <div><dt>Location</dt><dd>Narsapura, Karnataka</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/advik-peb.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
         </div>
-        <div class="row">
-          <article class="card card-img w-half" data-category="completed epc civil mep civil-peb">
-            <a class="card-hit" href="projects/wistron.html" aria-label="Wistron"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-foxconn.png" alt="Wistron" decoding="async" />
-            <div class="card-glass"><div class="card-glass-inner"><h3 class="card-title">Wistron</h3><span class="card-loc">India</span></div></div>
-          </article>
-          <article class="card card-img blue-bg w-half" data-category="completed peb civil mep civil-peb">
-            <a class="card-hit" href="projects/hindustan-peb.html" aria-label="Hindustan PEB"></a>
-            <img loading="lazy" class="cover" src="assets/shared/proj-peb-volvo.png" alt="Hindustan PEB" decoding="async" />
-            <div class="card-glass"><div class="card-glass-inner"><h3 class="card-title">Hindustan Foods — PEB</h3><span class="card-loc">India</span></div></div>
-          </article>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-tata.png" alt="Tata Electronics — Rainwater Harvesting" width="800" height="560" decoding="async" />
+        <img class="proj-tile-slide" src="assets/shared/proj-rwh1.png" alt="Tata Electronics — Rainwater Harvesting" width="800" height="560" decoding="async" loading="lazy" />
+        <img class="proj-tile-slide" src="assets/shared/proj-rwh2.png" alt="Tata Electronics — Rainwater Harvesting" width="800" height="560" decoding="async" loading="lazy" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
         </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Tata Electronics — Rainwater Harvesting</dd></div>
+            <div><dt>Built up area</dt><dd>13,500 sqm · 30,000 KL</dd></div>
+            <div><dt>Built config</dt><dd>Sump &amp; civil works</dd></div>
+            <div><dt>Location</dt><dd>Hosur</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/tata-rwh.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-volvo.png" alt="Volvo Trucks / Volvo CE" width="800" height="560" decoding="async" />
+        <img class="proj-tile-slide" src="assets/shared/proj-peb-volvo.png" alt="Volvo Trucks / Volvo CE" width="800" height="560" decoding="async" loading="lazy" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Volvo Trucks / Volvo CE</dd></div>
+            <div><dt>Built up area</dt><dd>Industrial facility works</dd></div>
+            <div><dt>Built config</dt><dd>Civil + PEB</dd></div>
+            <div><dt>Location</dt><dd>Hoskote / Narsapura</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, PEB, Interior, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/volvo.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-foxconn.png" alt="Foxconn / Cinda Engineering" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Foxconn / Cinda Engineering</dd></div>
+            <div><dt>Built up area</dt><dd>Road 16,000 sqm · Drain 1.6 km</dd></div>
+            <div><dt>Built config</dt><dd>Infrastructure</dd></div>
+            <div><dt>Location</dt><dd>Chennai</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil — trench, road &amp; drain</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/foxconn.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-lmwind.png" alt="LM Wind Power (GE Renewable Energy)" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>LM Wind Power (GE Renewable Energy)</dd></div>
+            <div><dt>Built up area</dt><dd>Manufacturing facility</dd></div>
+            <div><dt>Built config</dt><dd>Industrial hall</dd></div>
+            <div><dt>Location</dt><dd>Dobbaspet</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, PEB, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/lm-wind.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-vajra1.png" alt="Vajra Towers — Arul Group" width="800" height="560" decoding="async" />
+        <img class="proj-tile-slide" src="assets/shared/proj-vajra2.png" alt="Vajra Towers — Arul Group" width="800" height="560" decoding="async" loading="lazy" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Vajra Towers — Arul Group</dd></div>
+            <div><dt>Built up area</dt><dd>Multi-commercial building</dd></div>
+            <div><dt>Built config</dt><dd>Multi-storey</dd></div>
+            <div><dt>Location</dt><dd>SIPCOT II, Hosur</dd></div>
+            <div><dt>Category</dt><dd>Commercial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, facade &amp; interiors</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/vajra.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-pca.png" alt="PCA" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>PCA</dd></div>
+            <div><dt>Built up area</dt><dd>Facility works</dd></div>
+            <div><dt>Built config</dt><dd>Civil + MEP</dd></div>
+            <div><dt>Location</dt><dd>Bengaluru</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/pca.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-pca.png" alt="Apex" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Apex</dd></div>
+            <div><dt>Built up area</dt><dd>Industrial package</dd></div>
+            <div><dt>Built config</dt><dd>PEB + civil</dd></div>
+            <div><dt>Location</dt><dd>India</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, PEB, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/apex.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-foxconn.png" alt="Wistron" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Wistron</dd></div>
+            <div><dt>Built up area</dt><dd>Industrial package</dd></div>
+            <div><dt>Built config</dt><dd>EPC works</dd></div>
+            <div><dt>Location</dt><dd>India</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/wistron.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
+      <article class="proj-tile" data-category="completed">
+        <div class="proj-tile-media" data-proj-carousel>
+        <img class="proj-tile-slide is-active" src="assets/shared/proj-peb-volvo.png" alt="Hindustan Foods — PEB" width="800" height="560" decoding="async" />
+          <button type="button" class="proj-tile-nav proj-tile-nav-prev" data-proj-prev aria-label="Previous photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="proj-tile-nav proj-tile-nav-next" data-proj-next aria-label="Next photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="proj-tile-dots" data-proj-dots></div>
+        </div>
+        <div class="proj-tile-info">
+          <p class="proj-tile-status">Completed</p>
+          <dl class="proj-tile-dl">
+            <div><dt>Name</dt><dd>Hindustan Foods — PEB</dd></div>
+            <div><dt>Built up area</dt><dd>PEB production facility</dd></div>
+            <div><dt>Built config</dt><dd>PEB hall</dd></div>
+            <div><dt>Location</dt><dd>Coimbatore</dd></div>
+            <div><dt>Category</dt><dd>Industrial</dd></div>
+            <div><dt>Scope</dt><dd>Civil, PEB, MEP</dd></div>
+          </dl>
+          <a class="link-accent proj-tile-more" href="projects/hindustan-peb.html">
+            <span class="link-label">View project</span>
+            <img src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
+          </a>
+        </div>
+      </article>
       </div>
     </section>
 
@@ -439,8 +547,8 @@
   </div>
   <script src="js/vendor/lenis.min.js?v=1"></script>
   <script src="js/smooth-scroll.js?v=1"></script>
-  <script src="js/chrome.js?v=3"></script>
-  <script src="js/site.js?v=8"></script>
+  <script src="js/chrome.js?v=8"></script>
+  <script src="js/site.js?v=12"></script>
   <script>NH.mount("projects.html");</script>
 </body>
 </html>

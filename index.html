@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Fustat:wght@400;500;600;700&family=Hubballi&family=Inter:wght@400;700&family=Instrument+Sans:wght@500&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/pages/home/hero-bg.png" fetchpriority="high" />
-  <link rel="stylesheet" href="css/main.css?v=10" />
-  <link rel="stylesheet" href="css/pages/home.css?v=24" />
+  <link rel="stylesheet" href="css/main.css?v=12" />
+  <link rel="stylesheet" href="css/pages/home.css?v=26" />
 </head>
 <body data-root="" class="page-home">
   <div class="page">
@@ -190,7 +190,7 @@
         </article>
         <article class="home-stat-card" data-stat="2" tabindex="0">
           <p class="home-stat-num">20+</p>
-          <p class="home-stat-desc">Projects completed across commercial, residential, and industrial sectors.</p>
+          <p class="home-stat-desc">Projects completed across industrial, commercial, and residential sectors.</p>
           <span class="home-stat-glow" aria-hidden="true" style="--glow:#E0654F"></span>
           <div class="home-stat-panel">
             <div class="home-stat-tag-row"><p class="home-stat-tag">Projects</p></div>
@@ -338,11 +338,34 @@
       <div class="home-project-filters" data-project-filters>
         <button class="home-filter active" type="button" data-filter="ongoing" aria-pressed="true">On-going</button>
         <button class="home-filter" type="button" data-filter="completed" aria-pressed="false">Completed</button>
-        <button class="home-filter" type="button" data-filter="mep" aria-pressed="false">MEP</button>
       </div>
       <div class="project-grid">
         <div class="row-wide-narrow">
-          <article data-category="ongoing mep" class="card card-img w-65">
+          <article data-category="ongoing" class="card card-img w-65">
+            <a class="card-hit" href="projects/toyota.html" aria-label="Toyota Design Build Canteen"></a>
+            <img loading="lazy" class="cover" src="assets/shared/proj-toyota.png" alt="Toyota Kirloskar Motor" decoding="async" />
+            <img loading="lazy" class="card-arrow" src="assets/pages/home/circle-arrow-up-right.svg" alt="" width="48" height="48" decoding="async" />
+            <div class="card-glass">
+              <div class="card-glass-inner">
+                <h3 class="card-title">Toyota Design Build Canteen</h3>
+                <span class="card-loc font-hubballi">Bidadi, KA</span>
+              </div>
+            </div>
+          </article>
+          <article data-category="ongoing" class="card card-img blue-bg w-34">
+            <a class="card-hit" href="projects/ge-healthcare.html" aria-label="Wipro GE Healthcare"></a>
+            <img loading="lazy" class="cover" src="assets/shared/proj-ge.png" alt="Wipro GE Healthcare" decoding="async" />
+            <img loading="lazy" class="card-arrow" src="assets/pages/home/circle-arrow-up-right1.svg" alt="" width="48" height="48" decoding="async" />
+            <div class="card-glass">
+              <div class="card-glass-inner">
+                <h3 class="card-title">Wipro GE Healthcare</h3>
+                <span class="card-loc font-hubballi">Bengaluru</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="row-wide-narrow">
+          <article data-category="ongoing" class="card card-img w-65">
             <a class="card-hit" href="projects/shimzu.html" aria-label="SHIMZU - SAKATA"></a>
             <img loading="lazy" class="cover" src="assets/pages/home/image78.png" alt="SHIMZU - SAKATA" decoding="async" />
             <img loading="lazy" class="card-arrow" src="assets/pages/home/circle-arrow-up-right.svg" alt="" width="48" height="48" decoding="async" />
@@ -366,7 +389,7 @@
           </article>
         </div>
         <div class="row-split">
-          <article data-category="ongoing mep" class="card card-text w-32">
+          <article data-category="completed" class="card card-text w-32">
             <a class="card-hit" href="projects/schaeffler.html" aria-label="Schaeffler India Limited, Shoolagiri"></a>
             <div class="card-text-head">
               <h3 class="card-text-title">Schaeffler India Limited, Shoolagiri</h3>
@@ -378,7 +401,7 @@
               <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
             </span>
           </article>
-          <article data-category="ongoing mep" class="card card-img w-66">
+          <article data-category="completed" class="card card-img w-66">
             <a class="card-hit" href="projects/schaeffler.html" aria-label="SCHAEFFLER INDIA LIMITED"></a>
             <img loading="lazy" class="cover" src="assets/pages/home/image929.png" alt="SCHAEFFLER INDIA LIMITED" decoding="async" />
             <img loading="lazy" class="card-arrow" src="assets/pages/home/circle-arrow-up-right2.svg" alt="" width="48" height="48" decoding="async" />
@@ -430,7 +453,7 @@
       <div class="home-clients-glow" aria-hidden="true"></div>
       <div class="home-clients-copy">
         <p class="home-eyebrow">Clients</p>
-        <h2 class="home-section-title home-section-title-left">We collaborate with trusted brands in engineering and technology, valuing quality.</h2>
+        <h2 class="home-section-title home-section-title-left">We collaborate with trusted brands in engineering and technology.</h2>
       </div>
       <div class="home-client-logos">
         <div class="home-client-row">
@@ -747,13 +770,13 @@
             <img loading="lazy" src="assets/shared/icon-plus.svg" alt="" width="20" height="20" class="home-faq-icon" decoding="async" />
           </summary>
           <div class="home-faq-answer">
-            <p>Neo Heights Construction specializes in residential and commercial construction, including new builds, renovations, structural work, interior finishing, and project management from start to completion.</p>
+            <p>Neo Heights Builders and Promoters Pvt Ltd is an EPC contractor specializing in industrial, commercial and residential construction. We deliver end-to-end Design &amp; Build solutions, managing every stage of the project—from planning and engineering to procurement, construction, and project handover. Our expertise spans civil works, PEB structures, MEP services, interior fit-outs, and infrastructure development, ensuring quality, efficiency, and timely execution.</p>
             <p>You can request a quote by contacting us through our website or by phone.</p>
           </div>
         </details>
         <details class="home-faq-item">
           <summary>
-            <span>Do you handle both residential and commercial projects?</span>
+            <span>Do you handle industrial, commercial, and residential construction?</span>
             <img loading="lazy" src="assets/shared/icon-plus.svg" alt="" width="20" height="20" class="home-faq-icon" decoding="async" />
           </summary>
           <div class="home-faq-answer">
@@ -805,8 +828,8 @@
   </div>
   <script src="js/vendor/lenis.min.js?v=2"></script>
   <script src="js/smooth-scroll.js?v=2"></script>
-  <script src="js/chrome.js?v=4"></script>
-  <script src="js/site.js?v=9"></script>
+  <script src="js/chrome.js?v=8"></script>
+  <script src="js/site.js?v=12"></script>
   <script>NH.mount("index.html");</script>
 </body>
 </html>

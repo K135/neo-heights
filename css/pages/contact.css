@@ -192,6 +192,16 @@
   gap: 24px;
 }
 
+.ct-side-kicker {
+  margin: 0;
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #f68121;
+}
+
 .ct-side-item {
   display: flex;
   gap: 27px;
@@ -309,6 +319,16 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+
+.ct-office-kind {
+  margin: 0;
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #f68121;
 }
 
 .ct-office-name {

@@ -1,4 +1,12 @@
 (function () {
+  if (!document.getElementById("nh-nav-drawer-css")) {
+    const s = document.createElement("style");
+    s.id = "nh-nav-drawer-css";
+    s.textContent =
+      "@media (min-width: 1101px){.nav-overlay,.nav-drawer{display:none!important;visibility:hidden!important;pointer-events:none!important}}";
+    document.head.appendChild(s);
+  }
+
   const depth = document.body.dataset.root || "";
   const a = (p) => depth + p;
   const img = (f) => a("assets/shared/" + f);
@@ -8,6 +16,7 @@
   const ADDRESS_BREAKS = [
     "Achuth Square,",
     "24th Main Rd,",
+    "13th Cross Rd,",
     "HSR Layout,",
     "Plot No. CP5A,",
     "SIPCOT II",
@@ -26,7 +35,7 @@
     emails: ["ceo@neoheights.com", "monalisa@neoheights.com", "marketing@neoheights.com"],
     primaryEmail: "monalisa@neoheights.com",
     corporate:
-      "Achuth Square, First floor 1018/1, 24th Main Rd, 3th Cross Rd, 1st Sector, HSR Layout, Bengaluru, Karnataka 560102",
+      "Achuth Square, First floor 1018/1, 24th Main Rd, 13th Cross Rd, 1st Sector, HSR Layout, Bengaluru, Karnataka 560102",
     headOffice:
       "Plot No. CP5A, Vajra Tower, Second floor, SIPCOT II National Highway, Opp to Adiyaman College, Hosur 635109",
     social: {
@@ -39,18 +48,19 @@
 
   // Mega panel roster — row-major so the 2-up grid reads exactly as designed.
   const MEGA_PROJECTS = [
-    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "ongoing" },
+    { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
     { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "ongoing" },
     { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "ongoing" },
     { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html", status: "ongoing" },
-    { title: "Toyato Design Build canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
-    { title: "TATA Electronic", loc: "HOSUR", href: "projects/tata-rwh.html", status: "ongoing" },
+    { title: "GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", status: "ongoing" },
+    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "completed" },
     { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", status: "completed" },
     { title: "Foxconn - Cinda", loc: "CHENNAI", href: "projects/foxconn.html", status: "completed" },
     { title: "Advik Hi Tech Pvt. Ltd.", loc: "NARSAPURA, KA", href: "projects/advik-peb.html", status: "completed" },
     { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", status: "completed" },
     { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", status: "completed" },
     { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", status: "completed" },
+    { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "completed" },
   ];
 
   const MEGA_SERVICES = [
@@ -122,6 +132,119 @@
 </div>`;
   }
 
+  function currentLeaf() {
+    const parts = String(location.pathname || "").split("/").filter(Boolean);
+    return parts[parts.length - 1] || "index.html";
+  }
+
+  function leafOf(href) {
+    const parts = String(href).split("/").filter(Boolean);
+    return parts[parts.length - 1];
+  }
+
+  function drawerMarkup(active) {
+    const leaf = currentLeaf();
+    const onProjects =
+      String(active).startsWith("projects") || String(location.pathname).includes("/projects/");
+    const onServices =
+      String(active).startsWith("services") || String(location.pathname).includes("/services/");
+    const currentProject = MEGA_PROJECTS.find((p) => leafOf(p.href) === leaf);
+    const projectFilter = currentProject && currentProject.status === "completed" ? "completed" : "ongoing";
+
+    const drawerLink = (href, label) => {
+      const on = isNavCurrent(active, href) ? ' aria-current="page"' : "";
+      return `<a class="nav-drawer-link" href="${a(href)}"${on}><span>${label}</span></a>`;
+    };
+
+    const projectItems = MEGA_PROJECTS.map((p) => {
+      const current = leafOf(p.href) === leaf;
+      const hidden = p.status !== projectFilter ? " hidden" : "";
+      return `<a class="nav-drawer-sublink" href="${a(p.href)}" data-status="${p.status}"${current ? ' aria-current="page"' : ""}${hidden}>
+        <span class="nav-drawer-sub-title">${p.title}</span>
+        <span class="nav-drawer-sub-loc">${p.loc}</span>
+      </a>`;
+    }).join("");
+
+    const serviceItems = MEGA_SERVICES.map((s) => {
+      const current = leafOf(s.href) === leaf;
+      return `<a class="nav-drawer-sublink" href="${a(s.href)}"${current ? ' aria-current="page"' : ""}>
+        <span class="nav-drawer-sub-title">${s.title}</span>
+      </a>`;
+    }).join("");
+
+    const themeSwitch = `
+      <div class="theme-switch" role="group" aria-label="Color theme">
+        <button type="button" class="theme-toggle" data-theme-set="dark" aria-label="Dark mode" aria-pressed="true">
+          <img src="${img("moon.svg")}" alt="" width="20" height="20" />
+        </button>
+        <button type="button" class="theme-toggle" data-theme-set="light" aria-label="Light mode" aria-pressed="false">
+          <img src="${img("sun.svg")}" alt="" width="20" height="20" />
+        </button>
+      </div>`;
+
+    return `
+<button type="button" class="nav-overlay" data-nav-overlay aria-label="Close menu" hidden></button>
+<aside class="nav-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-labelledby="nav-drawer-title" aria-hidden="true" hidden>
+  <div class="nav-drawer-inner">
+    <div class="nav-drawer-head">
+      <p class="nav-drawer-kicker" id="nav-drawer-title">Menu</p>
+    </div>
+    <nav class="nav-drawer-nav" aria-label="Mobile">
+      ${drawerLink("index.html", "Home")}
+      ${drawerLink("about.html", "About us")}
+      <div class="nav-acc${onProjects ? " is-open" : ""}">
+        <button type="button" class="nav-acc-trigger" aria-expanded="${onProjects ? "true" : "false"}" aria-controls="drawer-projects">
+          <span>Projects</span>
+          <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-acc-panel" id="drawer-projects"${onProjects ? "" : " hidden"}>
+          <a class="nav-drawer-all" href="${a("projects.html")}"${leaf === "projects.html" ? ' aria-current="page"' : ""}>View all projects</a>
+          <div class="nav-drawer-filters" data-drawer-filters role="group" aria-label="Filter projects">
+            <button type="button" class="nav-drawer-filter${projectFilter === "ongoing" ? " is-active" : ""}" data-drawer-filter="ongoing" aria-pressed="${projectFilter === "ongoing" ? "true" : "false"}">On-going</button>
+            <button type="button" class="nav-drawer-filter${projectFilter === "completed" ? " is-active" : ""}" data-drawer-filter="completed" aria-pressed="${projectFilter === "completed" ? "true" : "false"}">Completed</button>
+          </div>
+          <div class="nav-drawer-list">${projectItems}</div>
+        </div>
+      </div>
+      <div class="nav-acc${onServices ? " is-open" : ""}">
+        <button type="button" class="nav-acc-trigger" aria-expanded="${onServices ? "true" : "false"}" aria-controls="drawer-services">
+          <span>Services</span>
+          <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-acc-panel" id="drawer-services"${onServices ? "" : " hidden"}>
+          <a class="nav-drawer-all" href="${a("services.html")}"${leaf === "services.html" ? ' aria-current="page"' : ""}>View all services</a>
+          <div class="nav-drawer-list">${serviceItems}</div>
+        </div>
+      </div>
+      ${drawerLink("sustainability.html", "Sustainability")}
+      ${drawerLink("blogs.html", "Newsroom")}
+      ${drawerLink("careers.html", "Careers")}
+    </nav>
+    <div class="nav-drawer-foot">
+      <a class="btn-primary nav-drawer-cta" href="${a("contact.html")}"${leaf === "contact.html" ? ' aria-current="page"' : ""}>
+        <span class="btn-label">Contact Us</span>
+        <img src="${img("arrow-btn.svg")}" alt="" width="24" height="24" />
+      </a>
+      <a class="nav-drawer-meta" href="tel:+919940217718">${CONTACT.phones[0]}</a>
+      <a class="nav-drawer-meta" href="mailto:${CONTACT.primaryEmail}">${CONTACT.primaryEmail}</a>
+      ${themeSwitch}
+    </div>
+  </div>
+</aside>`;
+  }
+
+  function isNavCurrent(active, href) {
+    return (
+      active === href ||
+      (href === "projects.html" && String(active).startsWith("projects")) ||
+      (href === "services.html" && String(active).startsWith("services"))
+    );
+  }
+
   function megaServicesPanel() {
     const cards = MEGA_SERVICES.map(
       (s) => `
@@ -163,8 +286,7 @@
       const isActive = (href) =>
         active === href ||
         (href === "projects.html" && String(active).startsWith("projects")) ||
-        (href === "services.html" && String(active).startsWith("services")) ||
-        (href === "about.html#team" && active === "about.html");
+        (href === "services.html" && String(active).startsWith("services"));
 
       const link = (href, label) => {
         const on = isActive(href) ? ' aria-current="page"' : "";
@@ -194,7 +316,7 @@ ${skipLink()}
     ${megaTrigger("services", "services.html", "Services")}
     ${link("sustainability.html", "Sustainability")}
     ${link("blogs.html", "Newsroom")}
-    ${link("about.html#team", "Team")}
+    ${link("careers.html", "Careers")}
     ${link("contact.html", "Contact")}
   </nav>
   <div class="header-actions">
@@ -206,14 +328,15 @@ ${skipLink()}
         <img src="${img("sun.svg")}" alt="" width="20" height="20" />
       </button>
     </div>
-    <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+    <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="mega-backdrop" hidden></div>
   ${megaProjectsPanel()}
   ${megaServicesPanel()}
-</header>`;
+</header>
+${drawerMarkup(active)}`;
     },
     footer() {
       const phones = CONTACT.phones.map((p) => `<span>${p}</span>`).join("");
@@ -237,6 +360,7 @@ ${skipLink()}
         <h4 class="footer-col-title">Quick Links</h4>
         <ul class="footer-links">
           <li><a href="${a("about.html")}">About Us</a></li>
+          <li><a href="${a("careers.html")}">Careers</a></li>
           <li><a href="${a("services.html")}">Services</a></li>
           <li><a href="${a("projects.html")}">Projects</a></li>
           <li><a href="${a("sustainability.html")}">Sustainability</a></li>
@@ -274,7 +398,7 @@ ${skipLink()}
           </div>
           <div class="footer-contact-row footer-address footer-headoffice">
             <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
-            <div><strong>Head office :</strong><br />${formatAddress(CONTACT.headOffice)}</div>
+            <div><strong>Head Office :</strong><br />${formatAddress(CONTACT.headOffice)}</div>
           </div>
         </div>
       </div>
@@ -287,7 +411,7 @@ ${skipLink()}
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Neo Heights. All rights reserved.</p>
+    <p>© 2025 Neo Heights Builders and Promoters Pvt Ltd. All rights reserved.</p>
     <p><a href="${a("terms.html")}">Terms &amp; Conditions</a> | <a href="${a("privacy.html")}">Privacy policy</a></p>
     <p>A part of the <span class="arul-link">Arul Group</span>.</p>
   </div>
@@ -304,7 +428,6 @@ ${skipLink()}
         projects: header.querySelector("#mega-projects"),
         services: header.querySelector("#mega-services"),
       };
-      const nav = header.querySelector("#primary-nav");
       const navToggle = header.querySelector(".nav-toggle");
 
       const closeMega = () => {
@@ -425,22 +548,124 @@ ${skipLink()}
       });
 
       if (backdrop) backdrop.addEventListener("click", closeMega);
+
+      const overlay = document.querySelector("[data-nav-overlay]");
+      const drawer = document.querySelector("#mobile-drawer");
+      let lastFocus = null;
+      const isMobileNav = () => window.matchMedia("(max-width: 1100px)").matches;
+      const syncDrawerSlot = () => {
+        if (!drawer) return;
+        if (isMobileNav()) {
+          drawer.hidden = false;
+        } else {
+          drawer.hidden = true;
+          if (overlay) overlay.hidden = true;
+          document.body.classList.remove("nav-open");
+          if (navToggle) {
+            navToggle.setAttribute("aria-expanded", "false");
+            navToggle.setAttribute("aria-label", "Open menu");
+          }
+        }
+      };
+
+      const drawerFocusables = () => {
+        if (!drawer) return [];
+        return [header.querySelector(".header-logo"), navToggle, ...drawer.querySelectorAll("a[href], button:not([disabled])")].filter(
+          (el) => el && !el.closest("[hidden]")
+        );
+      };
+
+      const setNavOpen = (open) => {
+        document.body.classList.toggle("nav-open", open);
+        if (navToggle) {
+          navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        }
+        if (overlay) overlay.hidden = !open;
+        if (drawer) {
+          drawer.setAttribute("aria-hidden", open ? "false" : "true");
+          if (open) drawer.removeAttribute("inert");
+          else drawer.setAttribute("inert", "");
+        }
+        if (open) {
+          lastFocus = document.activeElement;
+          closeMega();
+          const first = drawerFocusables().find((el) => el !== navToggle) || navToggle;
+          requestAnimationFrame(() => first && first.focus());
+        } else if (lastFocus && typeof lastFocus.focus === "function") {
+          lastFocus.focus();
+        }
+      };
+
+      if (navToggle) {
+        navToggle.addEventListener("click", () => {
+          setNavOpen(!document.body.classList.contains("nav-open"));
+        });
+      }
+      if (overlay) overlay.addEventListener("click", () => setNavOpen(false));
+
+      document.querySelectorAll(".nav-acc-trigger").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const acc = btn.closest(".nav-acc");
+          const panel = acc && acc.querySelector(".nav-acc-panel");
+          const open = btn.getAttribute("aria-expanded") === "true";
+          btn.setAttribute("aria-expanded", open ? "false" : "true");
+          if (acc) acc.classList.toggle("is-open", !open);
+          if (panel) panel.hidden = open;
+        });
+      });
+
+      document.querySelectorAll("[data-drawer-filters]").forEach((wrap) => {
+        const btns = [...wrap.querySelectorAll("[data-drawer-filter]")];
+        const list = wrap.parentElement.querySelector(".nav-drawer-list");
+        if (!list) return;
+        btns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const filter = btn.dataset.drawerFilter;
+            btns.forEach((b) => {
+              const on = b === btn;
+              b.classList.toggle("is-active", on);
+              b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+            list.querySelectorAll("[data-status]").forEach((item) => {
+              item.hidden = item.dataset.status !== filter;
+            });
+          });
+        });
+      });
+
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           closeMega();
-          document.body.classList.remove("nav-open");
-          if (navToggle) navToggle.setAttribute("aria-expanded", "false");
+          if (document.body.classList.contains("nav-open")) {
+            e.preventDefault();
+            setNavOpen(false);
+          }
+        }
+        if (e.key === "Tab" && document.body.classList.contains("nav-open")) {
+          const nodes = drawerFocusables();
+          if (!nodes.length) return;
+          const first = nodes[0];
+          const last = nodes[nodes.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
         }
       });
 
-      if (navToggle && nav) {
-        navToggle.addEventListener("click", () => {
-          const open = document.body.classList.toggle("nav-open");
-          navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-          navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-          closeMega();
-        });
-      }
+      window.addEventListener("resize", () => {
+        syncDrawerSlot();
+        if (!isMobileNav() && document.body.classList.contains("nav-open")) {
+          setNavOpen(false);
+        }
+      });
+      syncDrawerSlot();
+
+      if (drawer) drawer.setAttribute("inert", "");
 
       // Theme
       const applyTheme = (theme) => {
@@ -448,7 +673,7 @@ ${skipLink()}
         try {
           localStorage.setItem("nh-theme", theme);
         } catch (_) {}
-        header.querySelectorAll("[data-theme-set]").forEach((btn) => {
+        document.querySelectorAll("[data-theme-set]").forEach((btn) => {
           const on = btn.dataset.themeSet === theme;
           btn.classList.toggle("active", on);
           btn.setAttribute("aria-pressed", on ? "true" : "false");
@@ -459,7 +684,7 @@ ${skipLink()}
         saved = localStorage.getItem("nh-theme") || "dark";
       } catch (_) {}
       applyTheme(saved);
-      header.querySelectorAll("[data-theme-set]").forEach((btn) => {
+      document.querySelectorAll("[data-theme-set]").forEach((btn) => {
         btn.addEventListener("click", () => applyTheme(btn.dataset.themeSet));
       });
 
@@ -514,7 +739,7 @@ ${skipLink()}
       }
       // Ensure skip target
       if (!document.getElementById("main")) {
-        const target = document.querySelector(".page > section, .page .home-hero, .page .hero, .page .ct-hero, .page .terms-hero");
+        const target = document.querySelector(".page > section, .page .home-hero, .page .hero, .page .ct-hero, .page .terms-hero, .page .cr-hero");
         if (target) target.id = "main";
       }
       this.bindHeader();

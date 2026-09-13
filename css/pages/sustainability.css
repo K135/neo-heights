@@ -1097,7 +1097,7 @@
 @media (max-width: 768px) {
   .sus-hero,
   .sustain-hero {
-    padding: 100px 20px 48px !important;
+    padding: 100px 24px 48px !important;
     height: auto;
     min-height: 420px;
   }

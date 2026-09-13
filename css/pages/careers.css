@@ -1,0 +1,584 @@
+/* ——— Careers page ——— */
+
+.cr-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  padding: 122px 120px;
+  background: linear-gradient(180deg, #000 0%, #212121 100%);
+  overflow: hidden;
+  width: 100%;
+}
+
+.cr-hero-glow {
+  position: absolute;
+  left: 50%;
+  top: -246px;
+  transform: translateX(-50%);
+  width: 623px;
+  height: 257px;
+  background: rgba(224, 105, 0, 0.5);
+  border-radius: 200px;
+  filter: blur(300px);
+  pointer-events: none;
+}
+
+.cr-hero-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.cr-hero-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.cr-eyebrow {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #909090;
+}
+
+.cr-hero-title {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1.2;
+  color: #fff;
+  width: 799px;
+  max-width: 100%;
+  margin-top: 24px;
+}
+
+.cr-hero-right {
+  width: 755px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.cr-hero-copy {
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cr-note {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  text-transform: uppercase;
+  color: #bfc7d4;
+  position: relative;
+  z-index: 1;
+}
+
+.cr-note strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Openings */
+
+.cr-openings {
+  background: #161616;
+  padding: 112px 120px 0;
+  width: 100%;
+}
+
+.cr-openings-head {
+  max-width: 1015px;
+}
+
+.cr-openings-title {
+  font-family: "Fustat", sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 50px;
+  color: #fff;
+  margin-top: 24px;
+}
+
+.cr-openings-sub {
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 1015px;
+  margin-top: 32px;
+}
+
+.cr-jobs {
+  display: flex;
+  gap: 40px;
+  margin-top: 60px;
+  max-width: 1416px;
+}
+
+.cr-job {
+  width: 454px;
+  min-height: 500px;
+  height: auto;
+  background: #272727;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.cr-job:hover {
+  transform: translateY(-10px);
+  background: #2e2e2e;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+}
+
+.cr-job-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+}
+
+.cr-job-icon img {
+  width: 40px;
+  height: 40px;
+}
+
+.cr-job-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 99px;
+  background: rgba(255, 149, 61, 0.21);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #f68121;
+  margin-bottom: 11px;
+}
+
+.cr-job-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cr-job-body h3 {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28.8px;
+  letter-spacing: -1px;
+  color: #fff;
+  margin-bottom: 12px;
+  max-width: 394px;
+}
+
+.cr-job-body p {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 22.4px;
+  letter-spacing: -0.32px;
+  color: #cecece;
+  max-width: 377px;
+}
+
+.cr-job-apply {
+  margin-top: 24px;
+  align-self: flex-start;
+}
+
+.cr-form {
+  margin-top: 56px;
+  max-width: 845px;
+  background: rgba(19, 19, 19, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cr-form-title {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #fff;
+}
+
+.cr-form-sub {
+  font-family: "Fustat", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 640px;
+}
+
+.cr-form-sub a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.cr-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cr-field input,
+.cr-field select,
+.cr-field textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: "Fustat", sans-serif;
+  font-size: 18px;
+  color: #fff;
+  outline: none;
+}
+
+.cr-field input,
+.cr-field select {
+  height: 64px;
+}
+
+.cr-field textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 24px;
+}
+
+.cr-field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%23fff' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+.cr-field input::placeholder,
+.cr-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cr-field input:focus-visible,
+.cr-field select:focus-visible,
+.cr-field textarea:focus-visible {
+  border-color: #f68121;
+  box-shadow: 0 0 0 3px rgba(246, 129, 33, 0.28);
+}
+
+.cr-form .btn-primary {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.cr-form .nh-form-success {
+  margin: 0;
+  font-family: "Fustat", sans-serif;
+  font-size: 16px;
+  color: #f68121;
+}
+
+/* How to apply */
+
+.cr-apply {
+  background: #161616;
+  padding: 100px 120px 0;
+  width: 100%;
+  padding-bottom: 20px;
+  scroll-margin-top: calc(var(--header-height, 96px) + 16px);
+}
+
+.cr-apply-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #909090;
+}
+
+.cr-apply-title {
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 57px;
+  letter-spacing: -1px;
+  color: #fff;
+  max-width: 900px;
+  margin-top: 14px;
+}
+
+.cr-contact-row {
+  display: flex;
+  gap: 40px;
+  margin-top: 50px;
+  max-width: 1416px;
+}
+
+.cr-contact-card {
+  width: 454px;
+  height: 140px;
+  background: #272727;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.cr-contact-card:hover,
+.cr-contact-card:focus-visible {
+  background: #2e2e2e;
+  transform: translateY(-4px);
+}
+
+.cr-contact-card:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 3px;
+}
+
+.cr-contact-label {
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cr-contact-value {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 34px;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.cr-band.cta-wrap {
+  padding-top: 100px;
+  gap: 0;
+}
+
+@media (max-width: 1100px) {
+  .cr-hero,
+  .cr-openings,
+  .cr-apply {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cr-hero {
+    padding: 100px 20px 56px;
+    gap: 40px;
+    overflow-x: clip;
+  }
+
+  .cr-hero-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cr-hero-left,
+  .cr-hero-right,
+  .cr-hero-title,
+  .cr-hero-copy,
+  .cr-hero .btn-primary {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cr-hero-title {
+    font-size: clamp(28px, 8vw, 40px);
+    line-height: 1.15;
+  }
+
+  .cr-hero-copy {
+    font-size: 15px;
+  }
+
+  .cr-hero .btn-primary {
+    justify-content: center;
+  }
+
+  .cr-openings,
+  .cr-apply {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .cr-openings {
+    padding-top: 64px;
+  }
+
+  .cr-openings-title,
+  .cr-apply-title {
+    font-size: clamp(26px, 7vw, 36px);
+    line-height: 1.2;
+  }
+
+  .cr-jobs,
+  .cr-contact-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .cr-job,
+  .cr-contact-card {
+    width: 100%;
+  }
+
+  .cr-job {
+    height: auto;
+    min-height: 320px;
+  }
+
+  .cr-form {
+    padding: 24px 20px;
+  }
+
+  .cr-form .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cr-apply {
+    padding-top: 64px;
+  }
+
+  .cr-contact-value {
+    font-size: 20px;
+    line-height: 28px;
+    word-break: break-word;
+  }
+}
+
+/* Light mode — same tokens as About hero / method cards */
+html[data-theme="light"] .cr-hero {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-page) 100%);
+}
+
+html[data-theme="light"] .cr-hero-glow {
+  background: rgba(224, 105, 0, 0.4);
+}
+
+html[data-theme="light"] .cr-hero-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-hero-copy {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .cr-note {
+  color: var(--text-grey);
+}
+
+html[data-theme="light"] .cr-note strong {
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-openings,
+html[data-theme="light"] .cr-apply {
+  background: var(--bg-page);
+}
+
+html[data-theme="light"] .cr-openings-title,
+html[data-theme="light"] .cr-apply-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-openings-sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .cr-job,
+html[data-theme="light"] .cr-contact-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+html[data-theme="light"] .cr-job:hover,
+html[data-theme="light"] .cr-contact-card:hover,
+html[data-theme="light"] .cr-contact-card:focus-visible {
+  background: var(--bg-sunken);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .cr-job-icon img {
+  filter: invert(1);
+}
+
+html[data-theme="light"] .cr-job-body h3,
+html[data-theme="light"] .cr-contact-value {
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-job-body p,
+html[data-theme="light"] .cr-contact-label {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .cr-form {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .cr-form-title {
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-form-sub {
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .cr-form-sub a {
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-field input,
+html[data-theme="light"] .cr-field select,
+html[data-theme="light"] .cr-field textarea {
+  background: var(--bg-sunken);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+html[data-theme="light"] .cr-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%23111111' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}

@@ -4,6 +4,35 @@
       if (form.dataset.nhForm === "1") return;
       form.dataset.nhForm = "1";
 
+      const mailTo = (form.getAttribute("data-mail-to") || "").trim();
+      if (mailTo) {
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+          const fd = new FormData(form);
+          const lines = [];
+          fd.forEach((value, key) => {
+            if (key === "bot-field" || key === "form-name") return;
+            lines.push(`${key}: ${value}`);
+          });
+          const subject = encodeURIComponent(fd.get("role") ? `Career application — ${fd.get("role")}` : "Website enquiry");
+          const body = encodeURIComponent(lines.join("\n"));
+          window.location.href = `mailto:${mailTo}?subject=${subject}&body=${body}`;
+          let msg = form.querySelector(".nh-form-success");
+          if (!msg) {
+            msg = document.createElement("p");
+            msg.className = "nh-form-success";
+            msg.setAttribute("role", "status");
+            form.appendChild(msg);
+          }
+          msg.textContent = "Opening your email app to send this to " + mailTo + ". If nothing opens, write to that address directly.";
+        });
+        return;
+      }
+
       // Accessible required fields
       form.querySelectorAll('input[type="text"], input[name="name"]').forEach((el) => {
         el.required = true;
@@ -73,7 +102,7 @@
     const wrap = document.querySelector("[data-project-filters]");
     if (!wrap) return;
     const buttons = [...wrap.querySelectorAll("[data-filter]")];
-    const cards = [...document.querySelectorAll(".project-grid .card")];
+    const cards = [...document.querySelectorAll(".proj-tile, .project-grid .card")];
     cards.forEach((card) => {
       if (!card.dataset.category) {
         const t = (card.textContent || "").toLowerCase();
@@ -86,8 +115,10 @@
         card.dataset.category = cats.join(" ");
       }
     });
-    const grid = document.querySelector(".project-grid");
-    const rows = grid ? [...grid.children].filter((el) => !el.classList.contains("card")) : [];
+    const grid = document.querySelector("[data-project-list], .project-grid");
+    const rows = grid
+      ? [...grid.children].filter((el) => !el.classList.contains("card") && !el.classList.contains("proj-tile") && !el.classList.contains("home-projects-empty") && !el.classList.contains("proj-empty"))
+      : [];
 
     const apply = (f) => {
       let shown = 0;
@@ -99,10 +130,10 @@
       // the home grid is a bespoke masonry: hide rows that emptied out,
       // and flatten to an even 3-up while a filter is active
       rows.forEach((row) => {
-        const any = [...row.querySelectorAll(".card")].some((c) => c.style.display !== "none");
+        const any = [...row.querySelectorAll(".card, .proj-tile")].some((c) => c.style.display !== "none");
         row.style.display = any ? "" : "none";
       });
-      if (grid) grid.classList.toggle("is-filtered", f !== "all");
+      if (grid && grid.querySelector(".card")) grid.classList.toggle("is-filtered", f !== "all");
 
       let empty = grid && grid.querySelector(".home-projects-empty");
       if (grid && !shown) {
@@ -130,9 +161,88 @@
       });
     });
 
-    // honour whichever chip is marked active in the markup on load
-    const initial = buttons.find((b) => b.classList.contains("active"));
-    if (initial && initial.dataset.filter !== "all") apply(initial.dataset.filter);
+    const fromUrl = (new URLSearchParams(location.search).get("status") || "").toLowerCase();
+    const urlBtn = buttons.find((b) => b.dataset.filter === fromUrl);
+    const initial = urlBtn || buttons.find((b) => b.classList.contains("active"));
+    if (initial && initial.dataset.filter !== "all") {
+      buttons.forEach((b) => {
+        const on = b === initial;
+        b.classList.toggle("active", on);
+        if (b.hasAttribute("aria-pressed")) b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      apply(initial.dataset.filter);
+    }
+  }
+
+  function projectCarousels() {
+    document.querySelectorAll("[data-proj-carousel]").forEach((root) => {
+      const slides = [...root.querySelectorAll(".proj-tile-slide")];
+      const prev = root.querySelector("[data-proj-prev]");
+      const next = root.querySelector("[data-proj-next]");
+      const dotsWrap = root.querySelector("[data-proj-dots]");
+      if (slides.length < 2) {
+        if (prev) prev.hidden = true;
+        if (next) next.hidden = true;
+        if (dotsWrap) dotsWrap.hidden = true;
+        return;
+      }
+
+      let index = 0;
+      const dots = slides.map((_, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "proj-tile-dot";
+        b.setAttribute("aria-label", "Photo " + (i + 1));
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          go(i);
+        });
+        if (dotsWrap) dotsWrap.appendChild(b);
+        return b;
+      });
+
+      const go = (i) => {
+        index = ((i % slides.length) + slides.length) % slides.length;
+        slides.forEach((s, k) => s.classList.toggle("is-active", k === index));
+        dots.forEach((d, k) => d.classList.toggle("is-active", k === index));
+      };
+
+      if (prev) {
+        prev.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          go(index - 1);
+        });
+      }
+      if (next) {
+        next.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          go(index + 1);
+        });
+      }
+
+      let startX = 0;
+      root.addEventListener(
+        "touchstart",
+        (e) => {
+          startX = e.changedTouches[0].clientX;
+        },
+        { passive: true }
+      );
+      root.addEventListener(
+        "touchend",
+        (e) => {
+          const dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) < 40) return;
+          go(index + (dx < 0 ? 1 : -1));
+        },
+        { passive: true }
+      );
+
+      go(0);
+    });
   }
 
   function verticalsClose() {
@@ -625,9 +735,27 @@
     go(0);
   }
 
+  function inPageAnchors() {
+    document.querySelectorAll("[data-scroll-to]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = document.getElementById(btn.getAttribute("data-scroll-to"));
+        if (!target) return;
+        const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) || 96;
+        const offset = -(header + 12);
+        if (window.lenis && typeof window.lenis.scrollTo === "function") {
+          requestAnimationFrame(() => window.lenis.scrollTo(target, { offset }));
+        } else {
+          const top = target.getBoundingClientRect().top + window.scrollY + offset;
+          window.scrollTo({ top, behavior: "smooth" });
+        }
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     enhanceForms();
     projectFilters();
+    projectCarousels();
     verticalsClose();
     prioritizeHeroImages();
     processJourney();
@@ -639,5 +767,6 @@
     statCardTouch();
     homeHeroAudio();
     sustainabilityCarousel();
+    inPageAnchors();
   });
 })();

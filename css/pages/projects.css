@@ -245,8 +245,165 @@ body:has(.header.is-scrolled) .filters-bar {
 }
 
 .filter.active {
-  background: rgba(255, 255, 255, 0.19);
+  background: #f68121;
   font-weight: 600;
+}
+
+.proj-switch {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  padding: 0 120px;
+}
+
+.proj-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+}
+
+.proj-tile {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 0;
+  background: #272727;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 420px;
+}
+
+.proj-tile-media {
+  position: relative;
+  min-height: 420px;
+  background: #111;
+}
+
+.proj-tile-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.proj-tile-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.proj-tile-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.proj-tile-nav:hover,
+.proj-tile-nav:focus-visible {
+  background: #f68121;
+}
+
+.proj-tile-nav-prev { left: 16px; }
+.proj-tile-nav-next { right: 16px; }
+
+.proj-tile-nav[hidden],
+.proj-tile-dots[hidden] {
+  display: none !important;
+}
+
+.proj-tile-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.proj-tile-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0;
+}
+
+.proj-tile-dot.is-active {
+  background: #f68121;
+  width: 22px;
+  border-radius: 99px;
+}
+
+.proj-tile-info {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.proj-tile-status {
+  font-family: "Inter", "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #f68121;
+}
+
+.proj-tile-dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.proj-tile-dl > div {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+}
+
+.proj-tile-dl dt {
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.proj-tile-dl dd {
+  margin: 0;
+  font-family: "Fustat", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.proj-tile-more {
+  align-self: flex-start;
+}
+
+.filters-bar .proj-switch {
+  max-width: 1680px;
+  margin: 0 auto;
 }
 
 .project-grid {
@@ -1141,6 +1298,78 @@ html[data-theme="light"] .badge-area.ghost {
 
 html[data-theme="light"] .home-projects-empty {
   color: var(--text-secondary);
+}
+
+html[data-theme="light"] .proj-tile {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+html[data-theme="light"] .proj-tile-dl dt {
+  color: var(--text-grey);
+}
+
+html[data-theme="light"] .proj-tile-dl dd {
+  color: var(--text);
+}
+
+html[data-theme="light"] .filter.active {
+  background: #f68121;
+  color: #fff;
+  border-color: #f68121;
+}
+
+@media (max-width: 1100px) {
+  .proj-switch {
+    padding: 0 24px;
+  }
+
+  .proj-tile {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .proj-tile-media {
+    min-height: 280px;
+    aspect-ratio: 16 / 10;
+  }
+
+  .proj-tile-info {
+    padding: 24px 20px 28px;
+  }
+
+  .proj-tile-dl > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects {
+    padding: 0 20px 80px;
+    gap: 28px;
+  }
+
+  .filters-bar {
+    margin-left: -20px;
+    margin-right: -20px;
+    top: var(--header-height, 72px);
+  }
+
+  .proj-switch {
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .proj-switch .filter {
+    flex: 1;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .proj-tile-dl dd {
+    font-size: 16px;
+  }
 }
 
 /* --- Featured blogs band — light rules live in css/components.css (the band
