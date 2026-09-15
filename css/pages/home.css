@@ -307,12 +307,13 @@
   align-items: center;
   gap: 16.55px;
   padding: 15.17px 16.55px 16.55px;
-  background: rgba(10, 10, 10, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  /* Figma 2746:8328 ("v3") — 291.03 x 120.06, fill #131313 at 80%, radius 11.03.
+     No stroke and no drop shadow on the card in the design. */
+  background: rgba(19, 19, 19, 0.8);
+  border: 0;
+  border-radius: 11.03px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   overflow: visible;
   transform-origin: right bottom;
   transition:
@@ -1362,7 +1363,8 @@
   color: #fff;
 }
 
-.home-sustain-num span { color: #f68121; }
+/* Figma has the whole figure white — the "+" is not accented */
+.home-sustain-num span { color: inherit; }
 
 .home-sustain-cap {
   margin-top: 8px;
