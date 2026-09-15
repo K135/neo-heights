@@ -245,28 +245,6 @@
     });
   }
 
-  // The verticals strip loops forever: wrap the row in a clipping rail and
-  // clone the avatars once so a -50% translate lands back where it started.
-  function verticalsMarquee() {
-    document.querySelectorAll(".home-verticals-logos").forEach((row) => {
-      if (row.closest(".home-verticals-rail")) return;
-      const originals = [...row.children];
-      if (!originals.length) return;
-      const rail = document.createElement("div");
-      rail.className = "home-verticals-rail";
-      row.parentNode.insertBefore(rail, row);
-      rail.appendChild(row);
-      originals.forEach((node) => {
-        const copy = node.cloneNode(true);
-        copy.setAttribute("aria-hidden", "true");
-        copy.removeAttribute("role");
-        copy.tabIndex = -1;
-        row.appendChild(copy);
-      });
-      rail.classList.add("is-looping");
-    });
-  }
-
   function verticalsClose() {
     document.querySelectorAll(".home-verticals-close").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -889,7 +867,6 @@
     enhanceForms();
     projectFilters();
     projectCarousels();
-    verticalsMarquee();
     verticalsClose();
     prioritizeHeroImages();
     processJourney();

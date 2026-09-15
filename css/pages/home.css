@@ -371,42 +371,11 @@
   height: 50%;
 }
 
-/* Infinite marquee. site.js clones the avatar set once and flags the rail, so
-   translating the track by -50% loops seamlessly. */
-.home-verticals-rail {
-  width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
-}
-
 .home-verticals-logos {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
-}
-
-.home-verticals-rail .home-verticals-logos {
-  width: max-content;
-  min-width: 100%;
-}
-
-.home-verticals-rail.is-looping .home-verticals-logos {
-  animation: home-verticals-marquee 18s linear infinite;
-}
-
-.home-verticals-rail:hover .home-verticals-logos,
-.home-verticals-rail:focus-within .home-verticals-logos {
-  animation-play-state: paused;
-}
-
-@keyframes home-verticals-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-verticals-rail.is-looping .home-verticals-logos { animation: none; }
 }
 
 .home-vert-avatar {
@@ -415,7 +384,8 @@
   height: 44.14px;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-right: -16.55px;
+  /* no overlap — Figma spaces the five marks evenly across the row */
+  margin-right: 0;
   box-shadow: 0 0 0 1.38px #666;
   background: #222;
   overflow: visible;
@@ -644,15 +614,14 @@
 }
 
 .home-trusted-track img {
-  /* Every logo occupies an identical box and is contained inside it, so they all
-     read at the same size regardless of each mark's own proportions. Figma's
-     per-logo heights ran from 19.65px to 72.69px, which is why some looked tiny
-     next to others. Source files are trimmed to their ink, so "contain" fits the
-     artwork itself rather than any baked-in padding. */
+  /* One height for every mark, so they read at the same size regardless of each
+     logo's own proportions. Sources are trimmed to their ink, so the height is
+     the artwork itself, and centring then lines them all up on one axis. */
   display: block;
   flex: 0 0 auto;
-  width: 220px;
-  height: 72px;
+  width: auto;
+  height: 44px;
+  max-width: 240px;
   object-fit: contain;
   object-position: center;
   opacity: 1;
@@ -3693,23 +3662,3 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
   }
 }
 
-/* Area-normalised logo sizes: each mark is scaled so its VISIBLE artwork
-   covers a similar area, which is what makes them read as the same size.
-   A single uniform box does not achieve this - a thin wordmark and a square
-   mark fill the same box very differently. Derived from each file's trimmed
-   intrinsic ratio against a ~6200px2 target, clamped to the 220x72 slot. */
-.home-trusted-track img[src*="trust-apex"] { width: 58.0px; height: 72.0px; }
-.home-trusted-track img[src*="trust-ashok"] { width: 143.7px; height: 43.1px; }
-.home-trusted-track img[src*="trust-avtec"] { width: 160.7px; height: 38.6px; }
-.home-trusted-track img[src*="trust-cumi"] { width: 71.8px; height: 72.0px; }
-.home-trusted-track img[src*="trust-faiveley"] { width: 95.8px; height: 64.7px; }
-.home-trusted-track img[src*="trust-hindustan"] { width: 102.8px; height: 60.3px; }
-.home-trusted-track img[src*="trust-lmwind"] { width: 92.0px; height: 67.4px; }
-.home-trusted-track img[src*="trust-scania"] { width: 109.2px; height: 56.8px; }
-.home-trusted-track img[src*="trust-shimizu"] { width: 81.5px; height: 72.0px; }
-.home-trusted-track img[src*="trust-tvs"] { width: 115.5px; height: 53.7px; }
-.home-trusted-track img[src*="trust-voltas"] { width: 130.1px; height: 47.7px; }
-.home-trusted-track img[src*="trust-volvo"] { width: 210.5px; height: 29.4px; }
-.home-trusted-track img[src*="trust-wabtec"] { width: 132.2px; height: 46.9px; }
-.home-trusted-track img[src*="trust-wipro"] { width: 88.9px; height: 69.7px; }
-.home-trusted-track img[src*="trust-wistron"] { width: 190.7px; height: 32.5px; }
