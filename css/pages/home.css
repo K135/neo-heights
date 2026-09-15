@@ -625,7 +625,7 @@
   max-width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  height: 88px;
+  height: 96px;
   overflow: hidden;
   /* feather both ends so a logo leaving the viewport fades out instead of being
      sliced in half at the screen edge */
@@ -643,15 +643,17 @@
 }
 
 .home-trusted-track img {
-  /* Heights come from the HTML height attribute, which matches Figma's per-logo
-     sizes (687:19232). The source files were trimmed of baked-in transparent
-     padding — LM Wind carried 136px of dead space on its right edge, which read
-     as a double-width gap, and Faiveley/Ashok were rendering at a fraction of
-     their intended size because most of their box was padding. */
+  /* Every logo occupies an identical box and is contained inside it, so they all
+     read at the same size regardless of each mark's own proportions. Figma's
+     per-logo heights ran from 19.65px to 72.69px, which is why some looked tiny
+     next to others. Source files are trimmed to their ink, so "contain" fits the
+     artwork itself rather than any baked-in padding. */
   display: block;
   flex: 0 0 auto;
-  width: auto;
-  max-height: 73px;
+  width: 220px;
+  height: 72px;
+  object-fit: contain;
+  object-position: center;
   opacity: 1;
   filter: none;
 }
@@ -1289,16 +1291,19 @@
 }
 
 /* Sustainability banner */
+/* Figma 687:19591 — 1920x777 band. The CTA sits centred on its own (there is
+   no heading over the photo in the design) and the 96%/10+ stats are pinned to
+   the lower right at x=1423,y=558 in a 437x147 group, not centred underneath. */
 .home-sustain {
   position: relative;
-  height: 720px;
+  height: 777px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 40px;
+  gap: 24px;
 }
 
 .home-sustain-bg {
@@ -1307,12 +1312,16 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Figma frames this further right in the source so the lake sits left of
+     centre rather than tucked into the right edge */
+  object-position: 78% center;
 }
 
 .home-sustain-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  /* Figma uses 0.35, not 0.55 — ours was washing the photo out */
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .home-sustain-center,
@@ -1330,9 +1339,21 @@
   margin-bottom: 28px;
 }
 
+.home-sustain-cap {
+  max-width: 150px;
+}
+
 .home-sustain-stats {
+  /* pinned bottom-right per Figma (group at x=1423 of 1920, 60px from the right,
+     y=558 of 777), rather than centred below the button */
+  position: absolute;
+  left: auto;
+  right: clamp(24px, 3.125vw, 60px);
+  top: 71.8%;
   display: flex;
-  gap: 80px;
+  gap: 70px;
+  text-align: left;
+  z-index: 2;
 }
 
 .home-sustain-num {
@@ -1997,7 +2018,7 @@
   align-items: center;
   gap: 30px;
   color: #fff;
-  background: #121212;
+  background: #1d1d1d;
   padding: 100px 120px;
 }
 
@@ -2038,24 +2059,38 @@
 }
 
 .home-brand-wordmark {
+  /* Figma 687:19849 — one text block "NEO
+HEIGHTS", Plus Jakarta Sans 800 /
+     120px / 106px leading, with the gradient running across BOTH lines. We were
+     using Fustat 900 and gradienting only the second word. */
   margin: 0 0 24px;
-  font-family: "Fustat", sans-serif;
-  font-weight: 900;
-  font-size: 6.5rem;
-  line-height: 1.05;
-  color: #fff;
+  font-family: "Plus Jakarta Sans", "Fustat", sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.2rem, 8vw, 120px);
+  line-height: 0.883;
+  letter-spacing: 0;
+  /* handles (-0.007,0.024) -> (0.677,0.907) over an 850x212 box = 108deg */
+  background: linear-gradient(
+    108deg,
+    #ff3337 0%,
+    #f8ca53 31.8%,
+    #009a8f 53.2%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .home-brand-wordmark span {
   display: block;
 }
 
+/* the gradient now lives on the whole wordmark, so the second line needs no
+   treatment of its own */
 .home-brand-heights {
-  background: linear-gradient(120deg, #ff3337, #f8ca53, #009a8f, rgba(255, 255, 255, 0));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  background: none;
 }
 
 .home-brand-points {
@@ -2180,7 +2215,9 @@
    "NEED HELP?" block and the box under it were visibly two different greys. */
 .home-faq {
   color: #fff;
-  background: #1b1b1b;
+  /* Figma 687:19932 — darker at the top, fading back to the page ground. The
+     section above it has no fill, so it sits on the page's #1d1d1d. */
+  background: linear-gradient(180deg, #0d0d0d 0%, #1d1d1d 100%);
   padding: 100px 120px;
 }
 
@@ -2419,7 +2456,10 @@
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
-    overscroll-behavior-y: none;
+    /* `none` here blocked vertical scroll from chaining to the page, so a swipe
+       that started on a stat card could not scroll the page at all. */
+    overscroll-behavior-y: auto;
+    touch-action: pan-x pan-y;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
   }
@@ -3498,26 +3538,6 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
   }
 }
 
-/* Per-logo heights from Figma 687:19232. base.css sets `img{height:auto}`, which
-   outranks the HTML height attribute, so every PNG was rendering clamped at the
-   73px max-height instead of its designed size. */
-.home-trusted-track img[src*="trust-wistron"]   { height: 22.21px; }
-.home-trusted-track img[src*="trust-volvo"]     { height: 19.65px; }
-.home-trusted-track img[src*="trust-wabtec"]    { height: 38.77px; }
-.home-trusted-track img[src*="trust-voltas"]    { height: 32px; }
-.home-trusted-track img[src*="trust-tvs"]       { height: 35.23px; }
-.home-trusted-track img[src*="trust-faiveley"]  { height: 56.61px; }
-.home-trusted-track img[src*="trust-ashok"]     { height: 71.08px; }
-.home-trusted-track img[src*="trust-lmwind"]    { height: 63.08px; }
-.home-trusted-track img[src*="trust-hindustan"] { height: 72.69px; }
-.home-trusted-track img[src*="trust-wipro"]     { height: 69.19px; }
-.home-trusted-track img[src*="trust-scania"]    { height: 65.95px; }
-.home-trusted-track img[src*="trust-shimizu"]   { height: 65.43px; }
-.home-trusted-track img[src*="trust-cumi"]      { height: 56.91px; }
-.home-trusted-track img[src*="trust-apex"]      { height: 67.67px; }
-/* Figma places AVTEC's untrimmed file at 118x28, which renders the actual mark
-   ~69x7px — illegible. Trimmed and sized as a wordmark, in line with Volvo. */
-.home-trusted-track img[src*="trust-avtec"]     { height: 20px; }
 
 /* Home desktop logo is 126×101 with a 40px top radius. That rule is not
    in a media query, so it was winning on every phone/tablet: the mark sat
@@ -3670,3 +3690,24 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
     mask-image: none !important;
   }
 }
+
+/* Area-normalised logo sizes: each mark is scaled so its VISIBLE artwork
+   covers a similar area, which is what makes them read as the same size.
+   A single uniform box does not achieve this - a thin wordmark and a square
+   mark fill the same box very differently. Derived from each file's trimmed
+   intrinsic ratio against a ~6200px2 target, clamped to the 220x72 slot. */
+.home-trusted-track img[src*="trust-apex"] { width: 58.0px; height: 72.0px; }
+.home-trusted-track img[src*="trust-ashok"] { width: 143.7px; height: 43.1px; }
+.home-trusted-track img[src*="trust-avtec"] { width: 160.7px; height: 38.6px; }
+.home-trusted-track img[src*="trust-cumi"] { width: 71.8px; height: 72.0px; }
+.home-trusted-track img[src*="trust-faiveley"] { width: 95.8px; height: 64.7px; }
+.home-trusted-track img[src*="trust-hindustan"] { width: 102.8px; height: 60.3px; }
+.home-trusted-track img[src*="trust-lmwind"] { width: 92.0px; height: 67.4px; }
+.home-trusted-track img[src*="trust-scania"] { width: 109.2px; height: 56.8px; }
+.home-trusted-track img[src*="trust-shimizu"] { width: 81.5px; height: 72.0px; }
+.home-trusted-track img[src*="trust-tvs"] { width: 115.5px; height: 53.7px; }
+.home-trusted-track img[src*="trust-voltas"] { width: 130.1px; height: 47.7px; }
+.home-trusted-track img[src*="trust-volvo"] { width: 210.5px; height: 29.4px; }
+.home-trusted-track img[src*="trust-wabtec"] { width: 132.2px; height: 46.9px; }
+.home-trusted-track img[src*="trust-wipro"] { width: 88.9px; height: 69.7px; }
+.home-trusted-track img[src*="trust-wistron"] { width: 190.7px; height: 32.5px; }

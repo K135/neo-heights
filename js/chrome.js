@@ -185,7 +185,7 @@
     return `
 <button type="button" class="nav-overlay" data-nav-overlay aria-label="Close menu" hidden></button>
 <aside class="nav-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-labelledby="nav-drawer-title" aria-hidden="true" hidden>
-  <div class="nav-drawer-inner">
+  <div class="nav-drawer-inner" data-lenis-prevent>
     <div class="nav-drawer-head">
       <p class="nav-drawer-kicker" id="nav-drawer-title">Menu</p>
     </div>
@@ -584,6 +584,13 @@ ${drawerMarkup(active)}`;
 
       const setNavOpen = (open) => {
         document.body.classList.toggle("nav-open", open);
+        // Belt and braces: Lenis intercepts touchmove with preventDefault, which
+        // kills native scrolling inside the drawer. data-lenis-prevent on the
+        // scroller handles it, but stop Lenis outright while the menu is open so
+        // the drawer scrolls even if that attribute is ever lost.
+        try {
+          if (window.lenis) open ? window.lenis.stop() : window.lenis.start();
+        } catch (e) {}
         if (navToggle) {
           navToggle.setAttribute("aria-expanded", open ? "true" : "false");
           navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");

@@ -22,8 +22,10 @@
 .header {
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Runs edge to edge. It used to be capped at --max-page and centred, which
+     left 320px of bare page either side at 2560 and 760px at 3440. */
+  left: 0;
+  transform: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,7 +35,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   width: 100%;
-  max-width: var(--max-page);
+  max-width: none;
   z-index: 1000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   transition:
@@ -906,5 +908,35 @@ html[data-theme="light"] .nav-drawer {
   .mega-explore-loc {
     font-size: 14px;
     line-height: 1.4;
+  }
+}
+
+/* The header is 8% transparent, and the mega backdrop sits behind it at z-998,
+   so the dim bled THROUGH the header and read as a faded nav. Keep it fully
+   opaque while a panel is open. */
+body.mega-open .header,
+body.mega-hover .header,
+body.mega-open .page-home .header,
+body.mega-hover .page-home .header {
+  background: #1d1d1d;
+}
+html[data-theme="light"] body.mega-open .header,
+html[data-theme="light"] body.mega-hover .header,
+html[data-theme="light"] body.mega-open .page-home .header,
+html[data-theme="light"] body.mega-hover .page-home .header {
+  background: #ffffff;
+}
+
+/* Mobile drawer: `bottom:0` on a fixed element sits under the browser chrome on
+   real phones, so the tail of the menu was unreachable. Pin it to the dynamic
+   viewport and make the inner scroll reliably under touch. */
+@media (max-width: 1100px) {
+  .nav-drawer {
+    height: calc(100dvh - var(--header-height));
+    max-height: calc(100dvh - var(--header-height));
+  }
+  .nav-drawer-inner {
+    overscroll-behavior: contain;
+    touch-action: pan-y;
   }
 }
