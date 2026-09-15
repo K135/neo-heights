@@ -1616,3 +1616,178 @@ html[data-theme="light"] .sd-faq-more a {
 html[data-theme="light"] .sd-eyebrow {
   color: var(--text-grey);
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE RAIL ARROWS — service switcher
+   The switcher is a 7-up grid down to 1024px and a snap-scroller below it.
+   Swiping worked, but nothing said so, and on GC / Interiors the rail opens
+   part-scrolled with tiles hanging off both edges. These are the homepage
+   .home-stats-arrow controls, wired by js/pages/rails.js.
+   Hidden unless the rail actually overflows, so desktop is untouched.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.sd-rail-nav {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 16px 20px;
+  box-sizing: border-box;
+}
+
+.sd-rail-arrow {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f4f4;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.sd-rail-arrow svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.sd-rail-arrow:hover:not(:disabled) {
+  border-color: #f68121;
+  background: rgba(246, 129, 33, 0.14);
+  color: #f68121;
+}
+
+.sd-rail-arrow:active:not(:disabled) {
+  background: rgba(246, 129, 33, 0.22);
+}
+
+.sd-rail-arrow:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.sd-rail-arrow:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 3px;
+}
+
+html[data-theme="light"] .sd-rail-arrow {
+  border-color: var(--border-strong);
+  background: rgba(18, 18, 18, 0.04);
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .sd-rail-arrow:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(246, 129, 33, 0.12);
+  color: var(--accent);
+}
+
+@media (max-width: 1024px) {
+  .sd-hero.is-scrollable .sd-rail-nav {
+    display: flex;
+  }
+
+  /* The @1024 rail masks 40px off BOTH edges unconditionally, which greys
+     out the active tile when it is parked against a hard end (EPC first,
+     GC last). js/pages/rails.js flags which side still has hidden tiles. */
+  @supports (mask-image: linear-gradient(#000, #000)) {
+    .sd-svcnav {
+      --sd-fade-start: 0px;
+      --sd-fade-end: 0px;
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 var(--sd-fade-start),
+        #000 calc(100% - var(--sd-fade-end)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 var(--sd-fade-start),
+        #000 calc(100% - var(--sd-fade-end)),
+        transparent 100%
+      );
+    }
+
+    .sd-svcnav.rail-can-left {
+      --sd-fade-start: 40px;
+    }
+
+    .sd-svcnav.rail-can-right {
+      --sd-fade-end: 40px;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE LEGIBILITY / TOUCH (<= 768px)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* 13px breadcrumb was under the 14px floor, and "Home" was a 37x44 box. */
+  .sd-breadcrumb {
+    font-size: 14px;
+    padding: 6px 12px;
+    gap: 6px;
+    row-gap: 0;
+  }
+
+  .sd-breadcrumb a,
+  .sd-breadcrumb .current {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 4px;
+  }
+
+  /* 13px tile labels were under the 14px floor. */
+  .sd-svcnav-label {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  /* "View More" broke across two lines next to a two-line heading. */
+  .sd-featured-head {
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+  }
+
+  .sd-featured-head .link-accent {
+    flex-shrink: 0;
+  }
+
+  .sd-featured-head .link-label {
+    white-space: nowrap;
+  }
+
+  /* Inline mail / help-centre links were 23px tall. */
+  .sd-form .hint a,
+  .sd-faq-more a {
+    display: inline-block;
+    padding: 12px 4px;
+    margin: -12px -4px;
+  }
+}
+
+/* The services switcher feather costs 40px per side; at phone widths that is a
+   whole tile's worth of unreadable label. Run it edge to edge instead. */
+@media (max-width: 900px) {
+  .sd-svcnav {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+}

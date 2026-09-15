@@ -245,6 +245,28 @@
     });
   }
 
+  // The verticals strip loops forever: wrap the row in a clipping rail and
+  // clone the avatars once so a -50% translate lands back where it started.
+  function verticalsMarquee() {
+    document.querySelectorAll(".home-verticals-logos").forEach((row) => {
+      if (row.closest(".home-verticals-rail")) return;
+      const originals = [...row.children];
+      if (!originals.length) return;
+      const rail = document.createElement("div");
+      rail.className = "home-verticals-rail";
+      row.parentNode.insertBefore(rail, row);
+      rail.appendChild(row);
+      originals.forEach((node) => {
+        const copy = node.cloneNode(true);
+        copy.setAttribute("aria-hidden", "true");
+        copy.removeAttribute("role");
+        copy.tabIndex = -1;
+        row.appendChild(copy);
+      });
+      rail.classList.add("is-looping");
+    });
+  }
+
   function verticalsClose() {
     document.querySelectorAll(".home-verticals-close").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -752,10 +774,122 @@
     });
   }
 
+  // The partners band is one 1920-wide artwork. Below 900px css/components.css
+  // renders it at a legible 1200px inside a horizontal scroller, which was
+  // swipeable but had no affordance — at 375 it just looked like a logo with
+  // the address sliced off. Wrap it and give it the same prev/next control the
+  // homepage rails use. Runs on every page that renders the band; the nav only
+  // appears while the band actually overflows.
+  // On phones the band is rebuilt from per-company slices: Arul Group sits
+  // beside its address on the first row, and the four companies follow in a
+  // grid. Desktop keeps the original single-image band untouched.
+  function partnersBandGrid() {
+    const CELLS = [
+      { file: "group", alt: "Arul Group", cls: "is-group" },
+      { file: "address", alt: "Arul Group corporate office, B-5 SIDCO Industrial Estate, Krishnagiri Dist, Hosur 635 126, Tamil Nadu, India", cls: "is-address" },
+      { file: "rubbers", alt: "Arul Rubbers Private Limited — arulrubbers.com", cls: "" },
+      { file: "polymers", alt: "Arul Polymers Private Limited — arulpolymers.com", cls: "" },
+      { file: "neoheights", alt: "Neo Heights — neoheights.com", cls: "" },
+      { file: "vajra", alt: "Vajra Panels and The Neo Studio — theneostudio.com", cls: "" }
+    ];
+
+    document.querySelectorAll(".partners--band").forEach((band) => {
+      if (band.parentNode.querySelector(".partners-grid")) return;
+      const img = band.querySelector("img");
+      const base = img && img.getAttribute("src").indexOf("../") === 0 ? "../" : "";
+
+      const grid = document.createElement("div");
+      grid.className = "partners-grid";
+      CELLS.forEach((c) => {
+        const cell = document.createElement("span");
+        cell.className = "partners-cell " + c.cls;
+        if (c.file === "address") {
+          // Set as real text, not a slice: scaled into a ~178px column the
+          // address bitmap renders about 8px tall and is unreadable.
+          cell.innerHTML =
+            "Corporate Office : ARUL GROUP<br />B-5, SIDCO Industrial Estate<br />" +
+            "Krishnagiri Dist, Hosur - 635 126<br />Tamil Nadu, INDIA";
+        } else {
+          const i = document.createElement("img");
+          i.src = base + "assets/shared/band/" + c.file + ".png";
+          i.alt = c.alt;
+          i.loading = "lazy";
+          i.decoding = "async";
+          cell.appendChild(i);
+        }
+        grid.appendChild(cell);
+      });
+      band.parentNode.insertBefore(grid, band.nextSibling);
+    });
+  }
+
+  function partnersBandRail() {
+    const CHEVRON = {
+      "-1": '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11.25 3.75 6 9l5.25 5.25" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      1: '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M6.75 3.75 12 9l-5.25 5.25" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    };
+
+    document.querySelectorAll(".partners--band").forEach((band) => {
+      if (band.closest(".partners-rail")) return;
+
+      const wrap = document.createElement("div");
+      wrap.className = "partners-rail";
+      band.parentNode.insertBefore(wrap, band);
+
+      const nav = document.createElement("div");
+      nav.className = "partners-nav";
+      nav.setAttribute("role", "group");
+      nav.setAttribute("aria-label", "Scroll the Arul Group companies band");
+
+      const make = (dir, label) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "partners-arrow";
+        b.setAttribute("aria-label", label);
+        b.innerHTML = CHEVRON[dir];
+        b.addEventListener("click", () => go(dir));
+        nav.appendChild(b);
+        return b;
+      };
+
+      const prev = make(-1, "Previous companies");
+      const next = make(1, "Next companies");
+      wrap.appendChild(nav);
+      wrap.appendChild(band);
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const maxScroll = () => Math.max(0, band.scrollWidth - band.clientWidth);
+
+      function go(dir) {
+        if (maxScroll() <= 4) return;
+        band.scrollBy({
+          left: dir * Math.round(band.clientWidth * 0.8),
+          behavior: reduce ? "auto" : "smooth"
+        });
+      }
+
+      function sync() {
+        const max = maxScroll();
+        const can = max > 4;
+        wrap.classList.toggle("is-scrollable", can);
+        prev.disabled = !can || band.scrollLeft <= 2;
+        next.disabled = !can || band.scrollLeft >= max - 2;
+      }
+
+      band.addEventListener("scroll", sync, { passive: true });
+      window.addEventListener("resize", sync);
+      if (window.ResizeObserver) new ResizeObserver(sync).observe(band);
+      const art = band.querySelector("img");
+      if (art && !art.complete) art.addEventListener("load", sync, { once: true });
+      sync();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     enhanceForms();
     projectFilters();
     projectCarousels();
+    verticalsMarquee();
     verticalsClose();
     prioritizeHeroImages();
     processJourney();
@@ -768,5 +902,7 @@
     homeHeroAudio();
     sustainabilityCarousel();
     inPageAnchors();
+    partnersBandGrid();
+    partnersBandRail();
   });
 })();

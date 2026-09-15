@@ -1162,7 +1162,7 @@
   }
 
   .enquire {
-    padding: 64px 20px 80px !important;
+    padding: 64px 16px 80px !important;
   }
 
   .enquire-row {
@@ -1225,7 +1225,7 @@
 
 @media (max-width: 768px) {
   .sus-initiatives {
-    padding: 56px 20px 72px !important;
+    padding: 56px 16px 72px !important;
   }
 
   .sus-initiatives-inner {
@@ -1256,7 +1256,7 @@
   }
 
   .sus-init-client {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .sus-slide {
@@ -1467,8 +1467,21 @@ html[data-theme="light"] .enquire-fields textarea:focus-visible {
   .faq-body { padding: 0 16px 16px; }
   .faq-item[open] { min-height: 0; }
 
+  .faq-more a {
+    display: inline-block;
+    padding: 11px 2px;
+    margin: -11px -2px;
+  }
+
   .enquire-fields input,
   .enquire-fields textarea { max-width: 100%; }
+
+  /* inline mailto in a sentence — grow the hit box, not the line box */
+  .enquire-form-sub a {
+    display: inline-block;
+    padding: 11px 2px;
+    margin: -11px -2px;
+  }
 }
 
 @media (max-width: 390px) {

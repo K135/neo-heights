@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600&family=Fustat:wght@400;500;600;700&family=Hubballi&family=Instrument+Sans:wght@500&family=Inter:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=12" />
-  <link rel="stylesheet" href="css/pages/sustainability.css?v=2" />
+  <link rel="stylesheet" href="css/main.css?v=20" />
+  <link rel="stylesheet" href="css/pages/sustainability.css?v=3" />
 </head>
 <body data-root="">
   <div class="page">
@@ -62,7 +62,10 @@
           <img loading="lazy" src="assets/shared/arrow-accent.svg" alt="" width="24" height="24" decoding="async" />
         </a>
       </div>
-      <div class="sus-related-track">
+      <!-- data-rail-arrows: opt-in marker for the shared rail nav in js/site.js
+           (partnersBandRail). Inert until that function's selector is widened to
+           ".partners--band, [data-rail-arrows]" — see the handover note. -->
+      <div class="sus-related-track" data-rail-arrows>
         <article class="sus-proj-card">
           <img loading="lazy" class="cover" src="assets/pages/sustainability/proj-schaeffler.png" alt="SCHAEFFLER INDIA LIMITED" decoding="async" />
           <img loading="lazy" class="sus-proj-arrow" src="assets/pages/sustainability/circle-arrow.svg" alt="" width="48" height="48" decoding="async" />

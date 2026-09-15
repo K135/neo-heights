@@ -1324,12 +1324,25 @@ html[data-theme="light"] .filter.active {
     padding: 0 24px;
   }
 
+  /* `1fr` resolves to `minmax(auto, 1fr)`, so the auto MINIMUM let the media's
+     aspect-ratio win: `min-height:280px` + `16/10` asked for a 448px-wide box
+     and the single grid column grew to 448px inside a 335px tile. The tile's
+     own `overflow:hidden` hid the damage — the next arrow and the right third
+     of every photo and every `dd` value were clipped off on a phone.
+     `minmax(0, 1fr)` caps the track at the tile width; the aspect-ratio then
+     derives the height from the width instead of the other way round. */
   .proj-tile {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     min-height: 0;
   }
 
+  .proj-tile-media,
+  .proj-tile-info {
+    min-width: 0;
+  }
+
   .proj-tile-media {
+    width: 100%;
     min-height: 280px;
     aspect-ratio: 16 / 10;
   }
@@ -1342,7 +1355,64 @@ html[data-theme="light"] .filter.active {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+
+  .proj-tile-dl dd {
+    overflow-wrap: break-word;
+  }
 }
+
+/* Touch-target sizing for the tile carousels. Held one pixel below the
+   1100px desktop boundary so the signed-off >=1100px rendering is byte
+   identical; everything below it is a touch width. */
+@media (max-width: 1099.98px) {
+  /* ---- Carousel controls: 44x44 touch targets ----
+     The arrows go from 40 to 44. The dots keep their 8px / 22px pill visuals
+     but are drawn in a ::after so the button itself can be a transparent
+     44x44 hit box; `gap:0` keeps the row from growing past 132px (3 slides is
+     the maximum on this page) and the strip sits clear of the arrows, which
+     are vertically centred. */
+  .proj-tile-nav {
+    width: 44px;
+    height: 44px;
+  }
+
+  .proj-tile-nav-prev { left: 12px; }
+  .proj-tile-nav-next { right: 12px; }
+
+  .proj-tile-dots {
+    gap: 0;
+    bottom: 0;
+  }
+
+  .proj-tile-dot,
+  .proj-tile-dot.is-active {
+    width: 44px;
+    height: 44px;
+    border-radius: 0;
+    background: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .proj-tile-dot::after {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transition: width 0.25s ease, background-color 0.25s ease;
+  }
+
+  .proj-tile-dot.is-active::after {
+    width: 22px;
+    border-radius: 99px;
+    background: #f68121;
+  }
+}
+
 
 @media (max-width: 768px) {
   .projects {

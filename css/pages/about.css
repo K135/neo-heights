@@ -2224,7 +2224,7 @@ html[data-theme="light"] .ab-faq-more a {
   }
 
   .ab-legacy-quote span {
-    font-size: 13px;
+    font-size: 14px;
     padding-left: 30px;
   }
 
@@ -2288,10 +2288,16 @@ html[data-theme="light"] .ab-faq-more a {
   }
 
   /* — Journey: in a column flex container `flex: 1 1 968px` was read as a
-       968px flex-basis on the HEIGHT, so the black panel grew ~4x too tall. — */
+       968px flex-basis on the HEIGHT, so the black panel grew ~4x too tall.
+       The copy column has the same problem (`flex: 0 1 629px` on a 513px
+       stack), which left 116px of dead space above the black panel. — */
   .ab-journey-media {
     flex: none;
     width: 100%;
+  }
+
+  .ab-journey-left {
+    flex: none;
   }
 
   .ab-journey-left {
@@ -2422,3 +2428,154 @@ html[data-theme="light"] .ab-faq-more a {
   }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE RAILS — arrow controls for the client-logo strip and the team
+   roster. The client asked for the homepage pattern (.home-stats-arrow +
+   homeStatsCarousel) on every horizontal rail, because a swipe alone is
+   not discoverable. Geometry, disabled state and 44px hit box are copied
+   from .home-stats-arrow so the two pages read as one system.
+   Driven by js/pages/rails.js — the block only gets .is-scrollable while
+   the track actually overflows, so nothing shows at desktop widths.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ab-rail-nav {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
+.ab-rail-arrow {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f4f4;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.ab-rail-arrow svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.ab-rail-arrow:hover:not(:disabled) {
+  border-color: #f68121;
+  background: rgba(246, 129, 33, 0.14);
+  color: #f68121;
+}
+
+.ab-rail-arrow:active:not(:disabled) {
+  background: rgba(246, 129, 33, 0.22);
+}
+
+.ab-rail-arrow:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.ab-rail-arrow:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 3px;
+}
+
+html[data-theme="light"] .ab-team .ab-rail-arrow {
+  border-color: var(--border-strong);
+  background: rgba(18, 18, 18, 0.04);
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .ab-team .ab-rail-arrow:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(246, 129, 33, 0.12);
+  color: var(--accent);
+}
+
+/* The logo band stays dark in both themes (see the note above), so its
+   arrows keep the dark treatment in light mode too. */
+
+/* 1099.98 rather than 1100: the desktop layout is signed off down to and
+   including 1100px, so the arrows start one pixel below it. */
+@media (max-width: 1099.98px) {
+  .ab-logos.is-scrollable .ab-rail-nav,
+  .ab-team.is-scrollable .ab-rail-nav {
+    display: flex;
+  }
+
+  /* Centred inside the logo band, right-aligned over the team rail —
+     same placement the homepage uses for each. */
+  .ab-logos .ab-rail-nav {
+    justify-content: center;
+  }
+
+  .ab-team-nav {
+    margin-bottom: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* The roster was a 5-card wrapped column ~3100px tall on a 375 screen.
+     Desktop shows it as one horizontal row, so mobile keeps the row and
+     scrolls it — swipe plus the arrows above. */
+  .ab-team-grid {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 0;
+    gap: 16px;
+    padding-bottom: 4px;
+  }
+
+  .ab-member {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  /* A card narrower than the rail leaves the next one peeking, which is
+     what tells a thumb there is more to the right. */
+  .ab-member,
+  .ab-member-photo {
+    width: min(278px, calc(100vw - 96px));
+  }
+
+  .ab-logos .ab-rail-nav {
+    margin-top: 4px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE LEGIBILITY (<= 768px) — follow-ups
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* "Trusted by 100+ businesses" rendered at 12px, under the 14px floor —
+     and its 12px leading was shorter than the new type size. */
+  .ab-trusted-note,
+  .ab-trusted-note span,
+  .ab-trusted-note strong {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  /* Method-card category pills were 12px. */
+  .ab-method-pill {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

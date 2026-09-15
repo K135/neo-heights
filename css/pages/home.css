@@ -370,10 +370,42 @@
   height: 50%;
 }
 
+/* Infinite marquee. site.js clones the avatar set once and flags the rail, so
+   translating the track by -50% loops seamlessly. */
+.home-verticals-rail {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+}
+
 .home-verticals-logos {
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+.home-verticals-rail .home-verticals-logos {
+  width: max-content;
+  min-width: 100%;
+}
+
+.home-verticals-rail.is-looping .home-verticals-logos {
+  animation: home-verticals-marquee 18s linear infinite;
+}
+
+.home-verticals-rail:hover .home-verticals-logos,
+.home-verticals-rail:focus-within .home-verticals-logos {
+  animation-play-state: paused;
+}
+
+@keyframes home-verticals-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-verticals-rail.is-looping .home-verticals-logos { animation: none; }
 }
 
 .home-vert-avatar {
@@ -595,6 +627,10 @@
   margin-right: calc(50% - 50vw);
   height: 88px;
   overflow: hidden;
+  /* feather both ends so a logo leaving the viewport fades out instead of being
+     sliced in half at the screen edge */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
 }
 
 .home-trusted-track {
@@ -3512,5 +3548,125 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
     object-fit: cover;
     object-position: center;
     border-radius: 22px 22px 0 0;
+  }
+}
+
+
+/* ==========================================================================
+   MOBILE PASS — homepage
+   Everything below is scoped to <=768px (phones) and to .home-* selectors, so
+   desktop (>=1100px) and every other page are untouched.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* ---- Projects grid: the cards were rendering 0px tall ------------------
+     css/footer.css @1440 gives .w-65/.w-34/.w-33/... `flex: 1 1 100%`. Once
+     the shared 768 rule flips the rows to `flex-direction: column`, that
+     100% flex-basis is measured on the BLOCK axis against an indefinite row
+     height, which resolves to 0 — so every photo card collapsed and the whole
+     section rendered as a headline, a button and 250px of empty ground.
+     projects.html already carries this same fix locally; this is the homepage
+     copy of it, scoped so it cannot reach another page. */
+  .home-projects .project-grid .card {
+    flex: 0 0 auto;
+  }
+
+  .home-projects .project-grid .card:not(.card-text) {
+    /* same crop height the projects page uses for its stacked cards */
+    height: 240px;
+  }
+
+  .home-projects .project-grid .card.card-text {
+    height: auto;
+  }
+
+  .home-projects .project-grid .card-arrow {
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* ---- About Us stats rail: show that it scrolls ------------------------
+     The rail sat inside .home-about's 24px gutter PLUS its own 16px block
+     padding, and the card was `min(300px, 100%)` — i.e. exactly the rail's
+     own width, so no part of card 2 was ever visible and the rail read as a
+     single static card. Drop the block's side padding (the section gutter
+     already provides it) and leave ~40px of the next card showing, the same
+     affordance the Services and Team rails have. */
+  .home-stats-block {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .home-stat-card {
+    width: min(300px, calc(100vw - 100px));
+  }
+
+  /* ---- Team: 96px of dead ground between the intro and the rail --------
+     That margin is the desktop rhythm under a 1332px-wide intro block; on a
+     phone it reads as the section having ended. */
+  .home-team-intro {
+    margin-bottom: 32px;
+  }
+
+  /* ---- Inline links that were under the 44px touch minimum -------------- */
+  .home-form-sub a,
+  .home-faq-more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .home-faq-more a {
+    /* mid-sentence link: grow the hit box without moving the line */
+    min-height: 0;
+    padding: 12px 2px;
+    margin: -12px 0;
+  }
+}
+
+/* ---- Verticals marquee: make the loop seamless -------------------------
+   The avatars overlap by -16.55px, but `.home-vert-avatar:last-child` zeroes
+   that margin. Once site.js clones the set, the second half of the track is
+   16.55px wider than the first, so the -50% keyframe lands 16.55px short and
+   the strip visibly hitches once per cycle. Inside the marquee rail every
+   avatar keeps the same overlap, which makes the two halves identical. The
+   hover/focus state is excluded because it pauses the animation anyway. */
+.home-verticals-rail:not(:hover):not(:focus-within) .home-vert-avatar:last-child {
+  margin-right: -16.55px;
+}
+
+/* Below 375 the two hero CTAs no longer share a row, and `flex-wrap: wrap`
+   dropped "View Projects" onto a second line at its own narrow content width —
+   a ragged, accidental-looking break. Stack them to equal full width instead,
+   which is how the pair already behaves in the 768 block above 375 is lost. */
+@media (max-width: 374px) {
+  .home-hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .home-hero-ctas .btn-primary,
+  .home-hero-ctas .home-btn-glass,
+  .home-hero .home-btn-primary,
+  .home-hero .home-btn-glass {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+
+/* ---- No edge fades on phones -------------------------------------------
+   The rail feather is 96px per side. On a 375px screen that eats more than
+   half of each end card, so the copy under it is unreadable. Below 900px the
+   rails simply run edge to edge and clip hard instead. */
+@media (max-width: 900px) {
+  .rail-fade,
+  .home-verticals-rail,
+  .home-trusted-track-wrap {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
   }
 }

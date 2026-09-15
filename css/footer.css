@@ -353,3 +353,63 @@ html[data-theme="light"] .footer {
 
 /* The footer ground is the warm ink #191817 in BOTH themes, so its accent text
    keeps the bright accent — the darkened --accent-text is for light grounds only. */
+
+
+/* ==========================================================================
+   MOBILE PASS — footer
+   At 375 the footer was rendering 2344px tall: css/responsive.css collapsed
+   .footer-grid to one column, and the 44px touch targets above turned each
+   link list into a 7- and 8-item ladder with a 12px gap on top of that.
+   responsive.css now gives the grid two columns at <=768; these rules put the
+   blocks that need the full width back across both of them and take the slack
+   out of the link ladders. Nothing here applies above 768px, so every desktop
+   footer is byte-identical.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .footer-inner {
+    gap: 40px;
+    padding-top: 48px;
+  }
+
+  .footer-grid {
+    padding-bottom: 48px;
+    align-items: start;
+  }
+
+  /* brand blurb, the contact block and the social row read across the page;
+     only the two link lists sit side by side */
+  .footer-grid > .footer-brand,
+  .footer-grid > .footer-social,
+  .footer-grid > div:has(.footer-contact) {
+    grid-column: 1 / -1;
+  }
+
+  .footer-brand {
+    gap: 16px;
+  }
+
+  .footer-about {
+    max-width: 100%;
+  }
+
+  .footer-col-title {
+    margin-bottom: 4px;
+  }
+
+  /* the 44px tap target IS the row now — the extra 12px gap on top of it was
+     what stretched the lists */
+  .footer-links {
+    gap: 0;
+  }
+
+  .footer-links a {
+    width: 100%;
+    padding: 4px 0;
+    box-sizing: border-box;
+  }
+
+  .footer-social {
+    padding-top: 4px;
+  }
+}

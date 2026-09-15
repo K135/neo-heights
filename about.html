@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600&family=Fustat:wght@400;500;600;700&family=Hubballi&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=12" />
-  <link rel="stylesheet" href="css/pages/about.css?v=8" />
+  <link rel="stylesheet" href="css/main.css?v=20" />
+  <link rel="stylesheet" href="css/pages/about.css?v=9" />
 </head>
 <body data-root="">
   <div class="page">
@@ -74,9 +74,9 @@
     </section>
 
     <!-- Trusted logos -->
-    <section class="ab-logos">
+    <section class="ab-logos" data-rail-block>
       <p class="ab-logos-title">Trusted by Industry Leaders</p>
-      <div class="ab-logos-track" aria-label="Client logos">
+      <div class="ab-logos-track" aria-label="Client logos" data-rail>
         <span class="ab-logo-slot"><img loading="lazy" src="assets/pages/about/logo-wistron.svg" alt="Wistron" decoding="async" /></span>
         <span class="ab-logo-slot"><img loading="lazy" src="assets/pages/about/logo-volvo.svg" alt="Volvo" decoding="async" /></span>
         <span class="ab-logo-slot"><img loading="lazy" src="assets/pages/about/logo-wabtec.svg" alt="Wabtec" decoding="async" /></span>
@@ -92,6 +92,18 @@
         <span class="ab-logo-slot"><img loading="lazy" src="assets/pages/about/logo-carborundum.png" alt="Carborundum" decoding="async" /></span>
         <span class="ab-logo-slot"><img loading="lazy" src="assets/pages/about/logo-apex.png" alt="Apex" decoding="async" /></span>
         <span class="ab-logo-slot"><img loading="lazy" src="assets/pages/about/logo-avtec.png" alt="AVTEC" decoding="async" /></span>
+      </div>
+      <div class="ab-rail-nav" role="group" aria-label="Scroll client logos">
+        <button type="button" class="ab-rail-arrow" data-rail-prev aria-label="Previous logos">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false">
+            <path d="M11.25 3.75 6 9l5.25 5.25" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="ab-rail-arrow" data-rail-next aria-label="Next logos">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false">
+            <path d="M6.75 3.75 12 9l-5.25 5.25" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </section>
 
@@ -249,7 +261,7 @@
     </section>
 
     <!-- Team -->
-    <section class="ab-team" id="team">
+    <section class="ab-team" id="team" data-rail-block>
       <div class="ab-team-head">
         <p class="ab-eyebrow">Our Team</p>
         <h2>Meet Our Experts</h2>
@@ -263,8 +275,20 @@
           <p>Team of <strong>350+</strong> Experts</p>
         </div>
       </div>
-      <div class="ab-team-grid">
-        <article class="ab-member">
+      <div class="ab-rail-nav ab-team-nav" role="group" aria-label="Scroll team members">
+        <button type="button" class="ab-rail-arrow" data-rail-prev aria-label="Previous team members">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false">
+            <path d="M11.25 3.75 6 9l5.25 5.25" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="ab-rail-arrow" data-rail-next aria-label="Next team members">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false">
+            <path d="M6.75 3.75 12 9l-5.25 5.25" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="ab-team-grid" data-rail>
+        <article class="ab-member" data-rail-item>
           <div class="ab-member-photo"><img loading="lazy" src="assets/pages/about/team-arul.png?v=3" alt="Mr. Arul Vajravel" decoding="async" /></div>
           <div class="ab-member-meta">
             <div>
@@ -274,7 +298,7 @@
             <img loading="lazy" src="assets/pages/about/team-arrow.svg" alt="" width="21" height="21" decoding="async" />
           </div>
         </article>
-        <article class="ab-member">
+        <article class="ab-member" data-rail-item>
           <div class="ab-member-photo pink"><img loading="lazy" src="assets/pages/about/team-dinakaran.png?v=3" alt="Mr. Dinakaran L" decoding="async" /></div>
           <div class="ab-member-meta">
             <div>
@@ -284,7 +308,7 @@
             <img loading="lazy" src="assets/pages/about/team-arrow.svg" alt="" width="21" height="21" decoding="async" />
           </div>
         </article>
-        <article class="ab-member">
+        <article class="ab-member" data-rail-item>
           <div class="ab-member-photo coral"><img loading="lazy" src="assets/pages/about/team-xavier.png?v=3" alt="Mr Xavier" decoding="async" /></div>
           <div class="ab-member-meta">
             <div>
@@ -294,7 +318,7 @@
             <img loading="lazy" src="assets/pages/about/team-arrow.svg" alt="" width="21" height="21" decoding="async" />
           </div>
         </article>
-        <article class="ab-member">
+        <article class="ab-member" data-rail-item>
           <div class="ab-member-photo cream"><img loading="lazy" src="assets/pages/about/team-monalisa.png?v=3" alt="Mrs Monalisa" decoding="async" /></div>
           <div class="ab-member-meta">
             <div>
@@ -304,7 +328,7 @@
             <img loading="lazy" src="assets/pages/about/team-arrow.svg" alt="" width="21" height="21" decoding="async" />
           </div>
         </article>
-        <article class="ab-member">
+        <article class="ab-member" data-rail-item>
           <div class="ab-member-photo cream"><img loading="lazy" src="assets/pages/about/team-thirumalesh.png?v=3" alt="Mr. Thirumalesh" decoding="async" /></div>
           <div class="ab-member-meta">
             <div>
@@ -455,6 +479,7 @@
   <script src="js/smooth-scroll.js?v=1"></script>
   <script src="js/chrome.js?v=8"></script>
   <script src="js/site.js?v=12"></script>
+  <script src="js/pages/rails.js?v=1"></script>
   <script>NH.mount("about.html");</script>
 </body>
 </html>

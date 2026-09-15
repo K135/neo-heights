@@ -400,6 +400,83 @@
   color: #fff;
 }
 
+/* ---- Related rail arrows ----------------------------------------------
+   The desktop frame has no arrows on this rail (signed off), so the nav is
+   hidden above 1100px and only appears on the touch widths, where a rail with
+   no visible affordance reads as a dead crop. Styling mirrors the homepage
+   .home-stats-arrow so the two rails feel like one control. The `is-scrollable`
+   class is set by the page script only when the track actually overflows. */
+.pd-rel-nav {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.pd-rel-arrow {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f4f4;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.pd-rel-arrow svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.pd-rel-arrow:hover:not(:disabled) {
+  border-color: #f68121;
+  background: rgba(246, 129, 33, 0.14);
+  color: #f68121;
+}
+
+.pd-rel-arrow:active:not(:disabled) {
+  background: rgba(246, 129, 33, 0.22);
+}
+
+.pd-rel-arrow:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.pd-rel-arrow:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1099.98px) {
+  .pd-related-head {
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 12px;
+    column-gap: 16px;
+  }
+
+  .pd-related-head h2 {
+    flex: 1 1 100%;
+  }
+
+  .pd-related-head .link-accent {
+    margin-right: auto;
+  }
+
+  .pd-rel-nav.is-scrollable {
+    display: flex;
+    margin-left: auto;
+  }
+}
+
 .pd-related-track {
   display: flex;
   gap: 23px;
@@ -781,12 +858,17 @@
     font-size: 13px;
   }
 
+  /* These four sit INSIDE .pd-body, which already carries the 16px phone
+     gutter. Repeating it here pushed every meta row, stat card, scope item and
+     gallery image to x=32 while the section headings and every band below
+     .pd-body (awards / related / enquiry / FAQ) started at x=16 — a ragged left
+     edge down the whole page. The gutter belongs to .pd-body alone. */
   .pd-meta, .pd-stats, .pd-scope-grid, .pd-gallery {
     display: flex !important;
     flex-direction: column !important;
     gap: 16px;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .pd-stat, .pd-scope-item, .pd-gallery img {
@@ -828,10 +910,16 @@
     font-size: 16px;
   }
 
-  .pd-body,
-  .pd-meta {
+  .pd-body {
     padding-left: 16px !important;
     padding-right: 16px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pd-meta {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     width: 100%;
     box-sizing: border-box;
   }
@@ -1061,6 +1149,18 @@ html[data-theme="light"] .pd-enquire-copy .eyebrow {
 }
 
 /* --- Related rail: photo cards keep the dark glass ------------------------ */
+html[data-theme="light"] .pd-rel-arrow {
+  border-color: var(--border-strong);
+  background: rgba(18, 18, 18, 0.04);
+  color: var(--text-secondary);
+}
+
+html[data-theme="light"] .pd-rel-arrow:hover:not(:disabled) {
+  border-color: #f68121;
+  background: rgba(246, 129, 33, 0.12);
+  color: #f68121;
+}
+
 html[data-theme="light"] .pd-rel-card {
   background: var(--bg-elevated);
 }
@@ -1287,10 +1387,18 @@ html[data-theme="light"] .pd-faq-more a {
     min-height: 44px;
   }
 
+  /* "Home" is only ~37px wide at the mobile type size, which is the last
+     sub-44 target on these pages apart from the inline email link inside a
+     sentence. Centring it in a 44px box costs ~3px either side. */
   .pd-breadcrumb a,
   .pd-breadcrumb .current {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     min-height: 44px;
+  }
+
+  .pd-breadcrumb a {
+    min-width: 44px;
   }
 }

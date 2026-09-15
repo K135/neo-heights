@@ -985,6 +985,9 @@ html[data-theme="light"] .blogs-subtitle { color: rgba(255, 255, 255, 0.68); }
 @media (max-width: 768px) {
   .cta-title { line-height: 1.2; }
   .cta { width: calc(100% - 32px); height: auto; padding: 48px 24px; }
+  /* the 120px desktop gap between the CTA card and the partners band is a
+     third of a phone screen of dead ground */
+  .cta-wrap { gap: 56px; padding-top: 72px; }
 }
 
 /* FAQ +/- glyphs are shipped as <img> with a hardcoded white stroke, so they
@@ -1049,4 +1052,162 @@ html[data-theme="light"] .card-text .link-accent .link-label,
 html[data-theme="light"] .footer .link-accent,
 html[data-theme="light"] .footer a.link-accent {
   color: var(--accent);
+}
+
+
+/* ==========================================================================
+   Partners band — mobile rail controls
+   Below 900px the band becomes a 1200px-wide horizontal rail (see the block
+   above). It was swipeable but had no affordance at all, so at 375 it read as
+   a logo with an address sliced off mid-word. js/site.js wraps the band and
+   prepends this nav — the same treatment the homepage rails use — and only
+   when the band actually overflows. Above 900px the nav is display:none, so
+   desktop is untouched on every page.
+   ========================================================================== */
+
+.partners-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* the band keeps whatever gutter it had before it was wrapped */
+.cta-wrap > .partners-rail > .partners--band {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+}
+
+.partners-nav {
+  display: none;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+}
+
+.partners-rail.is-scrollable .partners-nav {
+  display: flex;
+}
+
+.partners-arrow {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--scrim);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.partners-arrow svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.partners-arrow:hover:not(:disabled) {
+  border-color: #f68121;
+  background: rgba(246, 129, 33, 0.14);
+  color: #f68121;
+}
+
+.partners-arrow:active:not(:disabled) {
+  background: rgba(246, 129, 33, 0.22);
+}
+
+.partners-arrow:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.partners-arrow:focus-visible {
+  outline: 2px solid #f68121;
+  outline-offset: 3px;
+}
+
+@media (min-width: 901px) {
+  .partners-rail.is-scrollable .partners-nav {
+    display: none;
+  }
+}
+
+/* The Featured Blogs subtitle carries hardcoded <br> tags that set the desktop
+   line breaks. At phone widths they land mid-sentence, so let the text wrap
+   naturally instead. */
+@media (max-width: 768px) {
+  .blogs-subtitle br { display: none; }
+}
+
+/* ---- Partners band on phones -------------------------------------------
+   The desktop band is one 3840px-wide sheet; scaled to a phone it is either
+   illegible or a swipe rail showing a third of a logo. Below 900px it is
+   rebuilt from per-company slices instead: the Arul Group mark sits beside its
+   address on the first row, the four companies follow in a grid. The address
+   is real text — as a slice it renders ~8px tall in that column. */
+.partners-grid { display: none; }
+
+@media (max-width: 900px) {
+  .partners-rail,
+  .partners-nav { display: none !important; }
+
+  .partners-grid {
+    display: grid;
+    grid-template-columns: 38% 1fr;
+    gap: 20px 16px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 18px;
+    background: #fff;
+  }
+
+  .partners-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .partners-cell img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 86px;
+    object-fit: contain;
+  }
+
+  .partners-cell.is-group img { max-height: 96px; }
+
+  .partners-cell.is-address {
+    justify-content: flex-start;
+    font-family: "Fustat", sans-serif;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #1a1a1a;
+    text-align: left;
+  }
+
+  /* no rule under the first row — a border per cell gives two separate lines
+     at different widths, which reads as a mistake. Spacing separates it. */
+  .partners-cell.is-group,
+  .partners-cell.is-address {
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .partners-grid { gap: 16px 12px; padding: 24px 14px; }
+  .partners-cell img { max-height: 72px; }
+  .partners-cell.is-group img { max-height: 80px; }
+  .partners-cell.is-address { font-size: 11.5px; }
 }

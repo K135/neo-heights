@@ -869,3 +869,24 @@ html[data-theme="light"] .enquire-eyebrow,
 html[data-theme="light"] .faq-eyebrow {
   color: var(--text-grey);
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE TOUCH / RHYTHM (<= 768px)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* .svc-grid gaps the rows but not the two cards inside a row, so a stacked
+     pair read as one double-height box while the next pair sat apart. */
+  .svc-row {
+    gap: 16px;
+  }
+
+  /* Inline mail / help-centre links were 23px tall. The negative margin keeps
+     the sentence on one baseline while giving the link a 44px touch box. */
+  .enquire-form-sub a,
+  .faq-more a {
+    display: inline-block;
+    padding: 12px 4px;
+    margin: -12px -4px;
+  }
+}

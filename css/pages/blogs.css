@@ -1125,22 +1125,34 @@ html[data-theme="light"] .blog-connect-social img {
   }
 
   /* 44px tap rows in the table of contents. Scoped to .ba-toc-list —
-     gold-platinum's TOC is plain text and keeps the wider 16px gap. */
+     gold-platinum's TOC is plain text and keeps the wider 16px gap.
+     The 44px floor has to sit on the <a>: padding on the <li> made the ROW
+     44px tall while the link itself stayed a 23px inline box, so a
+     single-line entry only had 23px of tappable height. */
   .ba-toc-list {
     gap: 0;
     display: block;
   }
 
   .ba-toc-list a {
-    display: inline;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 4px 0;
   }
 
   .blog-toc-list li,
   .ba-toc-list li {
     display: list-item;
-    padding: 10px 0;
+    padding: 4px 0;
     min-height: 44px;
+  }
+
+  .blog-toc-list li > a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 4px 0;
   }
 
   /* ---- Decorative full-bleed hero (gold-platinum) ---- */
@@ -1208,8 +1220,12 @@ html[data-theme="light"] .blog-connect-social img {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.28) 40%, rgba(0, 0, 0, 0.85) 100%);
   }
 
+  /* 1.05 is a display leading tuned for the 1–2 line desktop setting; the
+     longest title runs to four lines at 375 and the descenders ran into the
+     next line. */
   .ba-hero-title {
     font-size: clamp(28px, 8vw, 40px);
+    line-height: 1.18;
   }
 
   .ba-hero-copy {

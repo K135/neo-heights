@@ -402,7 +402,7 @@
 
 @media (max-width: 768px) {
   .cr-hero {
-    padding: 100px 20px 56px;
+    padding: 100px 16px 56px;
     gap: 40px;
     overflow-x: clip;
   }
@@ -431,14 +431,23 @@
     font-size: 15px;
   }
 
+  .cr-eyebrow {
+    font-size: 16px;
+    letter-spacing: 2.4px;
+  }
+
+  .cr-note {
+    line-height: 1.5;
+  }
+
   .cr-hero .btn-primary {
     justify-content: center;
   }
 
   .cr-openings,
   .cr-apply {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .cr-openings {
@@ -465,11 +474,19 @@
 
   .cr-job {
     height: auto;
-    min-height: 320px;
+    min-height: 0;
+    padding: 24px 20px;
   }
 
   .cr-form {
-    padding: 24px 20px;
+    padding: 24px 16px;
+  }
+
+  /* inline mailto in a sentence — grow the hit box, not the line box */
+  .cr-form-sub a {
+    display: inline-block;
+    padding: 11px 2px;
+    margin: -11px -2px;
   }
 
   .cr-form .btn-primary {
@@ -479,6 +496,12 @@
 
   .cr-apply {
     padding-top: 64px;
+  }
+
+  .cr-contact-card {
+    height: auto;
+    min-height: 116px;
+    padding: 20px;
   }
 
   .cr-contact-value {

@@ -59,8 +59,14 @@
 }
 
 @media (max-width: 768px) {
+  /* One column stacked all five footer blocks and, with the 44px touch
+     targets below, produced a 2344px-tall footer on a 375 screen — the
+     "footer is not coming properly" report. Two columns keeps the two link
+     lists side by side; css/footer.css spans the brand, contact and social
+     blocks back across both. */
   .footer-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px 20px;
   }
 
   .footer-top {

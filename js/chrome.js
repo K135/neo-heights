@@ -296,7 +296,7 @@
       const megaTrigger = (id, href, label) => {
         const on = isActive(href) ? ' aria-current="page"' : "";
         return `
-<button type="button" class="nav-item nav-mega-trigger" data-mega="${id}" aria-expanded="false" aria-haspopup="true" aria-controls="mega-${id}"${on}>
+<button type="button" class="nav-item nav-mega-trigger" data-mega="${id}" data-href="${a(href)}" aria-expanded="false" aria-haspopup="true" aria-controls="mega-${id}"${on}>
   <span>${label}</span>
   <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
     <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -479,6 +479,13 @@ ${drawerMarkup(active)}`;
         btn.addEventListener("click", (e) => {
           e.preventDefault();
           cancelClose();
+          // On a pointer device the panel already opens on hover, so a click on
+          // "Projects"/"Services" should go to that page rather than re-toggle
+          // the panel. Touch keeps the toggle, since there is no hover there.
+          if (canHover() && btn.dataset.href) {
+            window.location.href = btn.dataset.href;
+            return;
+          }
           const id = btn.dataset.mega;
           const open = btn.getAttribute("aria-expanded") === "true";
           if (open && document.body.classList.contains("mega-hover")) {
