@@ -142,6 +142,36 @@ body:not(.page-home) .page {
   display: none;
 }
 
+.mega-about-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mega-about-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 24px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+
+.mega-about-link:hover,
+.mega-about-link:focus-visible {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.05);
+  outline: none;
+}
+
+.mega-about-link[aria-current="page"] {
+  color: var(--accent);
+}
+
 html[data-theme="light"] .header {
   background: rgba(246, 243, 239, 0.92);
   border-bottom-color: var(--border);
@@ -330,6 +360,27 @@ body.mega-hover .mega-backdrop {
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+.mega-panel.mega-panel-about {
+  left: 0;
+  right: auto;
+  transform: none;
+  width: 220px;
+  min-width: 220px;
+  padding: 10px;
+  animation: mega-about-slide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes mega-about-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -843,13 +894,12 @@ body.mega-hover .mega-backdrop {
   }
 
   body.nav-open .nav-drawer-link:nth-child(1) { animation-delay: 0.04s; }
-  body.nav-open .nav-drawer-link:nth-child(2) { animation-delay: 0.08s; }
-  body.nav-open .nav-acc:nth-of-type(1) { animation-delay: 0.12s; }
-  body.nav-open .nav-acc:nth-of-type(2) { animation-delay: 0.16s; }
+  body.nav-open .nav-acc:nth-of-type(1) { animation-delay: 0.08s; }
+  body.nav-open .nav-acc:nth-of-type(2) { animation-delay: 0.12s; }
+  body.nav-open .nav-acc:nth-of-type(3) { animation-delay: 0.16s; }
   body.nav-open .nav-drawer-link:nth-child(5) { animation-delay: 0.2s; }
   body.nav-open .nav-drawer-link:nth-child(6) { animation-delay: 0.24s; }
-  body.nav-open .nav-drawer-link:nth-child(7) { animation-delay: 0.28s; }
-  body.nav-open .nav-drawer-foot { animation-delay: 0.3s; }
+  body.nav-open .nav-drawer-foot { animation-delay: 0.28s; }
 
   .nav-toggle,
   .nav-drawer-filter,

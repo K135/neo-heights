@@ -144,6 +144,12 @@
 
   function drawerMarkup(active) {
     const leaf = currentLeaf();
+    const hash = String(location.hash || "");
+    const onAbout =
+      active === "about.html" ||
+      active === "careers.html" ||
+      leaf === "about.html" ||
+      leaf === "careers.html";
     const onProjects =
       String(active).startsWith("projects") || String(location.pathname).includes("/projects/");
     const onServices =
@@ -191,7 +197,25 @@
     </div>
     <nav class="nav-drawer-nav" aria-label="Mobile">
       ${drawerLink("index.html", "Home")}
-      ${drawerLink("about.html", "About us")}
+      <div class="nav-acc${onAbout ? " is-open" : ""}">
+        <button type="button" class="nav-acc-trigger" aria-expanded="${onAbout ? "true" : "false"}" aria-controls="drawer-about">
+          <span>About us</span>
+          <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-acc-panel" id="drawer-about"${onAbout ? "" : " hidden"}>
+          <a class="nav-drawer-sublink" href="${a("about.html")}"${leaf === "about.html" && hash !== "#team" ? ' aria-current="page"' : ""}>
+            <span class="nav-drawer-sub-title">About us</span>
+          </a>
+          <a class="nav-drawer-sublink" href="${a("about.html")}#team"${leaf === "about.html" && hash === "#team" ? ' aria-current="page"' : ""}>
+            <span class="nav-drawer-sub-title">Team</span>
+          </a>
+          <a class="nav-drawer-sublink" href="${a("careers.html")}"${leaf === "careers.html" ? ' aria-current="page"' : ""}>
+            <span class="nav-drawer-sub-title">Careers</span>
+          </a>
+        </div>
+      </div>
       <div class="nav-acc${onProjects ? " is-open" : ""}">
         <button type="button" class="nav-acc-trigger" aria-expanded="${onProjects ? "true" : "false"}" aria-controls="drawer-projects">
           <span>Projects</span>
@@ -222,7 +246,6 @@
       </div>
       ${drawerLink("sustainability.html", "Sustainability")}
       ${drawerLink("blogs.html", "Insights")}
-      ${drawerLink("careers.html", "Careers")}
     </nav>
     <div class="nav-drawer-foot">
       <a class="btn-primary nav-drawer-cta" href="${a("contact.html")}"${leaf === "contact.html" ? ' aria-current="page"' : ""}>
@@ -243,6 +266,25 @@
       (href === "projects.html" && String(active).startsWith("projects")) ||
       (href === "services.html" && String(active).startsWith("services"))
     );
+  }
+
+  function megaAboutPanel(active) {
+    const leaf = currentLeaf();
+    const hash = String(location.hash || "");
+    const onAboutPage = active === "about.html" || leaf === "about.html";
+    const onTeam = onAboutPage && hash === "#team";
+    const onAbout = onAboutPage && hash !== "#team";
+    const onCareers = active === "careers.html" || leaf === "careers.html";
+    const item = (href, label, current) =>
+      `<a class="mega-about-link" href="${a(href)}"${current ? ' aria-current="page"' : ""}>${label}</a>`;
+    return `
+<div class="mega-panel mega-panel-about" id="mega-about" hidden>
+  <div class="mega-about-list">
+    ${item("about.html", "About us", onAbout)}
+    ${item("about.html#team", "Team", onTeam)}
+    ${item("careers.html", "Careers", onCareers)}
+  </div>
+</div>`;
   }
 
   function megaServicesPanel() {
@@ -286,7 +328,8 @@
       const isActive = (href) =>
         active === href ||
         (href === "projects.html" && String(active).startsWith("projects")) ||
-        (href === "services.html" && String(active).startsWith("services"));
+        (href === "services.html" && String(active).startsWith("services")) ||
+        (href === "about.html" && (active === "about.html" || active === "careers.html"));
 
       const link = (href, label) => {
         const on = isActive(href) ? ' aria-current="page"' : "";
@@ -311,12 +354,11 @@ ${skipLink()}
   <a class="header-logo" href="${a("index.html")}"><img class="logo" src="${img("logo.png")}" alt="Neo Heights" width="133" height="100" /></a>
   <nav class="nav font-nav" id="primary-nav" aria-label="Primary">
     ${link("index.html", "Home")}
-    ${link("about.html", "About us")}
+    ${megaTrigger("about", "about.html", "About us")}
     ${megaTrigger("projects", "projects.html", "Projects")}
     ${megaTrigger("services", "services.html", "Services")}
     ${link("sustainability.html", "Sustainability")}
     ${link("blogs.html", "Insights")}
-    ${link("careers.html", "Careers")}
     ${link("contact.html", "Contact")}
   </nav>
   <div class="header-actions">
@@ -333,6 +375,7 @@ ${skipLink()}
     </button>
   </div>
   <div class="mega-backdrop" hidden></div>
+  ${megaAboutPanel(active)}
   ${megaProjectsPanel()}
   ${megaServicesPanel()}
 </header>
@@ -425,6 +468,7 @@ ${drawerMarkup(active)}`;
       const backdrop = header.querySelector(".mega-backdrop");
       const triggers = [...header.querySelectorAll(".nav-mega-trigger")];
       const panels = {
+        about: header.querySelector("#mega-about"),
         projects: header.querySelector("#mega-projects"),
         services: header.querySelector("#mega-services"),
       };
@@ -445,6 +489,12 @@ ${drawerMarkup(active)}`;
         const panel = panels[id];
         const trigger = triggers.find((t) => t.dataset.mega === id);
         if (!panel || !trigger) return;
+        if (id === "about") {
+          const hr = header.getBoundingClientRect();
+          const tr = trigger.getBoundingClientRect();
+          panel.style.left = `${Math.round(tr.left - hr.left)}px`;
+          panel.style.top = `${Math.round(tr.bottom - hr.top + 8)}px`;
+        }
         panel.hidden = false;
         trigger.setAttribute("aria-expanded", "true");
         if (backdrop) backdrop.hidden = false;
