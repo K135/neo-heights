@@ -1,7 +1,7 @@
 /* ——— Shared ——— */
 
 .font-nav {
-  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-family: var(--font-nav);
   font-weight: 500;
 }
 
@@ -18,7 +18,7 @@
   color: #fff;
   border-radius: 12px;
   padding: 16px 24px;
-  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: 18px;
   line-height: 24px;

@@ -17,7 +17,9 @@
   --radius-btn: 12px;
   --radius-card: 17.46px;
   --font-body: "Fustat", system-ui, sans-serif;
-  --font-nav: Futura, "Trebuchet MS", Arial, sans-serif;
+  --font-display: "NH Futura", Futura, Jost, "Century Gothic", sans-serif;
+  --font-nav: var(--font-display);
+  --font-stat: Inter, "Fustat", sans-serif;
   --font-hubballi: "Hubballi", "Figtree", "Trebuchet MS", sans-serif;
   --max-page: 1920px;
   --page-pad: 120px;

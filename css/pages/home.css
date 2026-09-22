@@ -1,7 +1,7 @@
 /* ——— Home / Landing ——— */
 
 .home-eyebrow {
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: 20px;
   letter-spacing: 3px;
@@ -10,7 +10,7 @@
 }
 
 .home-section-title {
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: 48px;
   line-height: 1.2;
@@ -197,9 +197,9 @@
 .home-hero-title {
   margin: 0;
   width: 100%;
-  font-family: Futura, "Trebuchet MS", "Fustat", Arial, sans-serif;
+  font-family: var(--font-display);
   font-weight: 500;
-  font-size: 64px;
+  font-size: 76px;
   line-height: 1;
   letter-spacing: -3px;
   color: #fff;
@@ -210,7 +210,7 @@
   margin: 0;
   width: 100%;
   max-width: 900px;
-  font-family: Futura, "Trebuchet MS", "Fustat", Arial, sans-serif;
+  font-family: var(--font-body);
   font-weight: 500;
   font-size: 20px;
   line-height: 25px;
@@ -236,8 +236,8 @@
   padding: 18px 21px;
   border-radius: 12px;
   color: #fff;
-  font-family: "Fustat", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 500;
   font-size: 17px;
   line-height: 20px;
   letter-spacing: -0.1px;
@@ -337,7 +337,7 @@
 .home-verticals-title {
   flex: 1;
   margin: 0;
-  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: 16.55px;
   line-height: 27.59px;
@@ -540,8 +540,8 @@
   }
 
   .home-hero-title {
-    font-size: 48px;
-    letter-spacing: -1.5px;
+    font-size: clamp(40px, 5.5vw, 56px);
+    letter-spacing: -2px;
   }
 
   .home-hero-shade {
@@ -682,7 +682,7 @@
 
 .home-about-title {
   margin: 0;
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 42px;
   line-height: 1.2;
@@ -701,7 +701,7 @@
 
 .home-about-body {
   margin: 0;
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 500;
   font-size: 20px;
   line-height: 1.5;
@@ -848,17 +848,18 @@
 
 .home-stat-num {
   margin: 0;
-  font-family: Inter, "Fustat", sans-serif;
+  font-family: var(--font-stat);
   font-weight: 700;
-  font-size: clamp(36px, 3.2vw, 63px);
-  line-height: 1.1;
+  font-size: 63px;
+  line-height: 72px;
+  height: 72px;
   letter-spacing: -2px;
   color: #f4f4f4;
   white-space: nowrap;
 }
 
-.home-stat-num-sm { font-size: clamp(28px, 2.8vw, 48px); }
-.home-stat-num-md { font-size: clamp(32px, 3vw, 56px); }
+.home-stat-num-sm { font-size: 48px; }
+.home-stat-num-md { font-size: 56px; }
 
 .home-stat-desc {
   margin: 0;
@@ -1508,7 +1509,7 @@
 
 .home-team-title {
   margin: 0;
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 42px;
   line-height: 1.2;
@@ -1519,7 +1520,7 @@
 .home-team-body {
   margin: 0;
   max-width: 1055px;
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-body);
   font-weight: 500;
   font-size: 20px;
   line-height: 1.5;
@@ -1549,6 +1550,7 @@
   height: 53px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center 18%;
   border: 2px solid #1d1d1d;
 }
 
@@ -1647,10 +1649,12 @@
 .home-member-photo--cream { background: #ffefb6; }
 
 .home-member-photo > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 10%;
+  object-position: center 18%;
   display: block;
 }
 
@@ -3151,6 +3155,15 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
    (e.g. the Legacy block, which re-declares padding after the media queries).
    ========================================================================== */
 @media (max-width: 768px) {
+  .home-stat-num {
+    font-size: 48px;
+    line-height: 56px;
+    height: 56px;
+  }
+
+  .home-stat-num-sm { font-size: 36px; }
+  .home-stat-num-md { font-size: 44px; }
+
   /* ---- Hero: the mobile frame keeps both CTAs on one row ---------------- */
   .home-hero-ctas {
     flex-direction: row;
