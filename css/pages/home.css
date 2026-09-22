@@ -2379,13 +2379,13 @@ HEIGHTS", Plus Jakarta Sans 800 /
 
   .home-trusted {
     height: auto;
-    padding: 40px 0;
+    padding: 32px 0;
   }
 
   .home-trusted-inner {
     width: 100%;
     max-width: 100%;
-    gap: 24px;
+    gap: 16px;
     padding: 0 16px;
   }
 
@@ -2393,6 +2393,21 @@ HEIGHTS", Plus Jakarta Sans 800 /
     font-size: 14px;
     letter-spacing: 0.2em;
     text-align: center;
+  }
+
+  .home-trusted-track-wrap {
+    height: 40px;
+  }
+
+  .home-trusted-track {
+    gap: 28px;
+  }
+
+  .home-trusted-track img {
+    height: 22px;
+    max-height: 22px;
+    max-width: 96px;
+    width: auto;
   }
 
   .home-about {
@@ -3625,6 +3640,24 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
     min-height: 0;
     padding: 12px 2px;
     margin: -12px 0;
+  }
+
+  /* Trusted logos: desktop is 44×240 with an 85px gap — on 375 that leaves
+     one or two marks filling the screen. Figma 669:7625 keeps them compact. */
+  .home-trusted-track-wrap {
+    height: 40px;
+  }
+
+  .home-trusted-track {
+    gap: 28px;
+  }
+
+  .home-trusted-track img {
+    height: 22px;
+    max-height: 22px;
+    max-width: 96px;
+    width: auto;
+    object-fit: contain;
   }
 }
 

@@ -199,7 +199,7 @@
       ${drawerLink("index.html", "Home")}
       <div class="nav-acc${onAbout ? " is-open" : ""}">
         <button type="button" class="nav-acc-trigger" aria-expanded="${onAbout ? "true" : "false"}" aria-controls="drawer-about">
-          <span>About us</span>
+          <span>About</span>
           <svg class="nav-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
             <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -354,7 +354,7 @@ ${skipLink()}
   <a class="header-logo" href="${a("index.html")}"><img class="logo" src="${img("logo.png")}" alt="Neo Heights" width="133" height="100" /></a>
   <nav class="nav font-nav" id="primary-nav" aria-label="Primary">
     ${link("index.html", "Home")}
-    ${megaTrigger("about", "about.html", "About us")}
+    ${megaTrigger("about", "about.html", "About")}
     ${megaTrigger("projects", "projects.html", "Projects")}
     ${megaTrigger("services", "services.html", "Services")}
     ${link("sustainability.html", "Sustainability")}
