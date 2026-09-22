@@ -1030,7 +1030,8 @@
 .ab-member-photo {
   position: relative;
   width: 278px;
-  height: 340px;
+  height: 278px;
+  aspect-ratio: 1 / 1;
   flex-shrink: 0;
   border-radius: 21px;
   overflow: hidden;
@@ -1706,7 +1707,7 @@
   .ab-member-photo {
     width: min(278px, 80vw);
     height: auto;
-    aspect-ratio: 278 / 340;
+    aspect-ratio: 1 / 1;
   }
 
   .ab-journey {
@@ -2286,6 +2287,11 @@ html[data-theme="light"] .ab-faq-more a {
     width: min(300px, calc(100vw - 32px));
   }
 
+  .ab-member-photo {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
   .ab-team-cta {
     flex-wrap: wrap;
     justify-content: center;
@@ -2556,6 +2562,11 @@ html[data-theme="light"] .ab-team .ab-rail-arrow:hover:not(:disabled) {
   .ab-member,
   .ab-member-photo {
     width: min(278px, calc(100vw - 96px));
+  }
+
+  .ab-member-photo {
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 
   .ab-logos .ab-rail-nav {

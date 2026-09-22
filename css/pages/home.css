@@ -1637,7 +1637,7 @@
 .home-member-photo {
   position: relative;
   width: 100%;
-  aspect-ratio: 278 / 340;
+  aspect-ratio: 1 / 1;
   flex-shrink: 0;
   border-radius: 21.26px;
   overflow: hidden;
@@ -2577,7 +2577,7 @@ HEIGHTS", Plus Jakarta Sans 800 /
 
   .home-member-photo {
     height: auto;
-    aspect-ratio: 278 / 340;
+    aspect-ratio: 1 / 1;
   }
 
   .blogs {
