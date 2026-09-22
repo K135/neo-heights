@@ -221,7 +221,7 @@
         </div>
       </div>
       ${drawerLink("sustainability.html", "Sustainability")}
-      ${drawerLink("blogs.html", "Newsroom")}
+      ${drawerLink("blogs.html", "Insights")}
       ${drawerLink("careers.html", "Careers")}
     </nav>
     <div class="nav-drawer-foot">
@@ -315,7 +315,7 @@ ${skipLink()}
     ${megaTrigger("projects", "projects.html", "Projects")}
     ${megaTrigger("services", "services.html", "Services")}
     ${link("sustainability.html", "Sustainability")}
-    ${link("blogs.html", "Newsroom")}
+    ${link("blogs.html", "Insights")}
     ${link("careers.html", "Careers")}
     ${link("contact.html", "Contact")}
   </nav>

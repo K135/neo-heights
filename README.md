@@ -9,7 +9,7 @@ python3 -m http.server 8765
 ```
 
 ## Pages (31+)
-- Core: Home, About, Projects, Services, Sustainability, Newsroom, Contact, Terms, Privacy, 404
+- Core: Home, About, Projects, Services, Sustainability, Insights, Contact, Terms, Privacy, 404
 - `services/*` (7) · `projects/*` (15)
 
 ## Structure
