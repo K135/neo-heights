@@ -430,6 +430,10 @@
   display: block;
 }
 
+.home-vert-avatar--mark {
+  background: #fff;
+}
+
 .home-vert-avatar--logo {
   background: #fff;
 }
@@ -524,6 +528,13 @@
   }
 }
 
+@media (hover: none) {
+  .home-vert-avatar::after,
+  .home-vert-avatar::before {
+    display: none;
+  }
+}
+
 @media (max-width: 1680px) {
   .home-verticals {
     left: auto;
@@ -549,8 +560,20 @@
     background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 100%);
   }
 
-  .home-verticals {
-    display: none;
+  /* Keep the card on tablet/phone — it used to be display:none here, which is
+     why Other Verticals never appeared below 1100. Don't grow to 368px. */
+  .home-verticals,
+  .home-verticals:hover,
+  .home-verticals:focus-within {
+    display: flex;
+    width: min(291px, calc(100vw - 48px));
+    right: 24px;
+    bottom: 24px;
+  }
+
+  .home-verticals:hover .home-vert-avatar,
+  .home-verticals:focus-within .home-vert-avatar {
+    margin-right: 0;
   }
 }
 
@@ -1027,22 +1050,41 @@
 }
 
 .home-services-rail {
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  --svc-gap: 18px;
+  --svc-visible: 4.5;
+  /* 100vw fallback; 100cqi is the rail itself once container queries apply. */
+  --svc-card: calc((100vw - (var(--svc-visible) - 0.5) * var(--svc-gap)) / var(--svc-visible));
+  --svc-card: calc((100cqi - (var(--svc-visible) - 0.5) * var(--svc-gap)) / var(--svc-visible));
+  container-type: inline-size;
+  overflow: hidden;
   /* Figma 687:19361 — the services track sits at x=0 and runs edge to edge.
      The old 120px left pad with a flush right edge is what read as lopsided. */
   padding: 0 0 80px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  /* a scrolled card always parks flush against the edge, never half-cut */
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 0;
 }
+
+.home-services-track {
+  display: flex;
+  width: max-content;
+  animation: home-marquee 48s linear infinite;
+}
+
+.home-services-rail:hover .home-services-track,
+.home-services-rail:focus-within .home-services-track,
+.home-services-nav:hover + .home-services-rail .home-services-track,
+.home-services-nav:focus-within + .home-services-rail .home-services-track {
+  animation-play-state: paused;
+}
+
+.home-services-set {
+  display: flex;
+  gap: var(--svc-gap);
+  /* Trailing gap so each cloned half is the same width — otherwise
+     translateX(-50%) lands half a gap short and the loop hitches. */
+  padding-right: var(--svc-gap);
+}
+
 .home-services-rail::-webkit-scrollbar {
   display: none;
   width: 0;
@@ -1090,11 +1132,14 @@
 
 .home-svc-card {
   position: relative;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  /* Figma 431:17559 — 520x711, square corners */
-  flex: 0 0 520px;
-  height: 711px;
+  /* 4.5 of the rail: four full cards plus a half peek of the next.
+     Sized in cqi so the % is the rail, not the max-content track. */
+  flex: 0 0 var(--svc-card);
+  flex: 0 0 calc((100cqi - (var(--svc-visible) - 0.5) * var(--svc-gap)) / var(--svc-visible));
+  width: var(--svc-card);
+  width: calc((100cqi - (var(--svc-visible) - 0.5) * var(--svc-gap)) / var(--svc-visible));
+  aspect-ratio: 520 / 711;
+  height: auto;
   border-radius: 0;
   overflow: hidden;
   display: block;
@@ -1124,11 +1169,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 24px;
+  padding: clamp(12px, 1.4vw, 24px);
   background: linear-gradient(180deg, transparent, rgba(0,0,0,0.75));
   font-family: "Fustat", sans-serif;
   font-weight: 700;
-  font-size: 22px;
+  font-size: clamp(14px, 1.25vw, 22px);
   color: #fff;
 }
 
@@ -2256,6 +2301,11 @@ HEIGHTS", Plus Jakarta Sans 800 /
 }
 
 @media (max-width: 1100px) {
+  .home-services-rail {
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
   .home-stats-block {
     padding-left: 24px;
     padding-right: 24px;
@@ -2490,18 +2540,12 @@ HEIGHTS", Plus Jakarta Sans 800 /
   }
 
   .home-services-rail {
-    padding: 0 16px;
-    gap: 12px;
+    padding: 0 0 48px;
+    --svc-gap: 12px;
   }
 
   .home-services-nav {
     padding: 0 16px 12px;
-  }
-
-  .home-svc-card {
-    flex: 0 0 min(260px, 78vw);
-    width: min(260px, 78vw);
-    height: 360px;
   }
 
   .home-projects {
@@ -2912,10 +2956,26 @@ details[open] > summary .home-faq-icon { transform: rotate(45deg); }
 
 @media (prefers-reduced-motion: reduce) {
   .page-home .home-stats,
-  .page-home .home-services-rail,
   .page-home .home-team-grid {
     scroll-snap-type: none;
     scroll-behavior: auto;
+  }
+
+  .page-home .home-services-track {
+    animation: none;
+  }
+
+  .page-home .home-services-rail {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .page-home .home-svc-card {
+    scroll-snap-align: start;
   }
 
   .page-home .home-svc-card,
@@ -3642,6 +3702,87 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
     margin: -12px 0;
   }
 
+  /* Other Verticals — Figma mobile stacks the five marks with overlap.
+     Desktop keeps them spaced; phones used to hide the whole card. */
+  .home-verticals,
+  .home-verticals:hover,
+  .home-verticals:focus-within {
+    display: flex !important;
+    right: 16px;
+    bottom: 16px;
+    left: auto;
+    width: min(280px, calc(100vw - 76px));
+    padding: 16px 16px 18px;
+    gap: 14px;
+    border-radius: 20px;
+    background: rgba(19, 19, 19, 0.88);
+  }
+
+  .home-verticals-our {
+    display: none;
+  }
+
+  .home-verticals-title {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.16px;
+    white-space: nowrap;
+  }
+
+  .home-verticals-close {
+    width: 44px;
+    height: 44px;
+    padding: 12px;
+    margin: -10px -10px 0 0;
+    align-items: center;
+  }
+
+  .home-verticals-logos {
+    justify-content: flex-start;
+  }
+
+  .home-vert-avatar,
+  .home-verticals:hover .home-vert-avatar,
+  .home-verticals:focus-within .home-vert-avatar {
+    width: 44px;
+    height: 44px;
+    margin-right: -14px;
+    background: #fff;
+    box-shadow: 0 0 0 2px #f4f4f4;
+  }
+
+  .home-vert-avatar:nth-child(1) { z-index: 1; }
+  .home-vert-avatar:nth-child(2) { z-index: 2; }
+  .home-vert-avatar:nth-child(3) { z-index: 3; }
+  .home-vert-avatar:nth-child(4) { z-index: 4; }
+  .home-vert-avatar:nth-child(5) { z-index: 5; }
+
+  .home-vert-avatar:last-child,
+  .home-verticals:hover .home-vert-avatar:last-child,
+  .home-verticals:focus-within .home-vert-avatar:last-child {
+    margin-right: 0;
+  }
+
+  .home-vert-avatar--mark img {
+    object-fit: cover;
+    padding: 0;
+  }
+
+  .home-vert-avatar--logo .home-vert-avatar-fill img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .home-vert-avatar--studio img {
+    object-fit: cover;
+    padding: 0;
+  }
+
+  .home-vert-avatar:hover,
+  .home-vert-avatar:focus-visible {
+    transform: none;
+  }
+
   /* Trusted logos: desktop is 44×240 with an 85px gap — on 375 that leaves
      one or two marks filling the screen. Figma 669:7625 keeps them compact. */
   .home-trusted-track-wrap {
@@ -3703,6 +3844,49 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
   .home-trusted-track-wrap {
     -webkit-mask-image: none !important;
     mask-image: none !important;
+  }
+}
+
+/* Phones: 4.5 cards would be ~80px and unreadable. Keep a scrolling rail
+   with a peek of the next card so it does not look like a static poster. */
+@media (max-width: 767px) {
+  .home-services-rail {
+    --svc-visible: 1.4;
+    --svc-gap: 12px;
+    padding: 0 16px 48px;
+  }
+
+  .home-services-track {
+    animation-duration: 36s;
+  }
+
+  .home-svc-label {
+    font-size: 16px;
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-services-nav {
+    visibility: hidden;
+    pointer-events: none;
+    height: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-services-track {
+    animation: none;
+  }
+
+  .home-services-rail {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

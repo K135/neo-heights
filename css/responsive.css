@@ -128,9 +128,7 @@
     justify-content: center;
   }
 
-  .home-verticals {
-    display: none !important;
-  }
+  /* Other Verticals stays on the hero (home.css sizes the stacked marks). */
 
   .filters {
     flex-wrap: wrap;

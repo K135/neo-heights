@@ -441,35 +441,51 @@
     const next = document.querySelector("[data-svc-next]");
     if (!rail || !prev || !next) return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const firstSet = rail.querySelector(".home-services-set");
 
     const step = () => {
       const card = rail.querySelector(".home-svc-card");
-      const cs = getComputedStyle(rail);
-      const gap = parseFloat(cs.columnGap || cs.gap) || 16;
+      const gap = firstSet
+        ? parseFloat(getComputedStyle(firstSet).columnGap || getComputedStyle(firstSet).gap) || 16
+        : parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 16;
       return card ? Math.round(card.getBoundingClientRect().width + gap) : 336;
+    };
+
+    const loopExtent = () => (firstSet ? firstSet.offsetWidth : 0);
+
+    const wrap = () => {
+      const half = loopExtent();
+      if (half <= 4) return;
+      if (rail.scrollLeft >= half) rail.scrollLeft -= half;
+      else if (rail.scrollLeft < 0) rail.scrollLeft += half;
     };
 
     const maxScroll = () => Math.max(0, rail.scrollWidth - rail.clientWidth);
 
     const sync = () => {
+      wrap();
+      const looping = loopExtent() > 4;
       const left = rail.scrollLeft;
       const max = maxScroll();
-      prev.disabled = left <= 2;
-      next.disabled = left >= max - 2;
+      prev.disabled = looping ? false : left <= 2;
+      next.disabled = looping ? false : left >= max - 2;
       const nav = prev.parentElement;
-      if (nav) nav.classList.toggle("is-scrollable", max > 2);
+      if (nav) nav.classList.toggle("is-scrollable", max > 2 || looping);
       syncRailFade(rail);
     };
 
     const go = (dir) => {
-      rail.scrollBy({ left: dir * step(), behavior: reduce ? "auto" : "smooth" });
+      rail.scrollBy({ left: dir * step(), behavior: reduceMq.matches ? "auto" : "smooth" });
+      requestAnimationFrame(wrap);
     };
 
     prev.addEventListener("click", () => go(-1));
     next.addEventListener("click", () => go(1));
     rail.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
+    if (typeof reduceMq.addEventListener === "function") reduceMq.addEventListener("change", sync);
+    else if (typeof reduceMq.addListener === "function") reduceMq.addListener(sync);
     if (window.ResizeObserver) new ResizeObserver(sync).observe(rail);
     sync();
   }
