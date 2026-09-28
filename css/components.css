@@ -402,6 +402,20 @@
   height: 48px;
   z-index: 2;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+.card:hover .card-arrow,
+.card:focus-within .card-arrow {
+  opacity: 1;
+}
+
+/* Touch screens have no hover, so keep the affordance visible there. */
+@media (hover: none) {
+  .card-arrow {
+    opacity: 1;
+  }
 }
 
 .card-glass {

@@ -154,7 +154,7 @@
   width: 100%;
   height: auto;
   aspect-ratio: 343 / 220;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .pd-desc {
@@ -1400,5 +1400,72 @@ html[data-theme="light"] .pd-faq-more a {
 
   .pd-breadcrumb a {
     min-width: 44px;
+  }
+}
+
+/* ==========================================================================
+   Short project template — Figma "Projects - <client>" frames (1920 × 5424):
+   hero → meta → three stats → scope tags → one-row gallery band → related
+   rail → CTA + partners. No awards / enquiry / FAQ bands on these frames.
+   ========================================================================== */
+.pd-status {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-family: "Fustat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.pd-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.pd-status--ongoing {
+  background: #f68121;
+}
+
+.pd-stats.pd-stats--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pd-gallery.pd-gallery--band {
+  flex-direction: row;
+}
+
+.pd-gallery--band img {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 500px;
+  object-fit: cover;
+}
+
+@media (max-width: 1440px) {
+  .pd-gallery--band img {
+    height: 420px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pd-gallery--band img {
+    flex: none;
+    height: 240px;
+  }
+
+  .pd-status {
+    font-size: 12px;
+    padding: 4px 12px;
   }
 }

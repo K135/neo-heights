@@ -49,9 +49,9 @@
   // Mega panel roster — row-major so the 2-up grid reads exactly as designed.
   const MEGA_PROJECTS = [
     { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
-    { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "ongoing" },
-    { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "ongoing" },
-    { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html", status: "ongoing" },
+    { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "completed" },
+    { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "completed" },
+    { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html", status: "completed" },
     { title: "GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", status: "ongoing" },
     { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "completed" },
     { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", status: "completed" },
@@ -60,7 +60,7 @@
     { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", status: "completed" },
     { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", status: "completed" },
     { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", status: "completed" },
-    { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "completed" },
+    { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "ongoing" },
   ];
 
   const MEGA_SERVICES = [
@@ -77,9 +77,9 @@
   // statuses mirror the cards on projects.html / index.html.
   const MEGA_SHOWCASE = [
     { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", image: "assets/shared/proj-toyota.png", status: "ongoing" },
-    { title: "SHIMZU - SAKATA", loc: "DODDABALLAPURA", href: "projects/shimzu.html", image: "assets/pages/home/image78.png", status: "ongoing" },
+    { title: "SHIMZU - SAKATA", loc: "DODDABALLAPURA", href: "projects/shimzu.html", image: "assets/pages/home/image78.png", status: "completed" },
     { title: "Wipro GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", image: "assets/shared/proj-ge.png", status: "ongoing" },
-    { title: "CS Building — Wendt India", loc: "HOSUR", href: "projects/faiveley.html", image: "assets/shared/proj-wendt.png", status: "ongoing" },
+    { title: "CS Building — Wendt India", loc: "HOSUR", href: "projects/faiveley.html", image: "assets/shared/proj-wendt.png", status: "completed" },
     { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", image: "assets/shared/proj-volvo.png", status: "completed" },
     { title: "Schaeffler India Limited", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", image: "assets/pages/home/image929.png", status: "completed" },
     { title: "Advik Hi Tech Pvt. Ltd.", loc: "NARSAPURA, KA", href: "projects/advik-peb.html", image: "assets/pages/home/image943.png", status: "completed" },
@@ -87,7 +87,7 @@
     { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", image: "assets/shared/proj-lmwind.png", status: "completed" },
     { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", image: "assets/shared/proj-vajra1.png", status: "completed" },
     { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", image: "assets/shared/proj-pca.png", status: "completed" },
-    { title: "Tata Electronics", loc: "HOSUR", href: "projects/tata-rwh.html", image: "assets/pages/home/image944.png", status: "completed" },
+    { title: "Tata Electronics", loc: "HOSUR", href: "projects/tata-rwh.html", image: "assets/pages/home/image944.png", status: "ongoing" },
   ];
 
   function skipLink() {

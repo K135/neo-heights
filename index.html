@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Fustat:wght@400;500;600;700&family=Hubballi&family=Inter:wght@400;700&family=Instrument+Sans:wght@500&family=Jost:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/pages/home/hero-bg.png" fetchpriority="high" />
-  <link rel="stylesheet" href="css/main.css?v=32" />
-  <link rel="stylesheet" href="css/pages/home.css?v=79" />
+  <link rel="stylesheet" href="css/main.css?v=33" />
+  <link rel="stylesheet" href="css/pages/home.css?v=80" />
 </head>
 <body data-root="" class="page-home">
   <div class="page">
@@ -370,7 +370,8 @@
         </a>
       </div>
       <div class="home-project-filters" data-project-filters>
-        <button class="home-filter active" type="button" data-filter="ongoing" aria-pressed="true">On-going</button>
+        <button class="home-filter active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="home-filter" type="button" data-filter="ongoing" aria-pressed="false">On-going</button>
         <button class="home-filter" type="button" data-filter="completed" aria-pressed="false">Completed</button>
       </div>
       <div class="project-grid">
@@ -399,7 +400,7 @@
           </article>
         </div>
         <div class="row-wide-narrow">
-          <article data-category="ongoing" class="card card-img w-65">
+          <article data-category="completed" class="card card-img w-65">
             <a class="card-hit" href="projects/shimzu.html" aria-label="SHIMZU - SAKATA"></a>
             <img loading="lazy" class="cover" src="assets/pages/home/image78.png" alt="SHIMZU - SAKATA" decoding="async" />
             <img loading="lazy" class="card-arrow" src="assets/pages/home/circle-arrow-up-right.svg" alt="" width="48" height="48" decoding="async" />
@@ -448,7 +449,7 @@
           </article>
         </div>
         <div class="row-3">
-          <article data-category="completed" class="card card-img w-33">
+          <article data-category="ongoing" class="card card-img w-33">
             <a class="card-hit" href="projects/tata-rwh.html" aria-label="Tata electronics"></a>
             <img loading="lazy" class="cover" src="assets/pages/home/image944.png" alt="Tata electronics" decoding="async" />
             <img loading="lazy" class="card-arrow" src="assets/pages/home/circle-arrow-up-right3.svg" alt="" width="48" height="48" decoding="async" />
@@ -470,7 +471,7 @@
               </div>
             </div>
           </article>
-          <article data-category="completed" class="card card-text simple w-33b">
+          <article data-category="ongoing" class="card card-text simple w-33b">
             <a class="card-hit" href="projects/tata-rwh.html" aria-label="Learn more about Tata electronics"></a>
             <p class="card-desc">Executed as a turnkey EPC project, this facility integrates civil, structural, PEB, and MEP works to deliver a seamless, efficient, and future-ready industrial space tailored to client requirements.</p>
             <span class="link-accent">
@@ -869,7 +870,7 @@
   </div>
   <script src="js/vendor/lenis.min.js?v=3"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
-  <script src="js/chrome.js?v=17"></script>
+  <script src="js/chrome.js?v=18"></script>
   <script src="js/site.js?v=17"></script>
   <script>NH.mount("index.html");</script>
 </body>

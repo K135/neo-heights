@@ -780,6 +780,28 @@ body:has(.header.is-scrolled) .filters-bar {
   display: none;
 }
 
+/* Fact cards stand alone (no photo exists for these clients), so they stay. */
+.project-grid.is-filtered .card-text.card-fact {
+  display: flex;
+}
+
+@media (max-width: 1099.98px) {
+  .project-grid.is-filtered {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .project-grid.is-filtered {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .project-grid.is-filtered .card {
+    height: 240px;
+  }
+}
+
 .home-projects-empty {
   grid-column: 1 / -1;
   padding: 80px 0;
