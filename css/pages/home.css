@@ -1295,6 +1295,11 @@ html[data-theme="light"] .home-trusted-label { color: var(--text-grey); }
   margin-left: 0;
 }
 
+/* Four marks in the six-column grid: start at column 2 so the short row centres. */
+.home-client-row-3 > :first-child {
+  grid-column-start: 2;
+}
+
 /* Same shared-canvas marks as the trusted band, so one height evens both rows. */
 .home-client-row img {
   height: 76px;
@@ -2374,6 +2379,14 @@ HEIGHTS", Plus Jakarta Sans 800 /
   .home-client-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 32px 20px;
+  }
+
+  .home-client-row-3 > :first-child {
+    grid-column-start: auto;
+  }
+
+  .home-client-row-3 > :last-child {
+    grid-column-start: 2;
   }
 }
 

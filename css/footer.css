@@ -315,19 +315,20 @@
 .footer-contact .footer-headoffice { margin-top: 12px; }
 .footer-address strong { color: #f4f4f4; }
 
-/* Figma 2972:18011 — the Contact block runs across the full footer row with the
-   phone line and the email line each on a single row. A one-fifth (or half)
-   grid column is narrower than either line, so it spans every column instead. */
-@media (min-width: 769px) {
-  .footer-grid > .footer-social { grid-column: -2; }
-  .footer-grid > div:has(.footer-contact) {
-    grid-column: 1 / -1;
-    order: 1;
-  }
-  .footer-phones,
-  .footer-emails {
-    flex-wrap: nowrap;
-    white-space: nowrap;
+/* Top bar: Contact Us button with the social row beneath it, right-aligned. */
+.footer-top-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+/* One row: brand | Quick Links | Services | Contact. Contact is the widest
+   column; its phone roles may stack but each role stays on one line. */
+@media (min-width: 1101px) {
+  .footer .footer-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 0.9fr) minmax(0, 1.7fr);
+    align-items: start;
   }
 }
 
@@ -425,9 +426,12 @@ html[data-theme="light"] .footer {
   /* brand blurb, the contact block and the social row read across the page;
      only the two link lists sit side by side */
   .footer-grid > .footer-brand,
-  .footer-grid > .footer-social,
   .footer-grid > div:has(.footer-contact) {
     grid-column: 1 / -1;
+  }
+
+  .footer-top-actions {
+    align-items: flex-start;
   }
 
   .footer-brand {

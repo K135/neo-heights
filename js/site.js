@@ -774,47 +774,45 @@
   // the address sliced off. Wrap it and give it the same prev/next control the
   // homepage rails use. Runs on every page that renders the band; the nav only
   // appears while the band actually overflows.
-  // On phones the same six-company strip wraps into two columns, in the band's
-  // order and with its captions and URLs. Marks are cut from the band art
-  // itself (assets/shared/band/strip-*), so they carry the band's white panels;
-  // captions and URLs are real text — baked into a ~170px column they render
-  // 5-6px tall. Desktop keeps the single-image band.
+  // On phones the band is rebuilt to Figma 2972:18132 on the same white sheet:
+  // Arul Group beside the corporate office address, then Rubbers | Polymers
+  // and Neo Heights | Vajra over Neo Studio. Marks are cut from the desktop
+  // export (assets/shared/band/pf-*), white ground and brand colours intact;
+  // captions, URLs and the address are real text so they stay legible.
   function partnersBandGrid() {
-    const CELLS = [
-      { mark: "group", alt: "Arul Group", url: "www.arulgroup.in" },
-      { mark: "rubbers", alt: "Arul Rubbers Private Limited, Estd. 1978", cap: "An ISO 9001:2015 Company",
-        url: "www.arulrubbers.com" },
-      { mark: "polymers", alt: "Arul Polymers Private Limited, Estd. 1997",
-        cap: "An ISO: 9001:2015<br />&amp; IATF 16949 Company", url: "www.arulpolymers.com" },
-      { mark: "neoheights", alt: "Neo Heights — Scaling Newer Heights", cap: "An ISO 9001 &amp; 45001 Company",
-        url: "www.neoheights.com" },
-      { mark: "vajra", alt: "Vajra Panels", url: "www.vajrapanels.com" },
-      { mark: "neostudio", alt: "The Neo Studio — Where Spaces Turn Into Stories, powered by Neo Heights",
-        url: "www.theneostudio.com" }
-    ];
+    const link = (url, text) =>
+      '<a class="partners-url" href="' + url + '" target="_blank" rel="noopener">' + (text || url.replace(/^https?:\/\//, "")) + "</a>";
+    const cell = (name, parts) =>
+      '<div class="partners-cell is-' + name + '">' + parts.join("") + "</div>";
 
     document.querySelectorAll(".partners--band").forEach((band) => {
       if (band.parentNode.querySelector(".partners-grid")) return;
       const img = band.querySelector("img");
       const base = img && img.getAttribute("src").indexOf("../") === 0 ? "../" : "";
-
-      // One crop per ground; css/components.css shows the one for the theme.
-      const marks = (name, alt) =>
-        [["-dark.png?v=2", "partners-art--on-dark"], [".png?v=2", "partners-art--on-light"]]
-          .map(([suffix, cls]) =>
-            '<img class="partners-mark ' + cls + '" src="' + base + "assets/shared/band/strip-" + name + suffix +
-            '" alt="' + alt + '" loading="lazy" decoding="async" />')
-          .join("");
+      const mark = (name, alt) =>
+        '<img class="partners-mark" src="' + base + "assets/shared/band/pf-" + name + '.png?v=1" alt="' + alt +
+        '" loading="lazy" decoding="async" />';
+      const cap = (html) => '<span class="partners-cap">' + html + "</span>";
 
       const grid = document.createElement("div");
       grid.className = "partners-grid";
-      grid.innerHTML = CELLS.map((c) =>
-        '<div class="partners-cell is-' + c.mark + '">' +
-          '<span class="partners-cap">' + (c.cap || "") + "</span>" +
-          '<span class="partners-logo">' + marks(c.mark, c.alt) + "</span>" +
-          '<a class="partners-url" href="https://' + c.url + '" target="_blank" rel="noopener">' + c.url + "</a>" +
-        "</div>"
-      ).join("");
+      grid.innerHTML =
+        '<div class="partners-head">' +
+          cell("group", [mark("group", "Arul Group"), link("https://www.arulgroup.in", "www.arulgroup.in")]) +
+          '<address class="partners-address">Corporate Office : ARUL GROUP<br />B-5, SIDCO Industrial Estate<br />' +
+            "Krishnagiri Dist, Hosur - 635 126<br />Tamil Nadu, INDIA</address>" +
+        "</div>" +
+        cell("rubbers", [cap("An ISO 9001:2015 Company"), mark("rubbers", "Arul Rubbers Private Limited, Estd. 1978"),
+          link("https://www.arulrubbers.com"), link("mailto:arul@arulrubbers.com", "email. arul@arulrubbers.com")]) +
+        cell("polymers", [cap("An ISO: 9001:2015<br />&amp; IATF 16949 Company"),
+          mark("polymers", "Arul Polymers Private Limited, Estd. 1997"), link("https://www.arulpolymers.com")]) +
+        cell("neoheights", [cap("An ISO 9001&amp; 45001 Company"),
+          mark("neoheights", "Neo Heights — Scaling Newer Heights"), link("https://www.neoheights.com")]) +
+        '<div class="partners-cell is-stack">' +
+          mark("vajra", "Vajra Panels") +
+          mark("neostudio", "The Neo Studio — Where Spaces Turn Into Stories, powered by Neo Heights") +
+          link("https://www.theneostudio.com") +
+        "</div>";
       band.parentNode.insertBefore(grid, band.nextSibling);
     });
   }

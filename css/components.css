@@ -935,15 +935,10 @@
   object-fit: contain;
 }
 
-/* The band art and its phone slices ship on transparent in two inks: *-dark
-   (light type for the dark ground) and the original (dark type for light).
-   A filter can't do this — it turns the Rubbers/Polymers red pink. */
-.partners--band img.partners-art--on-light,
-.partners-cell img.partners-art--on-light { display: none; }
-html[data-theme="light"] .partners--band img.partners-art--on-dark,
-html[data-theme="light"] .partners-cell img.partners-art--on-dark { display: none; }
-html[data-theme="light"] .partners--band img.partners-art--on-light,
-html[data-theme="light"] .partners-cell img.partners-art--on-light { display: block; }
+/* The band is the Figma 2972:18065 export as-is: a white sheet with the brand
+   marks in their own colours, identical in both themes. Never filter or knock
+   it out — invert turns the Rubbers/Polymers red pink and the Neo Studio navy
+   pale blue. */
 
 /* ---- Client logos (assets/shared/clients) ----
    Every mark sits on the same transparent canvas height, with its ink already
@@ -990,9 +985,6 @@ html[data-theme="light"] .card-glass-inner {
 }
 html[data-theme="light"] .card-glass .card-title,
 html[data-theme="light"] .card-glass .card-loc { color: #fff; }
-
-html[data-theme="light"] .partners--band,
-html[data-theme="light"] .partners-grid { background: var(--bg-elevated); }
 
 /* Featured Blogs keeps the dark ink band in light mode — the cards are
    photography with white type, and the homepage frame keeps the whole strip
@@ -1196,13 +1188,12 @@ html[data-theme="light"] .footer a.link-accent {
 }
 
 /* ---- Partners band on phones -------------------------------------------
-   The desktop band is one 3840px-wide sheet; scaled to a phone it is either
-   illegible or a swipe rail showing a third of a logo. Below 900px the same
-   six-company strip wraps into two columns (js/site.js), in band order:
-   Group | Rubbers, Polymers | Neo Heights, Vajra | Neo Studio. The marks are
-   cut from the band art, so each keeps its white panels; captions and URLs
-   are real text. Every cell reserves the same caption and logo height so the
-   marks in a row share one baseline. */
+   The desktop band is one 3822px-wide sheet; scaled to a phone it is
+   illegible. Below 900px js/site.js rebuilds it to Figma 2972:18132 on the
+   same white sheet in both themes: Arul Group beside the corporate office
+   address, then Rubbers | Polymers, Neo Heights | Vajra over Neo Studio.
+   Marks are cut from the desktop export; captions, URLs and the address are
+   real text in the export's greys. */
 .partners-grid { display: none; }
 
 @media (max-width: 900px) {
@@ -1212,73 +1203,77 @@ html[data-theme="light"] .footer a.link-accent {
   .partners-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px 0;
+    gap: 28px 12px;
     align-items: start;
     width: 100%;
     box-sizing: border-box;
-    padding: 36px 0;
-    background: transparent;
-    font-family: "Fustat", sans-serif;
+    padding: 32px 16px 36px;
+    background: #fff;
+    color: #1a1a1a;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .partners-head {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+  }
+
+  .partners-address {
+    font-style: normal;
+    font-size: 11.5px;
+    line-height: 1.65;
+    white-space: nowrap;
+    color: #1a1a1a;
   }
 
   .partners-cell {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     min-width: 0;
-    padding: 0 10px;
     text-align: center;
   }
-  .partners-cell:nth-child(odd) { border-right: 1px dashed var(--border-strong); }
+  .partners-cell.is-stack { gap: 14px; padding-top: 4px; }
 
   .partners-cap {
+    min-height: 2.7em;
     display: flex;
     align-items: flex-end;
-    justify-content: center;
-    min-height: 2.7em;
-    font-size: 10px;
+    font-size: 9.5px;
     line-height: 1.35;
-    color: var(--text-secondary);
-  }
-  .is-vajra .partners-cap,
-  .is-neostudio .partners-cap { display: none; }
-
-  .partners-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 96px;
+    color: #8c8c8c;
   }
 
   .partners-mark {
     display: block;
     max-width: 100%;
-    max-height: 100%;
     height: auto;
   }
-  .is-group .partners-mark { width: 118px; }
-  .is-rubbers .partners-mark { width: 150px; }
-  .is-polymers .partners-mark { width: 160px; }
-  .is-neoheights .partners-mark { width: 104px; }
-  .is-vajra .partners-mark { width: 160px; }
-  .is-neostudio .partners-mark { width: 170px; }
+  .is-group .partners-mark { width: 108px; }
+  .is-rubbers .partners-mark { width: 132px; }
+  .is-polymers .partners-mark { width: 148px; }
+  .is-neoheights .partners-mark { width: 82px; }
+  .is-stack .partners-mark:nth-child(1) { width: 142px; }
+  .is-stack .partners-mark:nth-child(2) { width: 158px; }
 
   .partners-url {
-    font-size: 12px;
-    line-height: 1.4;
-    color: var(--text-secondary);
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: #6b6b6b;
     text-decoration: none;
     overflow-wrap: anywhere;
   }
+  .is-group .partners-url { font-size: 10px; font-weight: 700; color: #000; }
   .partners-url:hover,
-  .partners-url:focus-visible { color: var(--text); text-decoration: underline; }
+  .partners-url:focus-visible { color: #1a1a1a; text-decoration: underline; }
 }
 
 @media (max-width: 360px) {
-  .partners-grid { gap: 24px 0; padding: 28px 0; }
-  .partners-cell { padding: 0 6px; }
-  .partners-logo { height: 84px; }
-  .partners-url { font-size: 11px; }
+  .partners-grid { gap: 24px 8px; padding: 28px 12px 32px; }
+  .partners-head { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+  .partners-url { font-size: 10.5px; }
 }

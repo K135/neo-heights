@@ -445,7 +445,15 @@ ${drawerMarkup(active)}`;
         <p class="footer-top-title">Have a project in mind?</p>
         <p class="footer-top-sub">Let's build it together.</p>
       </div>
-      <a class="btn-primary" href="${a("contact.html")}"><span class="btn-label">Contact Us</span></a>
+      <div class="footer-top-actions">
+        <a class="btn-primary" href="${a("contact.html")}"><span class="btn-label">Contact Us</span></a>
+        <div class="footer-social">
+          <a href="${CONTACT.social.facebook}" target="_blank" rel="noopener noreferrer"><img src="${img("social-1.svg")}" alt="Facebook" width="46" height="35" /></a>
+          <a href="${CONTACT.social.twitter || CONTACT.social.x || "#"}" target="_blank" rel="noopener noreferrer"><img src="${img("social-2.svg")}" alt="X" width="46" height="35" /></a>
+          <a href="${CONTACT.social.linkedin}" target="_blank" rel="noopener noreferrer"><img src="${img("social-3.svg")}" alt="LinkedIn" width="46" height="35" /></a>
+          <a href="${CONTACT.social.youtube}" target="_blank" rel="noopener noreferrer"><img src="${img("social-4.svg")}" alt="YouTube" width="46" height="35" /></a>
+        </div>
+      </div>
     </div>
     <div class="footer-grid">
       <div class="footer-brand">
@@ -506,12 +514,6 @@ ${drawerMarkup(active)}`;
             <div><strong>Corporate Office :</strong><br />Achuth Square,<br />First floor 1018/1, 24th Main Rd,<br />13th Cross Rd, 1st Sector, HSR Layout,<br />Bengaluru, Karnataka 560102</div>
           </div>
         </div>
-      </div>
-      <div class="footer-social">
-        <a href="${CONTACT.social.facebook}" target="_blank" rel="noopener noreferrer"><img src="${img("social-1.svg")}" alt="Facebook" width="46" height="35" /></a>
-        <a href="${CONTACT.social.twitter || CONTACT.social.x || "#"}" target="_blank" rel="noopener noreferrer"><img src="${img("social-2.svg")}" alt="X" width="46" height="35" /></a>
-        <a href="${CONTACT.social.linkedin}" target="_blank" rel="noopener noreferrer"><img src="${img("social-3.svg")}" alt="LinkedIn" width="46" height="35" /></a>
-        <a href="${CONTACT.social.youtube}" target="_blank" rel="noopener noreferrer"><img src="${img("social-4.svg")}" alt="YouTube" width="46" height="35" /></a>
       </div>
     </div>
   </div>
