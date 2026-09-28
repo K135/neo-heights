@@ -245,7 +245,7 @@
         </div>
       </div>
       ${drawerLink("sustainability.html", "Sustainability")}
-      ${drawerLink("blogs.html", "Insights")}
+      ${drawerLink("blogs.html", "Newsroom")}
     </nav>
     <div class="nav-drawer-foot">
       <a class="btn-primary nav-drawer-cta" href="${a("contact.html")}"${leaf === "contact.html" ? ' aria-current="page"' : ""}>
@@ -358,7 +358,7 @@ ${skipLink()}
     ${megaTrigger("projects", "projects.html", "Projects")}
     ${megaTrigger("services", "services.html", "Services")}
     ${link("sustainability.html", "Sustainability")}
-    ${link("blogs.html", "Insights")}
+    ${link("blogs.html", "Newsroom")}
     ${link("contact.html", "Contact")}
   </nav>
   <div class="header-actions">

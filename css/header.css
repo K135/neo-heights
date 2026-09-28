@@ -59,8 +59,8 @@
   height: 58px;
 }
 
-/* Offset page content under fixed header (home overlays hero instead) */
-body:not(.page-home) .page {
+/* Offset page content under fixed header */
+.page {
   padding-top: var(--header-height);
 }
 
@@ -594,15 +594,6 @@ body.mega-hover .mega-backdrop {
     max-width: none;
   }
 
-  .page-home .header {
-    left: 0;
-    transform: none;
-  }
-
-  body:not(.page-home) .page {
-    padding-top: var(--header-height);
-  }
-
   .header .logo,
   .header.is-scrolled .logo {
     width: 70px;
@@ -940,7 +931,6 @@ body.mega-hover .mega-backdrop {
 }
 
 html[data-theme="light"] .header { background: rgba(246, 243, 239, 0.94); }
-html[data-theme="light"] .page-home .header.is-scrolled { background: rgba(246, 243, 239, 0.94); }
 
 html[data-theme="light"] .nav-overlay {
   background: rgba(25, 24, 23, 0.28);
@@ -965,15 +955,11 @@ html[data-theme="light"] .nav-drawer {
    so the dim bled THROUGH the header and read as a faded nav. Keep it fully
    opaque while a panel is open. */
 body.mega-open .header,
-body.mega-hover .header,
-body.mega-open .page-home .header,
-body.mega-hover .page-home .header {
+body.mega-hover .header {
   background: #1d1d1d;
 }
 html[data-theme="light"] body.mega-open .header,
-html[data-theme="light"] body.mega-hover .header,
-html[data-theme="light"] body.mega-open .page-home .header,
-html[data-theme="light"] body.mega-hover .page-home .header {
+html[data-theme="light"] body.mega-hover .header {
   background: #ffffff;
 }
 

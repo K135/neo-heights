@@ -27,55 +27,13 @@
   max-width: 712px;
 }
 
-/* Hero — header fixed overlays video */
-.page-home .header {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-  z-index: 1000;
-  height: var(--header-height);
-  padding: 0 80px;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-bottom: 1px solid transparent;
-  box-shadow: none;
-  transition: background 0.25s ease, backdrop-filter 0.25s ease;
-}
-
-@media (max-width: 1100px) {
-  .page-home .header {
-    background: rgba(10, 10, 10, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom-color: rgba(255, 255, 255, 0.08);
-  }
-}
-
-.page-home .header.is-scrolled {
-  height: 72px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background: rgba(10, 10, 10, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-}
-
-.page-home .header .logo {
-  width: 126px;
-  height: 101px;
-  object-fit: cover;
-  border-radius: 40px 40px 0 0;
-  transition: width 0.25s ease, height 0.25s ease;
-}
-
-.page-home .header.is-scrolled .logo {
-  width: 88px;
-  height: 58px;
+/* The page is offset under the shared fixed header like every other page,
+   so the hero fills what is left of the viewport. */
+.page-home .home-hero {
+  height: calc(100vh - var(--header-height));
+  height: calc(100svh - var(--header-height));
+  height: calc(100dvh - var(--header-height));
+  min-height: calc(100svh - var(--header-height));
 }
 
 .home-hero {
@@ -660,7 +618,7 @@
 .home-about {
   position: relative;
   padding: 0 0 80px;
-  background: linear-gradient(180deg, #000 0%, #212121 40%, #1d1d1d 100%);
+  background: linear-gradient(180deg, #000 0%, #0f0f0f 40%, #111 100%);
   overflow: visible;
 }
 
@@ -683,19 +641,19 @@
   width: 100%;
   max-width: 1332px;
   margin: 0 auto;
-  padding: 122px 40px 56px;
+  padding: 88px 40px 48px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
 }
 
 .home-about-kicker {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 18px;
   width: 100%;
 }
 
@@ -707,10 +665,10 @@
   margin: 0;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 42px;
+  font-size: 36px;
   line-height: 1.2;
   color: #fff;
-  max-width: 799px;
+  max-width: 700px;
 }
 
 .home-about-body-wrap {
@@ -719,15 +677,15 @@
   align-items: center;
   gap: 24px;
   width: 100%;
-  max-width: 1055px;
+  max-width: 820px;
 }
 
 .home-about-body {
   margin: 0;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 20px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.55;
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
 }
@@ -744,14 +702,18 @@
   padding: 0 120px 28px;
   box-sizing: border-box;
   overflow: clip;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Arrows sit under the rail so the copy-to-cards gap stays as tight as Figma */
 .home-stats-head {
+  order: 2;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   min-height: 44px;
-  margin: 0 0 14px;
+  margin: 16px 0 0;
 }
 
 .home-stats-block:not(.is-scrollable) .home-stats-head {
@@ -810,10 +772,10 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
-  gap: 16px;
+  gap: 12px;
   min-width: 0;
   max-width: 100%;
-  padding: 12px 0 8px;
+  padding: 0;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
@@ -835,19 +797,21 @@
   position: relative;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  flex: 0 0 358px;
-  width: 358px;
-  min-width: 358px;
-  height: 448px;
-  border-radius: 20px;
-  background: #262626;
-  border: 1px solid #383737;
-  padding: 32px 34px;
+  /* Figma home 643-12180: five compact cards fill the row, the sixth scrolls */
+  flex: 0 0 calc((100% - 48px) / 5);
+  width: calc((100% - 48px) / 5);
+  min-width: 212px;
+  height: 200px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  padding: 24px;
   overflow: hidden;
   overflow: clip;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   transform: translateZ(0);
   transition: transform 0.22s ease, border-color 0.22s ease;
 }
@@ -873,16 +837,16 @@
   margin: 0;
   font-family: var(--font-stat);
   font-weight: 700;
-  font-size: 63px;
-  line-height: 72px;
-  height: 72px;
-  letter-spacing: -2px;
+  font-size: 42px;
+  line-height: 48px;
+  height: 48px;
+  letter-spacing: -1px;
   color: #f4f4f4;
   white-space: nowrap;
 }
 
-.home-stat-num-sm { font-size: 48px; }
-.home-stat-num-md { font-size: 56px; }
+.home-stat-num-sm,
+.home-stat-num-md { font-size: 42px; }
 
 .home-stat-desc {
   margin: 0;
@@ -892,52 +856,51 @@
   font-size: 16px;
   line-height: 1.45;
   letter-spacing: 0.25px;
-  color: #e6e5e6;
+  color: rgba(230, 229, 230, 0.7);
 }
 
-/* Figma 290:6076 — a 550px panel inside a clipped 448px card.
-   Hover moves it up by exactly 355px, revealing image + Know More. */
+/* The panel is the card's own size and parks just below its clipped bottom
+   edge; the reveal slides it up by 100% so it works at any card height. */
 .home-stat-panel {
   position: absolute;
   left: 0;
   right: 0;
-  top: 262px;
-  height: 550px;
+  top: 100%;
+  height: 100%;
   box-sizing: border-box;
-  padding: 32px;
-  background: #262626;
+  padding: 20px 24px;
+  background: #1c1c1c;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 12px;
   z-index: 1;
+  isolation: isolate;
   transform: translateY(0);
   transition: transform 0.38s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
 }
 
 .home-stat-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 8px;
 }
 
-/* The panel is 550px tall inside a 448px card, so anything past the tag row +
-   copy must sit BELOW the card's bottom edge or it peeks through at rest.
-   Reserving the copy block's height parks the hover image exactly out of view. */
-.home-stat-body .home-stat-lines {
-  min-height: 81px;
-}
-
+/* the hover photo backs the whole panel instead of stacking under the copy */
 .home-stat-img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   display: block;
-  width: 292px;
-  height: 256px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 6px;
+  opacity: 0.28;
 }
 
 .home-stat-link {
-  padding-top: 12px;
+  margin-top: auto;
   font-family: "Fustat", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -949,10 +912,10 @@
 
 .home-stat-glow {
   position: absolute;
-  left: 172px;
-  top: 425px;
-  width: 224px;
-  height: 160px;
+  right: -60px;
+  bottom: -110px;
+  width: 200px;
+  height: 140px;
   border-radius: 9999px;
   background: var(--glow, #f57f2a);
   filter: blur(32px);
@@ -964,14 +927,14 @@
 
 @media (hover: hover) and (pointer: fine) {
   .home-stat-card:hover .home-stat-panel,
-  .home-stat-card:focus-within .home-stat-panel { transform: translateY(-355px); }
+  .home-stat-card:focus-within .home-stat-panel { transform: translateY(-100%); }
   .home-stat-card:hover .home-stat-glow,
   .home-stat-card:focus-within .home-stat-glow { opacity: 1; }
 }
 
 /* touch / coarse pointer — JS toggles .is-open */
 .home-stat-card.is-open { border-color: #f68121; }
-.home-stat-card.is-open .home-stat-panel { transform: translateY(-355px); }
+.home-stat-card.is-open .home-stat-panel { transform: translateY(-100%); }
 .home-stat-card.is-open .home-stat-glow { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -980,21 +943,21 @@
 
 .home-stat-tag-row {
   border-bottom: 1px solid #8b8b8b;
-  padding-bottom: 28px;
+  padding-bottom: 10px;
 }
 
 /* The partner wordmark is dark artwork, so it rides on a white chip to stay
    readable now that every card shares the dark surface. */
 .home-stat-tag-row img {
   display: block;
-  height: 28px;
+  height: 18px;
   width: auto;
-  max-width: 46%;
+  max-width: 60%;
   box-sizing: content-box;
-  padding: 7px 12px;
+  padding: 4px 10px;
   /* cancel the chip's vertical padding so the rule under it stays on the same
      baseline as the text-tag cards */
-  margin: -7px 0;
+  margin: -4px 0;
   border-radius: 8px;
   background: #fff;
 }
@@ -1519,6 +1482,11 @@
 
 @media (max-width: 768px) {
   .rail-fade { --rail-fade: 40px; }
+}
+
+/* the arrows already signal the sixth stat card; a wide fade dimmed the fifth */
+@media (min-width: 769px) {
+  .home-stats.rail-fade { --rail-fade: 24px; }
 }
 
 /* ——— Meet Our Experts ——— */
@@ -2483,14 +2451,14 @@ HEIGHTS", Plus Jakarta Sans 800 /
   }
 
   .home-stats-head {
-    margin-bottom: 10px;
+    margin-top: 14px;
   }
 
   .home-stats {
     flex-direction: row !important;
     flex-wrap: nowrap;
-    gap: 12px !important;
-    padding: 10px 0 8px;
+    gap: 10px !important;
+    padding: 0;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
@@ -2503,19 +2471,7 @@ HEIGHTS", Plus Jakarta Sans 800 /
   }
 
   .home-stat-card {
-    flex: 0 0 min(280px, 82vw);
-    width: min(280px, 82vw);
-    min-width: min(280px, 82vw);
-    height: auto;
-    min-height: 0;
-    padding: 22px;
     scroll-snap-align: start;
-  }
-
-  .home-stat-num,
-  .home-stat-num-sm,
-  .home-stat-num-md {
-    font-size: 40px;
   }
 
   .home-services {
@@ -2740,9 +2696,9 @@ details[open] > summary .home-faq-icon { transform: rotate(45deg); }
 .home-faq-more a { color: #fff; font-weight: 500; text-decoration: underline; }
 
 /* ---- About Us stat typography — Figma 290:6076 ---- */
-.home-stat-desc { font-size: 18px; line-height: 26px; letter-spacing: 0.25px; }
-.home-stat-tag { font-size: 14px; line-height: 22px; letter-spacing: 1.75px; }
-.home-stat-lines p { font-size: 14px; line-height: 22px; letter-spacing: 0.25px; }
+.home-stat-desc { font-size: 14px; line-height: 20px; letter-spacing: 0.2px; }
+.home-stat-tag { font-size: 11px; line-height: 16px; letter-spacing: 1.1px; }
+.home-stat-lines p { margin: 0; font-size: 13px; line-height: 19px; letter-spacing: 0.2px; }
 
 /* ---- Featured blogs — Figma 75:1783: hover zooms the cover 1.1, nothing else moves ---- */
 .blog-card { position: relative; overflow: hidden; }
@@ -3004,20 +2960,6 @@ details[open] > summary .home-faq-icon { transform: rotate(45deg); }
    The accent (#f68121) is never themed.
    ========================================================================== */
 
-/* --- Header: the light frame puts the nav on a solid white band ---------- */
-html[data-theme="light"] .page-home .header {
-  background: rgba(246, 243, 239, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: var(--border);
-}
-
-html[data-theme="light"] .page-home .header.is-scrolled {
-  background: rgba(246, 243, 239, 0.95);
-  border-bottom-color: var(--border);
-  box-shadow: 0 12px 40px rgba(30, 26, 20, 0.1);
-}
-
 /* --- Generic section headings ------------------------------------------- */
 html[data-theme="light"] .home-section-title { color: var(--text); }
 
@@ -3228,15 +3170,6 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
    (e.g. the Legacy block, which re-declares padding after the media queries).
    ========================================================================== */
 @media (max-width: 768px) {
-  .home-stat-num {
-    font-size: 48px;
-    line-height: 56px;
-    height: 56px;
-  }
-
-  .home-stat-num-sm { font-size: 36px; }
-  .home-stat-num-md { font-size: 44px; }
-
   /* ---- Hero: the mobile frame keeps both CTAs on one row ---------------- */
   .home-hero-ctas {
     flex-direction: row;
@@ -3277,59 +3210,30 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
     text-align: center;
   }
 
-  /* ---- About Us stat cards ---------------------------------------------
-     The reveal is a hard-coded vertical shift (panel top 262px, travel
-     -355px), so the card HEIGHT and the panel's own box must stay exactly as
-     they are on desktop. Only the width is allowed to change here. ------- */
+  /* ---- About Us stat cards: same compact card, narrower rail slot ------- */
   .home-stats-block {
     padding: 0 16px 24px;
   }
 
   .home-stat-card {
-    /* width tracks the rail's own content box, so it never outruns whatever
-       gutters the shared responsive rules apply to .home-about */
-    flex: 0 0 auto;
-    width: min(300px, 100%);
+    flex: 0 0 min(232px, 70vw);
+    width: min(232px, 70vw);
     min-width: 0;
-    height: 448px;
-    min-height: 448px;
-    padding: 32px 22px;
+    height: 188px;
+    min-height: 0;
+    padding: 20px;
   }
 
   .home-stat-panel {
-    padding: 32px 22px;
-  }
-
-  /* 20px shorter than desktop so "Know More" clears the card's clipped edge
-     once the panel has travelled its fixed -355px */
-  .home-stat-img {
-    width: 100%;
-    height: 236px;
-  }
-
-  .home-stat-glow {
-    left: 50%;
-    transform: translateX(-50%);
+    padding: 18px 20px;
   }
 
   .home-stat-num,
   .home-stat-num-sm,
   .home-stat-num-md {
-    font-size: 40px;
-  }
-
-  .home-stat-desc {
-    font-size: 16px;
-    line-height: 23px;
-  }
-
-  /* The tag has to stay on ONE line: the panel below it is positioned with
-     fixed pixel offsets, so a second line pushes "Know More" past the card's
-     clipped bottom edge once the panel slides up. */
-  .home-stat-tag {
-    font-size: 11px;
-    line-height: 18px;
-    letter-spacing: 0.9px;
+    font-size: 36px;
+    line-height: 44px;
+    height: 44px;
   }
 
   /* ---- Services --------------------------------------------------------- */
@@ -3596,39 +3500,6 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
 }
 
 
-/* Home desktop logo is 126×101 with a 40px top radius. That rule is not
-   in a media query, so it was winning on every phone/tablet: the mark sat
-   101px tall in a 72px bar (and at 390px the radius was still 40px, so
-   the wordmark was cropped into a pill). Scale the same crop to the bar. */
-@media (max-width: 1100px) {
-  .page-home .header,
-  .page-home .header.is-scrolled {
-    left: 0;
-    transform: none;
-    width: 100%;
-    max-width: none;
-    height: var(--header-height);
-    padding: 8px 16px;
-    overflow: hidden;
-  }
-
-  .page-home .header-logo {
-    display: flex;
-    align-items: center;
-    line-height: 0;
-  }
-
-  .page-home .header .logo,
-  .page-home .header.is-scrolled .logo {
-    width: 70px;
-    height: 56px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 22px 22px 0 0;
-  }
-}
-
-
 /* ==========================================================================
    MOBILE PASS — homepage
    Everything below is scoped to <=768px (phones) and to .home-* selectors, so
@@ -3677,7 +3548,8 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
   }
 
   .home-stat-card {
-    width: min(300px, calc(100vw - 100px));
+    flex-basis: min(232px, calc(100vw - 100px));
+    width: min(232px, calc(100vw - 100px));
   }
 
   /* ---- Team: 96px of dead ground between the intro and the rail --------
