@@ -73,45 +73,80 @@
     { title: "EPC Contractor", href: "services/epc.html" },
   ];
 
-  const EXPLORE = {
-    title: "SAKATA INDIA PVT LTD",
-    loc: "DODDABALLAPURA",
-    href: "projects/shimzu.html",
-    image: "explore-sakata.png",
-  };
+  // Photo cards for the mega panel's auto-scrolling strip. Titles, images and
+  // statuses mirror the cards on projects.html / index.html.
+  const MEGA_SHOWCASE = [
+    { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", image: "assets/shared/proj-toyota.png", status: "ongoing" },
+    { title: "SHIMZU - SAKATA", loc: "DODDABALLAPURA", href: "projects/shimzu.html", image: "assets/pages/home/image78.png", status: "ongoing" },
+    { title: "Wipro GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", image: "assets/shared/proj-ge.png", status: "ongoing" },
+    { title: "CS Building — Wendt India", loc: "HOSUR", href: "projects/faiveley.html", image: "assets/shared/proj-wendt.png", status: "ongoing" },
+    { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", image: "assets/shared/proj-volvo.png", status: "completed" },
+    { title: "Schaeffler India Limited", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", image: "assets/pages/home/image929.png", status: "completed" },
+    { title: "Advik Hi Tech Pvt. Ltd.", loc: "NARSAPURA, KA", href: "projects/advik-peb.html", image: "assets/pages/home/image943.png", status: "completed" },
+    { title: "Foxconn - Cinda", loc: "CHENNAI", href: "projects/foxconn.html", image: "assets/shared/proj-foxconn.png", status: "completed" },
+    { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", image: "assets/shared/proj-lmwind.png", status: "completed" },
+    { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", image: "assets/shared/proj-vajra1.png", status: "completed" },
+    { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", image: "assets/shared/proj-pca.png", status: "completed" },
+    { title: "Tata Electronics", loc: "HOSUR", href: "projects/tata-rwh.html", image: "assets/pages/home/image944.png", status: "completed" },
+  ];
 
   function skipLink() {
     return `<a class="skip-link" href="#main">Skip to content</a>`;
   }
 
+  const PROJECT_FILTERS = [
+    ["all", "All"],
+    ["ongoing", "On-going"],
+    ["completed", "Completed"],
+  ];
+
+  const matchesFilter = (status, filter) => filter === "all" || status === filter;
+
+  function showcaseCards(filter) {
+    const items = MEGA_SHOWCASE.filter((p) => matchesFilter(p.status, filter));
+    const card = (p, clone) => `
+      <a class="mega-explore-card" href="${a(p.href)}" data-status="${p.status}"${clone ? ' aria-hidden="true" tabindex="-1"' : ""}>
+        <img src="${a(p.image)}" alt="${clone ? "" : p.title}" loading="lazy" decoding="async" />
+        <div class="mega-explore-overlay">
+          <span class="mega-explore-title">${p.title}</span>
+          <span class="mega-explore-loc">${p.loc}</span>
+        </div>
+      </a>`;
+    // The track holds the set twice so translating it by -50% lands on an
+    // identical frame and the loop has no visible seam.
+    return {
+      count: items.length,
+      html: items.map((p) => card(p, false)).join("") + items.map((p) => card(p, true)).join(""),
+    };
+  }
+
   function megaProjectsPanel() {
+    const filter = "all";
     const cards = MEGA_PROJECTS.map(
       (p) => `
-      <a class="mega-project-item" href="${a(p.href)}" data-status="${p.status}"${p.status === "ongoing" ? "" : " hidden"}>
+      <a class="mega-project-item" href="${a(p.href)}" data-status="${p.status}"${matchesFilter(p.status, filter) ? "" : " hidden"}>
         <span class="mega-project-title">${p.title}</span>
         <span class="mega-project-loc">${p.loc}</span>
       </a>`
     ).join("");
+    const chips = PROJECT_FILTERS.map(
+      ([key, label]) =>
+        `<button type="button" class="mega-filter${key === filter ? " is-active" : ""}" data-mega-filter="${key}" aria-pressed="${key === filter}">${label}</button>`
+    ).join("");
+    const showcase = showcaseCards(filter);
     return `
 <div class="mega-panel mega-panel-projects" id="mega-projects" hidden>
   <div class="mega-grid">
     <div class="mega-col">
       <p class="mega-label">Projects</p>
-      <div class="mega-filters" data-mega-filters role="group" aria-label="Filter projects">
-        <button type="button" class="mega-filter is-active" data-mega-filter="ongoing" aria-pressed="true">On-going</button>
-        <button type="button" class="mega-filter" data-mega-filter="completed" aria-pressed="false">Completed</button>
-      </div>
+      <div class="mega-filters" data-mega-filters role="group" aria-label="Filter projects">${chips}</div>
       <div class="mega-projects-list">${cards}</div>
     </div>
     <div class="mega-col mega-col-explore">
       <p class="mega-label">Explore</p>
-      <a class="mega-explore-card" href="${a(EXPLORE.href)}">
-        <img src="${img(EXPLORE.image)}" alt="${EXPLORE.title}" />
-        <div class="mega-explore-overlay">
-          <span class="mega-explore-title">${EXPLORE.title}</span>
-          <span class="mega-explore-loc">${EXPLORE.loc}</span>
-        </div>
-      </a>
+      <div class="mega-marquee" data-mega-marquee aria-label="Project gallery">
+        <div class="mega-marquee-track" style="--marquee-count:${showcase.count}">${showcase.html}</div>
+      </div>
     </div>
   </div>
   <div class="mega-bottom">
@@ -122,10 +157,10 @@
           <rect x="11.5" y="3" width="4.5" height="14" rx="1.2" fill="#fff" />
         </svg>
       </span>
-      <p>Ready to kick off a project? <strong>Let's get in touch!</strong></p>
+      <p>Want the full portfolio? <strong>Browse every project.</strong></p>
     </div>
-    <a class="btn-primary mega-cta" href="${a("contact.html")}">
-      <span class="btn-label">Start Your Project</span>
+    <a class="btn-primary mega-cta" href="${a("projects.html")}">
+      <span class="btn-label">View all projects</span>
       <img src="${img("arrow-btn.svg")}" alt="" width="24" height="24" />
     </a>
   </div>
@@ -155,7 +190,7 @@
     const onServices =
       String(active).startsWith("services") || String(location.pathname).includes("/services/");
     const currentProject = MEGA_PROJECTS.find((p) => leafOf(p.href) === leaf);
-    const projectFilter = currentProject && currentProject.status === "completed" ? "completed" : "ongoing";
+    const projectFilter = currentProject ? currentProject.status : "all";
 
     const drawerLink = (href, label) => {
       const on = isNavCurrent(active, href) ? ' aria-current="page"' : "";
@@ -164,7 +199,7 @@
 
     const projectItems = MEGA_PROJECTS.map((p) => {
       const current = leafOf(p.href) === leaf;
-      const hidden = p.status !== projectFilter ? " hidden" : "";
+      const hidden = matchesFilter(p.status, projectFilter) ? "" : " hidden";
       return `<a class="nav-drawer-sublink" href="${a(p.href)}" data-status="${p.status}"${current ? ' aria-current="page"' : ""}${hidden}>
         <span class="nav-drawer-sub-title">${p.title}</span>
         <span class="nav-drawer-sub-loc">${p.loc}</span>
@@ -226,8 +261,10 @@
         <div class="nav-acc-panel" id="drawer-projects"${onProjects ? "" : " hidden"}>
           <a class="nav-drawer-all" href="${a("projects.html")}"${leaf === "projects.html" ? ' aria-current="page"' : ""}>View all projects</a>
           <div class="nav-drawer-filters" data-drawer-filters role="group" aria-label="Filter projects">
-            <button type="button" class="nav-drawer-filter${projectFilter === "ongoing" ? " is-active" : ""}" data-drawer-filter="ongoing" aria-pressed="${projectFilter === "ongoing" ? "true" : "false"}">On-going</button>
-            <button type="button" class="nav-drawer-filter${projectFilter === "completed" ? " is-active" : ""}" data-drawer-filter="completed" aria-pressed="${projectFilter === "completed" ? "true" : "false"}">Completed</button>
+            ${PROJECT_FILTERS.map(
+              ([key, label]) =>
+                `<button type="button" class="nav-drawer-filter${projectFilter === key ? " is-active" : ""}" data-drawer-filter="${key}" aria-pressed="${projectFilter === key}">${label}</button>`
+            ).join("")}
           </div>
           <div class="nav-drawer-list">${projectItems}</div>
         </div>
@@ -584,10 +621,13 @@ ${drawerMarkup(active)}`;
         if (!header.contains(e.target)) closeMega();
       });
 
-      // Mega panel status tabs (On-going / Completed)
+      // Mega panel status tabs (All / On-going / Completed) drive both the
+      // project list and the photo strip.
       header.querySelectorAll("[data-mega-filters]").forEach((wrap) => {
         const btns = [...wrap.querySelectorAll("[data-mega-filter]")];
-        const list = wrap.parentElement.querySelector(".mega-projects-list");
+        const panel = wrap.closest(".mega-panel");
+        const list = panel && panel.querySelector(".mega-projects-list");
+        const track = panel && panel.querySelector(".mega-marquee-track");
         if (!list) return;
         btns.forEach((btn) => {
           btn.addEventListener("click", () => {
@@ -598,8 +638,13 @@ ${drawerMarkup(active)}`;
               b.setAttribute("aria-pressed", on ? "true" : "false");
             });
             list.querySelectorAll("[data-status]").forEach((item) => {
-              item.hidden = item.dataset.status !== filter;
+              item.hidden = !matchesFilter(item.dataset.status, filter);
             });
+            if (track) {
+              const showcase = showcaseCards(filter);
+              track.innerHTML = showcase.html;
+              track.style.setProperty("--marquee-count", showcase.count);
+            }
           });
         });
       });
@@ -692,7 +737,7 @@ ${drawerMarkup(active)}`;
               b.setAttribute("aria-pressed", on ? "true" : "false");
             });
             list.querySelectorAll("[data-status]").forEach((item) => {
-              item.hidden = item.dataset.status !== filter;
+              item.hidden = !matchesFilter(item.dataset.status, filter);
             });
           });
         });
