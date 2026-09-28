@@ -1,7 +1,7 @@
 /* ——— Header ——— */
 
 :root {
-  --header-height: 154px;
+  --header-height: 72px;
 }
 
 .skip-link {
@@ -30,33 +30,16 @@
   align-items: center;
   justify-content: space-between;
   height: var(--header-height);
-  padding: 0 80px;
-  background: rgba(29, 29, 29, 0.92);
+  padding: 10px 80px;
+  background: rgba(10, 10, 10, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   width: 100%;
   max-width: none;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  transition:
-    height 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease,
-    padding 0.25s ease;
-}
-
-.header.is-scrolled {
-  height: 72px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background: rgba(10, 10, 10, 0.94);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-.header.is-scrolled .logo {
-  width: 88px;
-  height: 58px;
+  transition: background 0.25s ease;
 }
 
 /* Offset page content under fixed header */
@@ -78,8 +61,8 @@
 }
 
 .header .logo {
-  width: 126px;
-  height: 101px;
+  width: 88px;
+  height: 58px;
 }
 
 .nav {

@@ -420,6 +420,12 @@ body:has(.header.is-scrolled) .filters-bar {
   align-items: stretch;
 }
 
+.row > .card {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+}
+
 .row-tight {
   gap: 29.55px;
 }
@@ -448,6 +454,21 @@ body:has(.header.is-scrolled) .filters-bar {
 
 .card-img.blue-bg {
   background: linear-gradient(180.65deg, rgb(57, 145, 218) 13.15%, rgb(40, 126, 201) 50.56%);
+}
+
+.card-flag {
+  position: absolute;
+  top: 18px;
+  right: 88px;
+  z-index: 3;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.72);
+  color: #fff;
+  font-family: "Fustat", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
 }
 
 .card-arrow {
@@ -702,17 +723,21 @@ body:has(.header.is-scrolled) .filters-bar {
 
 .row-fixed {
   display: flex;
+  flex-wrap: nowrap;
   gap: 28px;
   width: 100%;
 }
 
+/* 620 / 1032 on a 1680 track with a 28px gutter. Percentages so the pair
+   stays side by side when the page gutter is 120px on a 1440 viewport. */
 .row-fixed .w-620 {
-  width: 620px;
-  flex-shrink: 0;
+  flex: 0 0 calc((100% - 28px) * 0.3753);
+  width: auto;
+  min-width: 0;
 }
 
 .row-fixed .w-1032 {
-  flex: 1;
+  flex: 0 0 calc((100% - 28px) * 0.6247);
   width: auto;
   min-width: 0;
 }
@@ -1001,28 +1026,8 @@ body:has(.header.is-scrolled) .filters-bar {
     width: 100%;
   }
 
-  .row-split,
-  .row-3,
-  .row-wide-narrow,
-  .row,
-  .row-fixed {
-    flex-wrap: wrap;
-  }
-
   .project-grid.is-filtered {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .row-split .w-32,
-  .row-split .w-66,
-  .row-3 .w-33,
-  .row-3 .w-33b,
-  .row-wide-narrow .w-65,
-  .row-wide-narrow .w-34,
-  .row-fixed .w-620,
-  .w-half {
-    width: 100%;
-    flex: 1 1 100%;
   }
 
   /* .cta / .blog-cards / .blog-card @1440 come from css/footer.css. */
