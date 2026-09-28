@@ -774,17 +774,23 @@
   // the address sliced off. Wrap it and give it the same prev/next control the
   // homepage rails use. Runs on every page that renders the band; the nav only
   // appears while the band actually overflows.
-  // On phones the band is rebuilt from per-company slices: Arul Group sits
-  // beside its address on the first row, and the four companies follow in a
-  // grid. Desktop keeps the original single-image band untouched.
+  // On phones the same six-company strip wraps into two columns, in the band's
+  // order and with its captions and URLs. Marks are cut from the band art
+  // itself (assets/shared/band/strip-*), so they carry the band's white panels;
+  // captions and URLs are real text — baked into a ~170px column they render
+  // 5-6px tall. Desktop keeps the single-image band.
   function partnersBandGrid() {
     const CELLS = [
-      { file: "group", alt: "Arul Group", cls: "is-group" },
-      { file: "address", alt: "Arul Group corporate office, B-5 SIDCO Industrial Estate, Krishnagiri Dist, Hosur 635 126, Tamil Nadu, India", cls: "is-address" },
-      { file: "rubbers", alt: "Arul Rubbers Private Limited — arulrubbers.com", cls: "" },
-      { file: "polymers", alt: "Arul Polymers Private Limited — arulpolymers.com", cls: "" },
-      { file: "neoheights", alt: "Neo Heights — neoheights.com", cls: "" },
-      { file: "vajra", alt: "Vajra Panels and The Neo Studio — theneostudio.com", cls: "" }
+      { mark: "group", alt: "Arul Group", url: "www.arulgroup.in" },
+      { mark: "rubbers", alt: "Arul Rubbers Private Limited, Estd. 1978", cap: "An ISO 9001:2015 Company",
+        url: "www.arulrubbers.com" },
+      { mark: "polymers", alt: "Arul Polymers Private Limited, Estd. 1997",
+        cap: "An ISO: 9001:2015<br />&amp; IATF 16949 Company", url: "www.arulpolymers.com" },
+      { mark: "neoheights", alt: "Neo Heights — Scaling Newer Heights", cap: "An ISO 9001 &amp; 45001 Company",
+        url: "www.neoheights.com" },
+      { mark: "vajra", alt: "Vajra Panels", url: "www.vajrapanels.com" },
+      { mark: "neostudio", alt: "The Neo Studio — Where Spaces Turn Into Stories, powered by Neo Heights",
+        url: "www.theneostudio.com" }
     ];
 
     document.querySelectorAll(".partners--band").forEach((band) => {
@@ -792,27 +798,23 @@
       const img = band.querySelector("img");
       const base = img && img.getAttribute("src").indexOf("../") === 0 ? "../" : "";
 
+      // One crop per ground; css/components.css shows the one for the theme.
+      const marks = (name, alt) =>
+        [["-dark.png?v=2", "partners-art--on-dark"], [".png?v=2", "partners-art--on-light"]]
+          .map(([suffix, cls]) =>
+            '<img class="partners-mark ' + cls + '" src="' + base + "assets/shared/band/strip-" + name + suffix +
+            '" alt="' + alt + '" loading="lazy" decoding="async" />')
+          .join("");
+
       const grid = document.createElement("div");
       grid.className = "partners-grid";
-      CELLS.forEach((c) => {
-        const cell = document.createElement("span");
-        cell.className = "partners-cell " + c.cls;
-        if (c.file === "address") {
-          // Set as real text, not a slice: scaled into a ~178px column the
-          // address bitmap renders about 8px tall and is unreadable.
-          cell.innerHTML =
-            "Corporate Office : ARUL GROUP<br />B-5, SIDCO Industrial Estate<br />" +
-            "Krishnagiri Dist, Hosur - 635 126<br />Tamil Nadu, INDIA";
-        } else {
-          const i = document.createElement("img");
-          i.src = base + "assets/shared/band/" + c.file + ".png?v=2";
-          i.alt = c.alt;
-          i.loading = "lazy";
-          i.decoding = "async";
-          cell.appendChild(i);
-        }
-        grid.appendChild(cell);
-      });
+      grid.innerHTML = CELLS.map((c) =>
+        '<div class="partners-cell is-' + c.mark + '">' +
+          '<span class="partners-cap">' + (c.cap || "") + "</span>" +
+          '<span class="partners-logo">' + marks(c.mark, c.alt) + "</span>" +
+          '<a class="partners-url" href="https://' + c.url + '" target="_blank" rel="noopener">' + c.url + "</a>" +
+        "</div>"
+      ).join("");
       band.parentNode.insertBefore(grid, band.nextSibling);
     });
   }

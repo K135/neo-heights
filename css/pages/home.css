@@ -3806,20 +3806,50 @@ html[data-theme="light"] .home-faq-more a { color: var(--text); }
 /* Phones: 4.5 cards would be ~80px and unreadable. Keep a scrolling rail
    with a peek of the next card so it does not look like a static poster. */
 @media (max-width: 767px) {
-  .home-services-rail {
-    --svc-visible: 1.4;
-    --svc-gap: 12px;
-    padding: 0 16px 48px;
+  .home-services {
+    padding-bottom: 40px;
   }
 
-  .home-services-track {
-    animation-duration: 36s;
+  /* The arrow row collapses to 0 here, so the head needs its own bottom
+     space. Keep it above the 28px reveal lift or the CTA slides under the
+     cards while the head fades in. */
+  .home-services-head {
+    padding-bottom: 32px;
+  }
+
+  /* No hover lift on touch, so the 48px reserved for it was just dead band. */
+  .home-services-rail {
+    --svc-visible: 1.4;
+    /* = the inset, so no sliver of the previous card shows at rest */
+    --svc-gap: 16px;
+    padding: 0 16px;
   }
 
   .home-svc-label {
     font-size: 16px;
     padding: 16px;
   }
+}
+
+/* A continuous drift always has one card cut by the screen edge. Step one
+   card at a time instead and rest each one inside the 16px inset. 7 cards,
+   so 7 steps end on -50% and the cloned set makes the loop seamless. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .home-services-track {
+    --svc-step: calc(-1 * (var(--svc-card) + var(--svc-gap)));
+    animation: home-svc-step 24.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+}
+
+@keyframes home-svc-step {
+  0%, 11.43%     { transform: translateX(0); }
+  14.29%, 25.71% { transform: translateX(var(--svc-step)); }
+  28.57%, 40%    { transform: translateX(calc(2 * var(--svc-step))); }
+  42.86%, 54.29% { transform: translateX(calc(3 * var(--svc-step))); }
+  57.14%, 68.57% { transform: translateX(calc(4 * var(--svc-step))); }
+  71.43%, 82.86% { transform: translateX(calc(5 * var(--svc-step))); }
+  85.71%, 97.14% { transform: translateX(calc(6 * var(--svc-step))); }
+  100%           { transform: translateX(calc(7 * var(--svc-step))); }
 }
 
 @media (prefers-reduced-motion: no-preference) {

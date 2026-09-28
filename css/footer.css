@@ -298,6 +298,10 @@
   gap: 0 6px;
 }
 
+/* Each role keeps its label, number and comma on one line; roles may stack. */
+.footer-phones > span,
+.footer-nowrap { white-space: nowrap; }
+
 .footer-phones a,
 .footer-emails a {
   color: inherit;
@@ -310,6 +314,22 @@
 .footer-address div { max-width: none; }
 .footer-contact .footer-headoffice { margin-top: 12px; }
 .footer-address strong { color: #f4f4f4; }
+
+/* Figma 2972:18011 — the Contact block runs across the full footer row with the
+   phone line and the email line each on a single row. A one-fifth (or half)
+   grid column is narrower than either line, so it spans every column instead. */
+@media (min-width: 769px) {
+  .footer-grid > .footer-social { grid-column: -2; }
+  .footer-grid > div:has(.footer-contact) {
+    grid-column: 1 / -1;
+    order: 1;
+  }
+  .footer-phones,
+  .footer-emails {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+}
 
 
 /* ============ LIGHT MODE — footer ============ */

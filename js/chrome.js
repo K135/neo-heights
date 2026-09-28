@@ -485,7 +485,7 @@ ${drawerMarkup(active)}`;
             <img src="${img("icon-phone.svg")}" alt="" width="20" height="20" />
             <div class="footer-phones">
               <span>Marketing: <a href="tel:+918754605666">+91 8754605666</a>,</span>
-              <span>Business development: <a href="tel:+919940217718">+91 9940217718</a>,</span>
+              <span class="footer-nowrap">Business development: <a href="tel:+919940217718">+91 9940217718</a>,</span>
               <span>CEO: <a href="tel:+918754605666">+91 87546 05666</a>,</span>
             </div>
           </div>
