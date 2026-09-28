@@ -157,7 +157,7 @@
   width: 100%;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 76px;
+  font-size: 64px;
   line-height: 1;
   letter-spacing: -3px;
   color: #fff;
@@ -588,26 +588,27 @@
 .home-trusted-track {
   display: flex;
   align-items: center;
-  gap: 85.55px;
+  gap: 64px;
   width: max-content;
   height: 100%;
   animation: home-marquee 45s linear infinite;
 }
 
 .home-trusted-track img {
-  /* One height for every mark, so they read at the same size regardless of each
-     logo's own proportions. Sources are trimmed to their ink, so the height is
-     the artwork itself, and centring then lines them all up on one axis. */
-  display: block;
-  flex: 0 0 auto;
-  width: auto;
-  height: 44px;
+  /* One canvas height for every mark; the canvas already sizes each logo's ink
+     optically (badges ~55px, wide wordmarks ~28px), so the row reads even.
+     Height AND max-width are both set so a wide wordmark can never balloon. */
+  height: 60px;
   max-width: 240px;
-  object-fit: contain;
-  object-position: center;
   opacity: 1;
-  filter: none;
 }
+
+/* Light mode: the band follows the page ground so the marks read dark on it. */
+html[data-theme="light"] .home-trusted {
+  background: var(--bg-elevated);
+  border-top-color: var(--border);
+}
+html[data-theme="light"] .home-trusted-label { color: var(--text-grey); }
 
 @keyframes home-marquee {
   from { transform: translateX(0); }
@@ -1175,6 +1176,18 @@
   font-weight: 600;
 }
 
+@media (min-width: 1100px) {
+  .home-project-filters { margin-top: 12px; }
+  .home-projects > .project-grid { margin-top: 40px; }
+}
+
+@media (min-width: 1441px) {
+  .home-projects .project-grid:not(.is-filtered) .row-split .w-32 { flex: 547 1 547px; }
+  .home-projects .project-grid:not(.is-filtered) .row-split .w-66 { flex: 1110 1 1110px; }
+  .home-projects .project-grid:not(.is-filtered) .row-3 .w-33 { flex: 544 1 544px; }
+  .home-projects .project-grid:not(.is-filtered) .row-3 .w-33b { flex: 552 1 552px; }
+}
+
 /* js/site.js adds .is-filtered while On-going / Completed is active: the
    bespoke masonry rows would leave holes where hidden cards sat, so flatten to
    an even grid and drop the prose companions (they only partner a photo card). */
@@ -1282,33 +1295,12 @@
   margin-left: 0;
 }
 
+/* Same shared-canvas marks as the trusted band, so one height evens both rows. */
 .home-client-row img {
-  display: block;
-  width: auto;
-  height: auto;
+  height: 76px;
   max-width: 100%;
-  object-fit: contain;
-  object-position: center;
-  /* Figma: full colour, 100% opacity — no filter (was brightness(0) invert(1)) */
-  filter: none;
   opacity: 1;
 }
-
-/* exact Figma intrinsic heights, row 1 (687:19469) */
-.home-client-row:first-child img:nth-child(1) { max-height: 60px; }    /* TATA */
-.home-client-row:first-child img:nth-child(2) { max-height: 31.24px; } /* Volvo */
-.home-client-row:first-child img:nth-child(3) { max-height: 56.6px; }  /* Faiveley */
-.home-client-row:first-child img:nth-child(4) { max-height: 50.94px; } /* Voltas */
-.home-client-row:first-child img:nth-child(5) { max-height: 56.03px; } /* TVS */
-.home-client-row:first-child img:nth-child(6) { max-height: 48px; }    /* Wabtec */
-
-/* row 2 (687:19500) */
-.home-client-row + .home-client-row img:nth-child(1) { max-height: 110px; }    /* Wipro */
-.home-client-row + .home-client-row img:nth-child(2) { max-height: 104.79px; } /* Scania */
-.home-client-row + .home-client-row img:nth-child(3) { max-height: 104.02px; } /* Shimizu */
-.home-client-row + .home-client-row img:nth-child(4) { max-height: 90.47px; }  /* CUMI */
-.home-client-row + .home-client-row img:nth-child(5) { max-height: 107.62px; } /* Apex */
-.home-client-row + .home-client-row img:nth-child(6) { max-height: 45.14px; }  /* AVTEC */
 
 /* Figma 687:19465 — 42px/700 in a 1017px box wraps to exactly 2 lines */
 .home-clients-copy .home-section-title {
@@ -2472,9 +2464,9 @@ HEIGHTS", Plus Jakarta Sans 800 /
   }
 
   .home-trusted-track img {
-    height: 22px;
-    max-height: 22px;
-    max-width: 96px;
+    height: 34px;
+    max-height: 34px;
+    max-width: 130px;
     width: auto;
   }
 
@@ -2589,7 +2581,7 @@ HEIGHTS", Plus Jakarta Sans 800 /
   }
 
   .home-client-row img {
-    max-height: 44px;
+    height: 56px;
   }
 
   .home-sustain {
@@ -3206,14 +3198,6 @@ html[data-theme="light"] .home-faq-icon { filter: invert(1); }
 html[data-theme="light"] .home-faq-more { color: var(--text-secondary); }
 html[data-theme="light"] .home-faq-more a { color: var(--text); }
 
-/* White-artwork client marks would vanish on the light surface. The classic
-   invert + hue-rotate pair flips their lightness while keeping the red.
-   (Figma 1264:9007 renders these three ghosted — treated as an oversight.) */
-html[data-theme="light"] .home-client-row:first-child img:nth-child(3),
-html[data-theme="light"] .home-client-row:first-child img:nth-child(6),
-html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
-  filter: invert(1) hue-rotate(180deg);
-}
 
 /* ==========================================================================
    Photo-backed surfaces get an explicit dark background-colour.
@@ -3445,7 +3429,8 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
   .home-client-row img,
   .home-client-row:first-child img,
   .home-client-row + .home-client-row img {
-    max-height: 38px !important;
+    height: 48px;
+    max-height: 48px !important;
   }
 
   /* ---- Legacy ----------------------------------------------------------- */
@@ -3765,9 +3750,9 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
   }
 
   .home-trusted-track img {
-    height: 22px;
-    max-height: 22px;
-    max-width: 96px;
+    height: 34px;
+    max-height: 34px;
+    max-width: 130px;
     width: auto;
     object-fit: contain;
   }
@@ -3858,6 +3843,27 @@ html[data-theme="light"] .home-client-row + .home-client-row img:nth-child(6) {
     overflow-y: hidden;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Team: a static five-up grid on desktop; phones keep the swipe rail. */
+@media (min-width: 1100px) {
+  .home-team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 278px));
+    justify-content: center;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .home-team-grid::before,
+  .home-team-grid::after {
+    content: none;
+  }
+
+  .home-member {
+    width: auto;
+    min-width: 0;
   }
 }
 

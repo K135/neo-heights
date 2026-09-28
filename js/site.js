@@ -805,7 +805,7 @@
             "Krishnagiri Dist, Hosur - 635 126<br />Tamil Nadu, INDIA";
         } else {
           const i = document.createElement("img");
-          i.src = base + "assets/shared/band/" + c.file + ".png";
+          i.src = base + "assets/shared/band/" + c.file + ".png?v=2";
           i.alt = c.alt;
           i.loading = "lazy";
           i.decoding = "async";

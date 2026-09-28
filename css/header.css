@@ -429,7 +429,15 @@ body.mega-hover .mega-backdrop {
 .mega-projects-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-content: start;
   gap: 11px 46px;
+  /* Four rows visible; longer rosters scroll so the panel fits the viewport. */
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 .mega-services-list {

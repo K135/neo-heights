@@ -193,6 +193,7 @@ button {
   gap: 80px;
   padding: 0 120px 120px;
   width: 100%;
+  scroll-margin-top: calc(var(--header-height, 72px) + 16px);
 }
 
 .filters-bar {

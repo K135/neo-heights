@@ -47,20 +47,35 @@
   };
 
   // Mega panel roster — row-major so the 2-up grid reads exactly as designed.
+  // Statuses follow "Project details-02.xlsx": any client on its Ongoing sheet
+  // is ongoing. Clients without a detail page link to the projects listing.
   const MEGA_PROJECTS = [
     { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
+    { title: "Wipro GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", status: "ongoing" },
+    { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "ongoing" },
+    { title: "GE BE Pvt Ltd", loc: "BENGALURU", href: "projects.html", status: "ongoing" },
+    { title: "TVS Motor Company", loc: "BENGALURU & HOSUR", href: "projects.html", status: "ongoing" },
+    { title: "Volvo CE India Pvt Ltd", loc: "BENGALURU", href: "projects.html", status: "ongoing" },
+    { title: "Saint-Gobain Industries India", loc: "CHENNAI", href: "projects.html", status: "ongoing" },
+    { title: "Plansee India", loc: "MYSORE", href: "projects.html", status: "ongoing" },
+    { title: "Autoliv India Limited", loc: "DEVANAHALLI", href: "projects.html", status: "ongoing" },
+    { title: "Mahindra Aerostructures", loc: "BENGALURU", href: "projects.html", status: "ongoing" },
+    { title: "VinFast Auto India", loc: "THOOTHUKUDI", href: "projects.html", status: "ongoing" },
     { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "completed" },
+    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "completed" },
     { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "completed" },
     { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html", status: "completed" },
-    { title: "GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", status: "ongoing" },
-    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "completed" },
     { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", status: "completed" },
     { title: "Foxconn - Cinda", loc: "CHENNAI", href: "projects/foxconn.html", status: "completed" },
     { title: "Advik Hi Tech Pvt. Ltd.", loc: "NARSAPURA, KA", href: "projects/advik-peb.html", status: "completed" },
     { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", status: "completed" },
     { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", status: "completed" },
     { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", status: "completed" },
-    { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "ongoing" },
+    { title: "Magnum Residential", loc: "CHENNAI & BENGALURU", href: "projects.html", status: "completed" },
+    { title: "Aster Residential", loc: "BENGALURU", href: "projects.html", status: "completed" },
+    { title: "School CSR Project", loc: "SCHAEFFLER", href: "projects/schaeffler.html", status: "completed" },
+    { title: "Honda Motorcycle & Scooter", loc: "BENGALURU", href: "projects.html", status: "completed" },
+    { title: "India Build Pvt Ltd", loc: "BENGALURU", href: "projects.html", status: "completed" },
   ];
 
   const MEGA_SERVICES = [
@@ -88,6 +103,9 @@
     { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", image: "assets/shared/proj-vajra1.png", status: "completed" },
     { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", image: "assets/shared/proj-pca.png", status: "completed" },
     { title: "Tata Electronics", loc: "HOSUR", href: "projects/tata-rwh.html", image: "assets/pages/home/image944.png", status: "ongoing" },
+    { title: "RCC Residential Building — Magnum", loc: "CHENNAI & BENGALURU", href: "projects.html", image: "assets/shared/proj-magnum.png", status: "completed" },
+    { title: "RCC Residential Building — Aster", loc: "BENGALURU", href: "projects.html", image: "assets/shared/proj-aster.png", status: "completed" },
+    { title: "School Building CSR Project", loc: "SCHAEFFLER", href: "projects/schaeffler.html", image: "assets/shared/proj-school.png", status: "completed" },
   ];
 
   function skipLink() {
@@ -95,12 +113,11 @@
   }
 
   const PROJECT_FILTERS = [
-    ["all", "All"],
     ["ongoing", "On-going"],
     ["completed", "Completed"],
   ];
 
-  const matchesFilter = (status, filter) => filter === "all" || status === filter;
+  const matchesFilter = (status, filter) => status === filter;
 
   function showcaseCards(filter) {
     const items = MEGA_SHOWCASE.filter((p) => matchesFilter(p.status, filter));
@@ -121,7 +138,7 @@
   }
 
   function megaProjectsPanel() {
-    const filter = "all";
+    const filter = "ongoing";
     const cards = MEGA_PROJECTS.map(
       (p) => `
       <a class="mega-project-item" href="${a(p.href)}" data-status="${p.status}"${matchesFilter(p.status, filter) ? "" : " hidden"}>
@@ -140,7 +157,7 @@
     <div class="mega-col">
       <p class="mega-label">Projects</p>
       <div class="mega-filters" data-mega-filters role="group" aria-label="Filter projects">${chips}</div>
-      <div class="mega-projects-list">${cards}</div>
+      <div class="mega-projects-list" data-lenis-prevent>${cards}</div>
     </div>
     <div class="mega-col mega-col-explore">
       <p class="mega-label">Explore</p>
@@ -189,8 +206,9 @@
       String(active).startsWith("projects") || String(location.pathname).includes("/projects/");
     const onServices =
       String(active).startsWith("services") || String(location.pathname).includes("/services/");
-    const currentProject = MEGA_PROJECTS.find((p) => leafOf(p.href) === leaf);
-    const projectFilter = currentProject ? currentProject.status : "all";
+    const isDetailPage = (p) => p.href.startsWith("projects/") && leafOf(p.href) === leaf;
+    const currentProject = MEGA_PROJECTS.find(isDetailPage);
+    const projectFilter = currentProject ? currentProject.status : "ongoing";
 
     const drawerLink = (href, label) => {
       const on = isNavCurrent(active, href) ? ' aria-current="page"' : "";
@@ -198,7 +216,7 @@
     };
 
     const projectItems = MEGA_PROJECTS.map((p) => {
-      const current = leafOf(p.href) === leaf;
+      const current = isDetailPage(p);
       const hidden = matchesFilter(p.status, projectFilter) ? "" : " hidden";
       return `<a class="nav-drawer-sublink" href="${a(p.href)}" data-status="${p.status}"${current ? ' aria-current="page"' : ""}${hidden}>
         <span class="nav-drawer-sub-title">${p.title}</span>
@@ -419,7 +437,6 @@ ${skipLink()}
 ${drawerMarkup(active)}`;
     },
     footer() {
-      const phones = CONTACT.phones.map((p) => `<span>${p}</span>`).join("");
       return `
 <footer class="footer">
   <div class="footer-inner">
@@ -466,19 +483,27 @@ ${drawerMarkup(active)}`;
         <div class="footer-contact">
           <div class="footer-contact-row">
             <img src="${img("icon-phone.svg")}" alt="" width="20" height="20" />
-            <div class="footer-phones">${phones}</div>
+            <div class="footer-phones">
+              <span>Marketing: <a href="tel:+918754605666">+91 8754605666</a>,</span>
+              <span>Business development: <a href="tel:+919940217718">+91 9940217718</a>,</span>
+              <span>CEO: <a href="tel:+918754605666">+91 87546 05666</a>,</span>
+            </div>
           </div>
           <div class="footer-contact-row">
             <img src="${img("icon-email.svg")}" alt="" width="20" height="20" />
-            <span>${CONTACT.emails.join(", ")}</span>
-          </div>
-          <div class="footer-contact-row footer-address">
-            <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
-            <div><strong>Corporate Office :</strong><br />${formatAddress(CONTACT.corporate)}</div>
+            <div class="footer-emails">
+              <span><a href="mailto:marketing@neoheights.com">marketing@neoheights.com</a>,</span>
+              <span><a href="mailto:monalisa@neoheights.com">monalisa@neoheights.com</a>,</span>
+              <span><a href="mailto:ceo@neoheights.com">ceo@neoheights.com</a>,</span>
+            </div>
           </div>
           <div class="footer-contact-row footer-address footer-headoffice">
             <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
-            <div><strong>Head Office :</strong><br />${formatAddress(CONTACT.headOffice)}</div>
+            <div><strong>Head office :</strong><br />Plot No. CP5A,<br />Vajra Tower, Second floor, SIPCOT II<br />National Highway, Opp to<br />Adiyaman College, Hosur 635109</div>
+          </div>
+          <div class="footer-contact-row footer-address">
+            <img src="${img("icon-location.svg")}" alt="" width="20" height="20" />
+            <div><strong>Corporate Office :</strong><br />Achuth Square,<br />First floor 1018/1, 24th Main Rd,<br />13th Cross Rd, 1st Sector, HSR Layout,<br />Bengaluru, Karnataka 560102</div>
           </div>
         </div>
       </div>
@@ -621,7 +646,7 @@ ${drawerMarkup(active)}`;
         if (!header.contains(e.target)) closeMega();
       });
 
-      // Mega panel status tabs (All / On-going / Completed) drive both the
+      // Mega panel status tabs (On-going / Completed) drive both the
       // project list and the photo strip.
       header.querySelectorAll("[data-mega-filters]").forEach((wrap) => {
         const btns = [...wrap.querySelectorAll("[data-mega-filter]")];

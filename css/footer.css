@@ -289,7 +289,27 @@
 
 /* Figma 2363:16356 -> 2363:16370 — Contact list itemSpacing is 16px */
 .footer-contact { display: flex; flex-direction: column; gap: 16px; }
-.footer-address div { max-width: 229px; }
+
+.footer-phones,
+.footer-emails {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 6px;
+}
+
+.footer-phones a,
+.footer-emails a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-phones a:hover,
+.footer-emails a:hover { color: #fff; }
+
+.footer-address div { max-width: none; }
+.footer-contact .footer-headoffice { margin-top: 12px; }
+.footer-address strong { color: #f4f4f4; }
 
 
 /* ============ LIGHT MODE — footer ============ */
@@ -334,6 +354,11 @@ html[data-theme="light"] .footer {
   }
   .footer-links li,
   .footer-col li { margin: 0; }
+  .footer-contact-row .footer-phones a,
+  .footer-contact-row .footer-emails a {
+    display: inline;
+    min-height: 0;
+  }
 }
 
 

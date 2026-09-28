@@ -923,7 +923,7 @@
   position: relative;
   width: 100%;
   height: auto;
-  background: #fff;
+  background: transparent;
   overflow: hidden;
 }
 .partners--band .partners-band {
@@ -934,6 +934,40 @@
   margin: 0 auto;
   object-fit: contain;
 }
+
+/* The band art and its phone slices are dark ink on transparent. On the dark
+   ground invert + hue-rotate flips their lightness but keeps each brand hue,
+   so the navy type reads white while the orange/red/blue marks stay on-brand. */
+.partners--band .partners-band,
+.partners-cell img {
+  filter: invert(1) hue-rotate(180deg);
+}
+html[data-theme="light"] .partners--band .partners-band,
+html[data-theme="light"] .partners-cell img {
+  filter: none;
+}
+
+/* ---- Client logos (assets/shared/clients) ----
+   Every mark sits on the same transparent canvas height, with its ink already
+   optically sized, so one CSS height gives an even row. --ink-dark marks would
+   vanish on the dark ground and --ink-light marks on a light one; the same
+   hue-preserving flip lifts each onto the ground it needs. */
+.client-logo {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  object-fit: contain;
+  object-position: center;
+}
+.client-logo--ink-dark { filter: invert(1) hue-rotate(180deg); }
+html[data-theme="light"] .client-logo--ink-dark { filter: none; }
+html[data-theme="light"] .client-logo--ink-light { filter: invert(1) hue-rotate(180deg); }
+
+/* Marks that pair a brand red with neutral type can't take the filter (red
+   turns pink), so they ship a baked variant per ground and swap by theme. */
+.client-logo--on-light { display: none; }
+html[data-theme="light"] .client-logo--on-dark { display: none; }
+html[data-theme="light"] .client-logo--on-light { display: block; }
 
 
 /* ============ LIGHT MODE — shared components ============ */
@@ -959,7 +993,8 @@ html[data-theme="light"] .card-glass-inner {
 html[data-theme="light"] .card-glass .card-title,
 html[data-theme="light"] .card-glass .card-loc { color: #fff; }
 
-html[data-theme="light"] .partners--band { background: var(--bg-elevated); }
+html[data-theme="light"] .partners--band,
+html[data-theme="light"] .partners-grid { background: var(--bg-elevated); }
 
 /* Featured Blogs keeps the dark ink band in light mode — the cards are
    photography with white type, and the homepage frame keeps the whole strip
@@ -1182,7 +1217,7 @@ html[data-theme="light"] .footer a.link-accent {
     width: 100%;
     box-sizing: border-box;
     padding: 30px 18px;
-    background: #fff;
+    background: transparent;
   }
 
   .partners-cell {
@@ -1207,7 +1242,7 @@ html[data-theme="light"] .footer a.link-accent {
     font-family: "Fustat", sans-serif;
     font-size: 12.5px;
     line-height: 1.55;
-    color: #1a1a1a;
+    color: var(--text);
     text-align: left;
   }
 

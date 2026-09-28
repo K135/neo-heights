@@ -2601,3 +2601,25 @@ html[data-theme="light"] .ab-team .ab-rail-arrow:hover:not(:disabled) {
     line-height: 20px;
   }
 }
+
+/* Team: a static five-up grid on desktop; phones keep the swipe rail. */
+@media (min-width: 1100px) {
+  .ab-team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 278px));
+    justify-content: center;
+    gap: clamp(16px, 2vw, 36px);
+    overflow: visible;
+  }
+
+  .ab-member {
+    width: auto;
+    min-width: 0;
+  }
+
+  .ab-member-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
