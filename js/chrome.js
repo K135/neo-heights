@@ -397,7 +397,7 @@
 ${skipLink()}
 <header class="header">
   <a class="header-logo" href="${a("index.html")}">
-    <img class="logo logo-for-dark" src="${img("logo.png")}" alt="Neo Heights" width="110" height="110" />
+    <img class="logo logo-for-dark" src="${img("logo-dark.png")}" alt="Neo Heights" width="110" height="110" />
     <img class="logo logo-for-light" src="${img("logo-light.png")}" alt="Neo Heights" width="110" height="110" />
   </a>
   <nav class="nav font-nav" id="primary-nav" aria-label="Primary">
@@ -450,7 +450,7 @@ ${drawerMarkup(active)}`;
     </div>
     <div class="footer-grid">
       <div class="footer-brand">
-        <img class="logo logo-for-dark" src="${img("logo.png")}" alt="Neo Heights" width="110" height="110" />
+        <img class="logo logo-for-dark" src="${img("logo-dark.png")}" alt="Neo Heights" width="110" height="110" />
         <img class="logo logo-for-light" src="${img("logo-light.png")}" alt="Neo Heights" width="110" height="110" />
         <p class="footer-arul">Part of Arul Group</p>
         <p class="footer-about">Neo Heights, backed by the Arul Group, delivers civil, PEB, interior, and MEP construction solutions with a focus on quality, safety, and long-term value.</p>

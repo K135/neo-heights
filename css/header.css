@@ -77,8 +77,17 @@ html[data-theme="light"] .logo-for-light {
   display: block;
 }
 
-.header .logo-for-light,
-.header.is-scrolled .logo-for-light {
+.header .logo.logo-for-dark,
+.header.is-scrolled .logo.logo-for-dark {
+  width: 78px;
+  height: 58px;
+  object-fit: contain;
+  object-position: left center;
+  border-radius: 0;
+}
+
+.header .logo.logo-for-light,
+.header.is-scrolled .logo.logo-for-light {
   width: 58px;
   height: 58px;
   max-width: 58px;
@@ -676,8 +685,17 @@ body.mega-hover .mega-backdrop {
     border-radius: 22px 22px 0 0;
   }
 
-  .header .logo-for-light,
-  .header.is-scrolled .logo-for-light {
+  .header .logo.logo-for-dark,
+  .header.is-scrolled .logo.logo-for-dark {
+    width: 74px;
+    height: 56px;
+    object-fit: contain;
+    object-position: left center;
+    border-radius: 0;
+  }
+
+  .header .logo.logo-for-light,
+  .header.is-scrolled .logo.logo-for-light {
     width: 56px;
     height: 56px;
     max-width: 56px;
