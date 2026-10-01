@@ -53,14 +53,6 @@
     { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
     { title: "Wipro GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", status: "ongoing" },
     { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "ongoing" },
-    { title: "GE BE Pvt Ltd", loc: "BENGALURU", href: "projects.html", status: "ongoing" },
-    { title: "TVS Motor Company", loc: "BENGALURU & HOSUR", href: "projects.html", status: "ongoing" },
-    { title: "Volvo CE India Pvt Ltd", loc: "BENGALURU", href: "projects.html", status: "ongoing" },
-    { title: "Saint-Gobain Industries India", loc: "CHENNAI", href: "projects.html", status: "ongoing" },
-    { title: "Plansee India", loc: "MYSORE", href: "projects.html", status: "ongoing" },
-    { title: "Autoliv India Limited", loc: "DEVANAHALLI", href: "projects.html", status: "ongoing" },
-    { title: "Mahindra Aerostructures", loc: "BENGALURU", href: "projects.html", status: "ongoing" },
-    { title: "VinFast Auto India", loc: "THOOTHUKUDI", href: "projects.html", status: "ongoing" },
     { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "completed" },
     { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "completed" },
     { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "completed" },
@@ -74,8 +66,6 @@
     { title: "Magnum Residential", loc: "CHENNAI & BENGALURU", href: "projects.html", status: "completed" },
     { title: "Aster Residential", loc: "BENGALURU", href: "projects.html", status: "completed" },
     { title: "School CSR Project", loc: "SCHAEFFLER", href: "projects/schaeffler.html", status: "completed" },
-    { title: "Honda Motorcycle & Scooter", loc: "BENGALURU", href: "projects.html", status: "completed" },
-    { title: "India Build Pvt Ltd", loc: "BENGALURU", href: "projects.html", status: "completed" },
   ];
 
   const MEGA_SERVICES = [
@@ -406,7 +396,10 @@
       return `
 ${skipLink()}
 <header class="header">
-  <a class="header-logo" href="${a("index.html")}"><img class="logo" src="${img("logo.png")}" alt="Neo Heights" width="133" height="100" /></a>
+  <a class="header-logo" href="${a("index.html")}">
+    <img class="logo logo-for-dark" src="${img("logo.png")}" alt="Neo Heights" width="110" height="110" />
+    <img class="logo logo-for-light" src="${img("logo-light.png")}" alt="Neo Heights" width="110" height="110" />
+  </a>
   <nav class="nav font-nav" id="primary-nav" aria-label="Primary">
     ${link("index.html", "Home")}
     ${megaTrigger("about", "about.html", "About")}
@@ -457,7 +450,8 @@ ${drawerMarkup(active)}`;
     </div>
     <div class="footer-grid">
       <div class="footer-brand">
-        <img class="logo" src="${img("logo.png")}" alt="Neo Heights" width="133" height="100" />
+        <img class="logo logo-for-dark" src="${img("logo.png")}" alt="Neo Heights" width="110" height="110" />
+        <img class="logo logo-for-light" src="${img("logo-light.png")}" alt="Neo Heights" width="110" height="110" />
         <p class="footer-arul">Part of Arul Group</p>
         <p class="footer-about">Neo Heights, backed by the Arul Group, delivers civil, PEB, interior, and MEP construction solutions with a focus on quality, safety, and long-term value.</p>
       </div>

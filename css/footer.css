@@ -59,6 +59,13 @@
   height: 100px;
 }
 
+.footer-brand .logo.logo-for-light {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
 .footer-arul {
   font-family: "Fustat", sans-serif;
   font-weight: 400;

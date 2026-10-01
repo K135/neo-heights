@@ -781,9 +781,11 @@ body:has(.header.is-scrolled) .filters-bar {
   display: none;
 }
 
-/* Fact cards stand alone (no photo exists for these clients), so they stay. */
-.project-grid.is-filtered .card-text.card-fact {
-  display: flex;
+/* Clients with no photograph are kept in the markup and hidden until photos exist. */
+.row-unpictured,
+.project-grid.is-filtered .card-text.card-fact,
+.card-fact {
+  display: none;
 }
 
 @media (max-width: 1099.98px) {

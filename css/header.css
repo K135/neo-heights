@@ -65,6 +65,27 @@
   height: 58px;
 }
 
+.logo-for-light {
+  display: none;
+}
+
+html[data-theme="light"] .logo-for-dark {
+  display: none;
+}
+
+html[data-theme="light"] .logo-for-light {
+  display: block;
+}
+
+.header .logo-for-light,
+.header.is-scrolled .logo-for-light {
+  width: 58px;
+  height: 58px;
+  max-width: 58px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -653,6 +674,15 @@ body.mega-hover .mega-backdrop {
     object-fit: cover;
     object-position: center;
     border-radius: 22px 22px 0 0;
+  }
+
+  .header .logo-for-light,
+  .header.is-scrolled .logo-for-light {
+    width: 56px;
+    height: 56px;
+    max-width: 56px;
+    object-fit: contain;
+    border-radius: 12px;
   }
 
   .nav-toggle {
