@@ -79,7 +79,7 @@ html[data-theme="light"] .logo-for-light {
 
 .header .logo.logo-for-dark,
 .header.is-scrolled .logo.logo-for-dark {
-  width: 78px;
+  width: 73px;
   height: 58px;
   object-fit: contain;
   object-position: left center;
@@ -88,11 +88,12 @@ html[data-theme="light"] .logo-for-light {
 
 .header .logo.logo-for-light,
 .header.is-scrolled .logo.logo-for-light {
-  width: 58px;
+  width: 77px;
   height: 58px;
-  max-width: 58px;
+  max-width: none;
   object-fit: contain;
-  border-radius: 12px;
+  object-position: left center;
+  border-radius: 0;
 }
 
 .nav {
@@ -687,7 +688,7 @@ body.mega-hover .mega-backdrop {
 
   .header .logo.logo-for-dark,
   .header.is-scrolled .logo.logo-for-dark {
-    width: 74px;
+    width: 70px;
     height: 56px;
     object-fit: contain;
     object-position: left center;
@@ -696,11 +697,12 @@ body.mega-hover .mega-backdrop {
 
   .header .logo.logo-for-light,
   .header.is-scrolled .logo.logo-for-light {
-    width: 56px;
+    width: 74px;
     height: 56px;
-    max-width: 56px;
+    max-width: none;
     object-fit: contain;
-    border-radius: 12px;
+    object-position: left center;
+    border-radius: 0;
   }
 
   .nav-toggle {
