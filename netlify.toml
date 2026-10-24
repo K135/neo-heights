@@ -1,6 +1,78 @@
 [build]
   publish = "."
 
+# Retired project pages: 301 to the replacement page, or to the projects index
+# where there is no direct successor. Must stay above the catch-all 404 below.
+[[redirects]]
+  from = "/projects/ge-healthcare.html"
+  to = "/projects/wipro-ge.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/tata-rwh.html"
+  to = "/projects/tata-rwh-sump.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/toyota.html"
+  to = "/projects/toyota-canteen.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/advik-peb.html"
+  to = "/projects/advik-hitech.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/apex.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/faiveley.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/foxconn.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/hindustan-peb.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/lm-wind.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/pca.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/shimzu.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/vajra.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/volvo.html"
+  to = "/projects.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/wistron.html"
+  to = "/projects.html"
+  status = 301
+
 [[redirects]]
   from = "/*"
   to = "/404.html"

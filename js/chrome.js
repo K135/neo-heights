@@ -48,19 +48,26 @@
 
   // Mega panel roster — row-major so the 2-up grid reads exactly as designed.
   const MEGA_PROJECTS = [
-    { title: "Toyota Design Build Canteen", loc: "BIDADI, KA", href: "projects/toyota.html", status: "ongoing" },
-    { title: "SHIMZU - SAKATA", loc: "HOSUR", href: "projects/shimzu.html", status: "ongoing" },
-    { title: "FAIVELEY - CS Building", loc: "HOSUR", href: "projects/faiveley.html", status: "ongoing" },
-    { title: "SAKATA - WAREHOUSE", loc: "BENGALURU", href: "projects/shimzu.html", status: "ongoing" },
-    { title: "GE Healthcare", loc: "BENGALURU", href: "projects/ge-healthcare.html", status: "ongoing" },
-    { title: "Schaeffler India Limited.", loc: "SHOOLAGIRI", href: "projects/schaeffler.html", status: "completed" },
-    { title: "Volvo Trucks", loc: "HOSKOTE", href: "projects/volvo.html", status: "completed" },
-    { title: "Foxconn - Cinda", loc: "CHENNAI", href: "projects/foxconn.html", status: "completed" },
-    { title: "Advik Hi Tech Pvt. Ltd.", loc: "NARSAPURA, KA", href: "projects/advik-peb.html", status: "completed" },
-    { title: "LM Wind Power", loc: "DOBBASPET", href: "projects/lm-wind.html", status: "completed" },
-    { title: "Vajra Towers", loc: "HOSUR", href: "projects/vajra.html", status: "completed" },
-    { title: "PCA", loc: "BENGALURU", href: "projects/pca.html", status: "completed" },
-    { title: "TATA Electronics RWH", loc: "HOSUR", href: "projects/tata-rwh.html", status: "completed" },
+    { title: "Toyota Kirloskar: Canteen Buildings", loc: "BANGALORE", href: "projects/toyota-canteen.html", status: "ongoing" },
+    { title: "Wipro GE Healthcare: CT4", loc: "BANGALORE", href: "projects/wipro-ge-ct4.html", status: "ongoing" },
+    { title: "Toyota Kirloskar: School CSR Project", loc: "BANGALORE", href: "projects/toyota-school-csr.html", status: "ongoing" },
+    { title: "Tata Electronics: RWH Sump", loc: "HOSUR", href: "projects/tata-rwh-sump.html", status: "ongoing" },
+    { title: "VE Commercial Vehicles: VBI Expansion", loc: "BANGALORE", href: "projects/vecv-vbi.html", status: "ongoing" },
+    { title: "TVS Motor: Plant 03 Dining Hall", loc: "BANGALORE", href: "projects/tvs-dining-hall.html", status: "ongoing" },
+    { title: "Toyota Kirloskar: P2 Resin Shop", loc: "BANGALORE", href: "projects/toyota-p2-resin-shop.html", status: "ongoing" },
+    { title: "GE BE: Gas Bank Civil Works", loc: "BANGALORE", href: "projects/ge-be-gas-bank.html", status: "ongoing" },
+    { title: "Toyota Kirloskar: P1 Toilets", loc: "BANGALORE", href: "projects/toyota-p1-toilets.html", status: "ongoing" },
+    { title: "Toyota Kirloskar: P2 Toilets", loc: "BANGALORE", href: "projects/toyota-p2-toilets.html", status: "ongoing" },
+    { title: "GE BE: MPP Wedge Area", loc: "BANGALORE", href: "projects/ge-be-mpp-wedge.html", status: "ongoing" },
+    { title: "Schaeffler India Limited", loc: "HOSUR", href: "projects/schaeffler.html", status: "completed" },
+    { title: "Advik Hi-Tech", loc: "BANGALORE", href: "projects/advik-hitech.html", status: "completed" },
+    { title: "Cinda Engineering & Construction", loc: "CHENNAI", href: "projects/cinda.html", status: "completed" },
+    { title: "Toyota Kirloskar: Vin Punch P2", loc: "BANGALORE", href: "projects/toyota-vin-punch-p2.html", status: "completed" },
+    { title: "Honda Motorcycle & Scooter India", loc: "BANGALORE", href: "projects/honda-hmsi.html", status: "completed" },
+    { title: "Wipro GE Healthcare: CT3 Warehouse", loc: "BANGALORE", href: "projects/wipro-ge.html", status: "completed" },
+    { title: "India Build", loc: "BANGALORE", href: "projects/india-build.html", status: "completed" },
+    { title: "Toyota Kirloskar: Land Levelling", loc: "BANGALORE", href: "projects/toyota-land-levelling.html", status: "completed" },
+    { title: "GE BE: Car Parking", loc: "BANGALORE", href: "projects/ge-be.html", status: "completed" },
   ];
 
   const MEGA_SERVICES = [
@@ -74,10 +81,10 @@
   ];
 
   const EXPLORE = {
-    title: "SAKATA INDIA PVT LTD",
-    loc: "DODDABALLAPURA",
-    href: "projects/shimzu.html",
-    image: "explore-sakata.png",
+    title: "WIPRO GE HEALTHCARE PVT LTD",
+    loc: "BANGALORE",
+    href: "projects/wipro-ge.html",
+    image: "assets/pages/projects/wipro-ge/hero.jpg",
   };
 
   function skipLink() {
@@ -101,12 +108,12 @@
         <button type="button" class="mega-filter is-active" data-mega-filter="ongoing" aria-pressed="true">On-going</button>
         <button type="button" class="mega-filter" data-mega-filter="completed" aria-pressed="false">Completed</button>
       </div>
-      <div class="mega-projects-list">${cards}</div>
+      <div class="mega-projects-list" data-lenis-prevent>${cards}</div>
     </div>
     <div class="mega-col mega-col-explore">
       <p class="mega-label">Explore</p>
       <a class="mega-explore-card" href="${a(EXPLORE.href)}">
-        <img src="${img(EXPLORE.image)}" alt="${EXPLORE.title}" />
+        <img src="${a(EXPLORE.image)}" alt="${EXPLORE.title}" />
         <div class="mega-explore-overlay">
           <span class="mega-explore-title">${EXPLORE.title}</span>
           <span class="mega-explore-loc">${EXPLORE.loc}</span>

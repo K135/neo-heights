@@ -1,6 +1,23 @@
 # Custom error page (netlify.toml does not apply on Apache/Hostinger)
 ErrorDocument 404 /404.html
 
+# Retired project pages (projects section rebuilt): 301 to the replacement page,
+# or to the projects index where there is no direct successor. Mirrored in netlify.toml.
+Redirect 301 /projects/ge-healthcare.html /projects/wipro-ge.html
+Redirect 301 /projects/tata-rwh.html /projects/tata-rwh-sump.html
+Redirect 301 /projects/toyota.html /projects/toyota-canteen.html
+Redirect 301 /projects/advik-peb.html /projects/advik-hitech.html
+Redirect 301 /projects/apex.html /projects.html
+Redirect 301 /projects/faiveley.html /projects.html
+Redirect 301 /projects/foxconn.html /projects.html
+Redirect 301 /projects/hindustan-peb.html /projects.html
+Redirect 301 /projects/lm-wind.html /projects.html
+Redirect 301 /projects/pca.html /projects.html
+Redirect 301 /projects/shimzu.html /projects.html
+Redirect 301 /projects/vajra.html /projects.html
+Redirect 301 /projects/volvo.html /projects.html
+Redirect 301 /projects/wistron.html /projects.html
+
 # Compress text assets
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml

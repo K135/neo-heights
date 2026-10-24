@@ -398,6 +398,22 @@ body.mega-hover .mega-backdrop {
   gap: 11px 46px;
 }
 
+/* Eleven on-going projects run the list to six rows, which pushed the fixed
+   panel (and its CTA) past the bottom of laptop-height viewports, out of reach.
+   Cap the list to the room left under the header and let it scroll inside
+   (data-lenis-prevent in chrome.js); on tall screens the cap never engages. */
+.mega-panel-projects .mega-projects-list {
+  max-height: max(175px, calc(100vh - var(--header-height) - 290px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #4a4a4a transparent;
+}
+
+.header.is-scrolled .mega-panel-projects .mega-projects-list {
+  max-height: max(175px, calc(100vh - 72px - 290px));
+}
+
 .mega-services-list {
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
